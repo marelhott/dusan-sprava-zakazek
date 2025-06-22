@@ -1052,7 +1052,7 @@ const PaintPro = () => {
                 <div className="stats-item">
                   <div className="stats-icon purple">📋</div>
                   <div className="stats-content">
-                    <div class`tats-label">Ziskové marže</div>
+                    <div className="stats-label">Ziskové marže</div>
                     <div className="stats-value">
                       {periodData.celkoveTrzby > 0 ? Math.round((periodData.celkovyZisk / periodData.celkoveTrzby) * 100) : 0}%
                     </div>
