@@ -869,8 +869,12 @@ const PaintPro = () => {
           <p>Přehled a správa všech malířských zakázek s automatickým výpočtem zisku</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-secondary">Export CSV</button>
+          <button className="btn btn-secondary">
+            <div className="modern-icon size-small icon-export"></div>
+            Export CSV
+          </button>
           <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+            <div className="modern-icon size-small icon-add"></div>
             Přidat zakázku
           </button>
         </div>
