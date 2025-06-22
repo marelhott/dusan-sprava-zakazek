@@ -1072,14 +1072,14 @@ const PaintPro = () => {
       };
     };
 
-    // Export funkce
+    // Export funkce s plnou grafikou
     const exportToPDF = async () => {
       try {
         // Zobrazit loading
         const loadingToast = document.createElement('div');
         loadingToast.innerHTML = `
           <div style="position: fixed; top: 20px; right: 20px; background: #1F1F53; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
-            📄 Generuje se PDF report...
+            📄 Generuje se stylový PDF report...
           </div>
         `;
         document.body.appendChild(loadingToast);
@@ -1088,209 +1088,324 @@ const PaintPro = () => {
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
         
-        // Header
-        pdf.setFontSize(24);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('PaintPro - Finanční Report', 20, 30);
+        // Přidat podporu pro české znaky
+        pdf.addFont('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap', 'Inter', 'normal');
         
-        pdf.setFontSize(12);
-        pdf.setTextColor(139, 139, 167);
-        pdf.text(`Datum exportu: ${new Date().toLocaleDateString('cs-CZ')}`, 20, 40);
-        pdf.text(`Čas exportu: ${new Date().toLocaleTimeString('cs-CZ')}`, 20, 47);
-
-        let yPosition = 60;
-
-        // Celkové statistiky
-        pdf.setFontSize(16);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('CELKOVÉ STATISTIKY', 20, yPosition);
-        yPosition += 10;
-
-        const stats = [
-          ['Celkové tržby:', `${allPeriods.all.celkoveTrzby.toLocaleString()} Kč`],
-          ['Celkový zisk:', `${allPeriods.all.celkovyZisk.toLocaleString()} Kč`],
-          ['Zisková marže:', `${allPeriods.all.celkoveTrzby > 0 ? Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100) : 0}%`],
-          ['Počet zakázek:', `${allPeriods.all.pocetZakazek.toString()}`],
-          ['Průměrný zisk:', `${Math.round(allPeriods.all.celkovyZisk / (allPeriods.all.pocetZakazek || 1)).toLocaleString()} Kč`]
-        ];
-
-        pdf.setFontSize(11);
-        stats.forEach(([label, value]) => {
-          pdf.setTextColor(100, 100, 100);
-          pdf.text(label, 25, yPosition);
-          pdf.setTextColor(31, 31, 83);
-          pdf.text(value, 80, yPosition);
-          yPosition += 8;
-        });
-
-        yPosition += 10;
-
-        // Statistiky podle období
-        pdf.setFontSize(16);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('STATISTIKY PODLE OBDOBÍ', 20, yPosition);
-        yPosition += 15;
-
-        const periodStats = [
-          ['Období', 'Tržby (Kč)', 'Zisk (Kč)', 'Zakázky'],
-          ['Týden', allPeriods.week.celkoveTrzby.toLocaleString(), allPeriods.week.celkovyZisk.toLocaleString(), allPeriods.week.pocetZakazek.toString()],
-          ['Měsíc', allPeriods.month.celkoveTrzby.toLocaleString(), allPeriods.month.celkovyZisk.toLocaleString(), allPeriods.month.pocetZakazek.toString()],
-          ['Rok', allPeriods.year.celkoveTrzby.toLocaleString(), allPeriods.year.celkovyZisk.toLocaleString(), allPeriods.year.pocetZakazek.toString()],
-          ['Od začátku', allPeriods.all.celkoveTrzby.toLocaleString(), allPeriods.all.celkovyZisk.toLocaleString(), allPeriods.all.pocetZakazek.toString()]
-        ];
-
+        // Background gradient simulace
+        pdf.setFillColor(15, 15, 35); // #0F0F23
+        pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+        
+        // Header s gradienty
+        pdf.setFillColor(31, 31, 83); // #1F1F53
+        pdf.roundedRect(15, 15, pageWidth - 30, 25, 3, 3, 'F');
+        
+        pdf.setTextColor(255, 255, 255);
+        pdf.setFontSize(20);
+        pdf.text('🎨 PaintPro - Financni Report', 20, 30);
+        
         pdf.setFontSize(10);
-        periodStats.forEach((row, index) => {
-          const x = 20;
-          if (index === 0) {
-            pdf.setTextColor(31, 31, 83);
-            pdf.setFont(undefined, 'bold');
-          } else {
-            pdf.setTextColor(100, 100, 100);
-            pdf.setFont(undefined, 'normal');
-          }
+        pdf.setTextColor(181, 181, 209);
+        pdf.text(`Export: ${new Date().toLocaleDateString('cs-CZ')} ${new Date().toLocaleTimeString('cs-CZ')}`, 20, 36);
+
+        let yPosition = 55;
+
+        // Stylové statistiky karty
+        const createStatsCard = (title, stats, yPos) => {
+          // Karta pozadí
+          pdf.setFillColor(42, 45, 95); // card-bg
+          pdf.roundedRect(15, yPos, pageWidth - 30, 45, 3, 3, 'F');
           
-          pdf.text(row[0], x, yPosition);
-          pdf.text(row[1], x + 35, yPosition);
-          pdf.text(row[2], x + 75, yPosition);
-          pdf.text(row[3], x + 115, yPosition);
-          yPosition += 8;
+          // Gradient top border
+          pdf.setFillColor(79, 70, 229); // accent-blue
+          pdf.rect(15, yPos, pageWidth - 30, 2, 'F');
+          
+          // Titulek
+          pdf.setFontSize(14);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(title, 20, yPos + 12);
+          
+          // Statistiky
+          pdf.setFontSize(9);
+          let xPos = 20;
+          stats.forEach(([label, value], index) => {
+            if (index > 0 && index % 2 === 0) {
+              xPos = 20;
+              yPos += 8;
+            } else if (index > 0) {
+              xPos = 110;
+            }
+            
+            pdf.setTextColor(139, 139, 167);
+            pdf.text(label, xPos, yPos + 20);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(value, xPos, yPos + 26);
+          });
+          
+          return yPos + 45;
+        };
+
+        // Celkové statistiky karta
+        const stats = [
+          ['Celkove trzby:', `${allPeriods.all.celkoveTrzby.toLocaleString()} Kc`],
+          ['Celkovy zisk:', `${allPeriods.all.celkovyZisk.toLocaleString()} Kc`],
+          ['Ziskova marze:', `${allPeriods.all.celkoveTrzby > 0 ? Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100) : 0}%`],
+          ['Pocet zakazek:', `${allPeriods.all.pocetZakazek.toString()}`]
+        ];
+
+        yPosition = createStatsCard('📊 CELKOVE STATISTIKY', stats, yPosition) + 10;
+
+        // Období statistiky tabulka
+        pdf.setFillColor(42, 45, 95);
+        pdf.roundedRect(15, yPosition, pageWidth - 30, 55, 3, 3, 'F');
+        
+        pdf.setFillColor(16, 185, 129); // green
+        pdf.rect(15, yPosition, pageWidth - 30, 2, 'F');
+        
+        pdf.setFontSize(14);
+        pdf.setTextColor(255, 255, 255);
+        pdf.text('📈 STATISTIKY PODLE OBDOBI', 20, yPosition + 12);
+
+        // Tabulka header
+        pdf.setFontSize(8);
+        pdf.setTextColor(181, 181, 209);
+        const headers = ['Obdobi', 'Trzby (Kc)', 'Zisk (Kc)', 'Zakazky'];
+        headers.forEach((header, index) => {
+          pdf.text(header, 20 + (index * 35), yPosition + 22);
         });
 
-        yPosition += 15;
+        // Tabulka data
+        const periodStats = [
+          ['Tyden', allPeriods.week.celkoveTrzby.toLocaleString(), allPeriods.week.celkovyZisk.toLocaleString(), allPeriods.week.pocetZakazek.toString()],
+          ['Mesic', allPeriods.month.celkoveTrzby.toLocaleString(), allPeriods.month.celkovyZisk.toLocaleString(), allPeriods.month.pocetZakazek.toString()],
+          ['Rok', allPeriods.year.celkoveTrzby.toLocaleString(), allPeriods.year.celkovyZisk.toLocaleString(), allPeriods.year.pocetZakazek.toString()],
+          ['Celkem', allPeriods.all.celkoveTrzby.toLocaleString(), allPeriods.all.celkovyZisk.toLocaleString(), allPeriods.all.pocetZakazek.toString()]
+        ];
 
-        // Top klienti
-        pdf.setFontSize(16);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('TOP KLIENTI', 20, yPosition);
-        yPosition += 15;
+        pdf.setFontSize(8);
+        pdf.setTextColor(255, 255, 255);
+        periodStats.forEach((row, index) => {
+          const rowY = yPosition + 28 + (index * 6);
+          row.forEach((cell, cellIndex) => {
+            pdf.text(cell, 20 + (cellIndex * 35), rowY);
+          });
+        });
 
+        yPosition += 65;
+
+        // Top klienti karta
         const topClients = Object.entries(
           zakazkyData.reduce((acc, z) => {
             acc[z.klient] = (acc[z.klient] || 0) + z.zisk;
             return acc;
           }, {})
-        ).sort(([,a], [,b]) => b - a).slice(0, 10);
+        ).sort(([,a], [,b]) => b - a).slice(0, 6);
 
-        pdf.setFontSize(10);
-        pdf.setTextColor(31, 31, 83);
-        pdf.setFont(undefined, 'bold');
-        pdf.text('Klient', 25, yPosition);
-        pdf.text('Celkový zisk', 100, yPosition);
-        pdf.text('Počet zakázek', 140, yPosition);
-        yPosition += 8;
+        pdf.setFillColor(42, 45, 95);
+        pdf.roundedRect(15, yPosition, pageWidth - 30, 50, 3, 3, 'F');
+        
+        pdf.setFillColor(245, 158, 11); // orange
+        pdf.rect(15, yPosition, pageWidth - 30, 2, 'F');
+        
+        pdf.setFontSize(14);
+        pdf.setTextColor(255, 255, 255);
+        pdf.text('🏆 TOP KLIENTI', 20, yPosition + 12);
 
-        pdf.setFont(undefined, 'normal');
-        topClients.forEach(([klient, zisk]) => {
+        pdf.setFontSize(8);
+        topClients.forEach(([klient, zisk], index) => {
+          const clientY = yPosition + 20 + (index * 5);
           const pocetZakazek = zakazkyData.filter(z => z.klient === klient).length;
-          pdf.setTextColor(100, 100, 100);
-          pdf.text(klient, 25, yPosition);
-          pdf.text(`${zisk.toLocaleString()} Kč`, 100, yPosition);
-          pdf.text(pocetZakazek.toString(), 140, yPosition);
-          yPosition += 6;
+          
+          // Klient ikona
+          pdf.setFillColor(79, 70, 229);
+          pdf.circle(22, clientY, 1.5, 'F');
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(klient[0], 21.3, clientY + 0.7);
+          
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(klient, 28, clientY + 1);
+          pdf.setTextColor(16, 185, 129);
+          pdf.text(`${zisk.toLocaleString()} Kc`, 80, clientY + 1);
+          pdf.setTextColor(181, 181, 209);
+          pdf.text(`${pocetZakazek} zakazek`, 130, clientY + 1);
         });
+
+        // Nová stránka pro grafy
+        pdf.addPage();
+        
+        // Background
+        pdf.setFillColor(15, 15, 35);
+        pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+        
+        yPosition = 20;
+        
+        // Header
+        pdf.setFillColor(31, 31, 83);
+        pdf.roundedRect(15, 15, pageWidth - 30, 20, 3, 3, 'F');
+        
+        pdf.setFontSize(16);
+        pdf.setTextColor(255, 255, 255);
+        pdf.text('📊 GRAFICKE TRENDY', 20, 28);
+
+        yPosition = 45;
+
+        // Zachytit skutečné grafy pomocí html2canvas
+        try {
+          const chartsElement = document.querySelector('#charts-export');
+          if (chartsElement) {
+            loadingToast.querySelector('div').innerHTML = '📸 Zachycuji grafy...';
+            
+            const canvas = await html2canvas(chartsElement, {
+              backgroundColor: '#0F0F23',
+              scale: 1.5,
+              logging: false,
+              allowTaint: true,
+              useCORS: true,
+              width: chartsElement.offsetWidth,
+              height: chartsElement.offsetHeight,
+              onclone: (clonedDoc) => {
+                // Ensure charts are visible in cloned document
+                const clonedCharts = clonedDoc.querySelector('#charts-export');
+                if (clonedCharts) {
+                  clonedCharts.style.background = '#0F0F23';
+                  clonedCharts.style.padding = '20px';
+                }
+              }
+            });
+            
+            const imgData = canvas.toDataURL('image/png', 0.95);
+            const imgWidth = pageWidth - 30;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            
+            // Vycentrovat obraz
+            const imgX = 15;
+            let imgY = yPosition;
+            
+            if (imgHeight > pageHeight - yPosition - 20) {
+              const scale = (pageHeight - yPosition - 20) / imgHeight;
+              const scaledWidth = imgWidth * scale;
+              const scaledHeight = imgHeight * scale;
+              pdf.addImage(imgData, 'PNG', imgX + (imgWidth - scaledWidth) / 2, imgY, scaledWidth, scaledHeight);
+            } else {
+              pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth, imgHeight);
+            }
+            
+            yPosition += Math.min(imgHeight, pageHeight - yPosition - 40) + 10;
+          }
+        } catch (error) {
+          console.log('Error capturing charts:', error);
+          
+          // Fallback - stylové textové grafy
+          const periods = [
+            { name: 'TYDEN', value: allPeriods.week.celkovyZisk, color: [79, 70, 229], count: allPeriods.week.pocetZakazek },
+            { name: 'MESIC', value: allPeriods.month.celkovyZisk, color: [16, 185, 129], count: allPeriods.month.pocetZakazek },
+            { name: 'ROK', value: allPeriods.year.celkovyZisk, color: [245, 158, 11], count: allPeriods.year.pocetZakazek },
+            { name: 'CELKEM', value: allPeriods.all.celkovyZisk, color: [139, 92, 246], count: allPeriods.all.pocetZakazek }
+          ];
+
+          periods.forEach((period, index) => {
+            const cardY = yPosition + (index * 35);
+            
+            // Period karta
+            pdf.setFillColor(42, 45, 95);
+            pdf.roundedRect(15, cardY, pageWidth - 30, 30, 3, 3, 'F');
+            
+            // Barevný border
+            pdf.setFillColor(...period.color);
+            pdf.rect(15, cardY, pageWidth - 30, 2, 'F');
+            
+            // Progress bar
+            const maxValue = Math.max(...periods.map(p => p.value));
+            const barWidth = (period.value / maxValue) * (pageWidth - 80);
+            pdf.setFillColor(...period.color, 0.3);
+            pdf.roundedRect(20, cardY + 15, pageWidth - 50, 8, 2, 2, 'F');
+            pdf.setFillColor(...period.color);
+            pdf.roundedRect(20, cardY + 15, barWidth, 8, 2, 2, 'F');
+            
+            // Text
+            pdf.setFontSize(12);
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(period.name, 20, cardY + 10);
+            pdf.setFontSize(10);
+            pdf.setTextColor(...period.color);
+            pdf.text(`${period.value.toLocaleString()} Kc`, 20, cardY + 28);
+            pdf.setTextColor(181, 181, 209);
+            pdf.text(`${period.count} zakazek`, pageWidth - 50, cardY + 28);
+          });
+        }
 
         // Nová stránka pro detailní data
         pdf.addPage();
-        yPosition = 30;
+        pdf.setFillColor(15, 15, 35);
+        pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+        
+        yPosition = 20;
+        
+        // Header
+        pdf.setFillColor(31, 31, 83);
+        pdf.roundedRect(15, 15, pageWidth - 30, 20, 3, 3, 'F');
+        
+        pdf.setFontSize(16);
+        pdf.setTextColor(255, 255, 255);
+        pdf.text('📋 DETAILNI PREHLED ZAKAZEK', 20, 28);
 
-        pdf.setFontSize(18);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('DETAILNÍ PŘEHLED ZAKÁZEK', 20, yPosition);
+        yPosition = 45;
+
+        // Tabulka záhlaví
+        pdf.setFillColor(53, 56, 104);
+        pdf.roundedRect(15, yPosition, pageWidth - 30, 12, 2, 2, 'F');
+        
+        const tableHeaders = ['Datum', 'Klient', 'Castka', 'Zisk'];
+        pdf.setFontSize(8);
+        pdf.setTextColor(255, 255, 255);
+        tableHeaders.forEach((header, index) => {
+          pdf.text(header, 20 + (index * 35), yPosition + 8);
+        });
+
         yPosition += 15;
 
-        // Tabulka zakázek
-        const headers = ['Datum', 'Klient', 'Částka', 'Fee', 'Materiál', 'Zisk'];
-        pdf.setFontSize(9);
-        pdf.setFont(undefined, 'bold');
-        pdf.setTextColor(31, 31, 83);
-        
-        headers.forEach((header, index) => {
-          pdf.text(header, 20 + (index * 28), yPosition);
-        });
-        yPosition += 8;
-
-        pdf.setFont(undefined, 'normal');
-        pdf.setFontSize(8);
-        
-        zakazkyData.forEach((zakazka) => {
+        // Data řádky
+        zakazkyData.slice(0, 25).forEach((zakazka, index) => {
           if (yPosition > 270) {
             pdf.addPage();
+            pdf.setFillColor(15, 15, 35);
+            pdf.rect(0, 0, pageWidth, pageHeight, 'F');
             yPosition = 30;
           }
           
-          pdf.setTextColor(100, 100, 100);
-          pdf.text(zakazka.datum, 20, yPosition);
-          pdf.text(zakazka.klient, 48, yPosition);
-          pdf.text(`${zakazka.castka.toLocaleString()}`, 76, yPosition);
-          pdf.text(`${zakazka.fee.toLocaleString()}`, 104, yPosition);
-          pdf.text(`${zakazka.material.toLocaleString()}`, 132, yPosition);
+          // Alternating row colors
+          if (index % 2 === 0) {
+            pdf.setFillColor(42, 45, 95, 0.3);
+            pdf.rect(15, yPosition - 2, pageWidth - 30, 8, 'F');
+          }
+          
+          pdf.setFontSize(7);
+          pdf.setTextColor(255, 255, 255);
+          pdf.text(zakazka.datum, 20, yPosition + 3);
+          pdf.text(zakazka.klient, 55, yPosition + 3);
+          pdf.text(`${zakazka.castka.toLocaleString()}`, 90, yPosition + 3);
           pdf.setTextColor(16, 185, 129);
-          pdf.text(`${zakazka.zisk.toLocaleString()}`, 160, yPosition);
-          yPosition += 6;
+          pdf.text(`${zakazka.zisk.toLocaleString()}`, 125, yPosition + 3);
+          
+          yPosition += 8;
         });
-
-        // Grafy info stránka
-        pdf.addPage();
-        yPosition = 30;
-        
-        pdf.setFontSize(18);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('PŘEHLED GRAFŮ', 20, yPosition);
-        yPosition += 20;
-
-        // Info o grafech místo screenshotu
-        pdf.setFontSize(14);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('TÝDENNÍ TREND', 20, yPosition);
-        yPosition += 10;
-        pdf.setFontSize(11);
-        pdf.setTextColor(100, 100, 100);
-        pdf.text(`Zisk za týden: ${allPeriods.week.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
-        pdf.text(`Počet zakázek: ${allPeriods.week.pocetZakazek.toString()}`, 25, yPosition + 7);
-        yPosition += 25;
-
-        pdf.setFontSize(14);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('MĚSÍČNÍ TREND', 20, yPosition);
-        yPosition += 10;
-        pdf.setFontSize(11);
-        pdf.setTextColor(100, 100, 100);
-        pdf.text(`Zisk za měsíc: ${allPeriods.month.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
-        pdf.text(`Počet zakázek: ${allPeriods.month.pocetZakazek.toString()}`, 25, yPosition + 7);
-        yPosition += 25;
-
-        pdf.setFontSize(14);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('ROČNÍ TREND', 20, yPosition);
-        yPosition += 10;
-        pdf.setFontSize(11);
-        pdf.setTextColor(100, 100, 100);
-        pdf.text(`Zisk za rok: ${allPeriods.year.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
-        pdf.text(`Počet zakázek: ${allPeriods.year.pocetZakazek.toString()}`, 25, yPosition + 7);
-        yPosition += 25;
-
-        pdf.setFontSize(14);
-        pdf.setTextColor(31, 31, 83);
-        pdf.text('CELKOVÝ TREND', 20, yPosition);
-        yPosition += 10;
-        pdf.setFontSize(11);
-        pdf.setTextColor(100, 100, 100);
-        pdf.text(`Celkový zisk: ${allPeriods.all.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
-        pdf.text(`Celkový počet zakázek: ${allPeriods.all.pocetZakazek.toString()}`, 25, yPosition + 7);
 
         // Footer na všech stránkách
         const totalPages = pdf.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
           pdf.setPage(i);
+          
+          // Footer background
+          pdf.setFillColor(31, 31, 83);
+          pdf.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+          
           pdf.setFontSize(8);
-          pdf.setTextColor(139, 139, 167);
-          pdf.text(`Stránka ${i} z ${totalPages}`, pageWidth - 40, pageHeight - 10);
-          pdf.text('Generováno PaintPro systémem', 20, pageHeight - 10);
+          pdf.setTextColor(181, 181, 209);
+          pdf.text(`Strana ${i} z ${totalPages}`, pageWidth - 30, pageHeight - 5);
+          pdf.text('🎨 PaintPro System', 15, pageHeight - 5);
         }
 
         // Uložit PDF
-        pdf.save(`paintpro-report-${new Date().toISOString().split('T')[0]}.pdf`);
+        pdf.save(`paintpro-stylovy-report-${new Date().toISOString().split('T')[0]}.pdf`);
         
         document.body.removeChild(loadingToast);
         
@@ -1298,7 +1413,7 @@ const PaintPro = () => {
         const successToast = document.createElement('div');
         successToast.innerHTML = `
           <div style="position: fixed; top: 20px; right: 20px; background: #10B981; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
-            ✅ PDF report byl úspěšně stažen!
+            ✅ Stylový PDF report byl úspěšně stažen!
           </div>
         `;
         document.body.appendChild(successToast);
@@ -1308,7 +1423,7 @@ const PaintPro = () => {
         console.error('Chyba při exportu PDF:', error);
         
         // Remove loading toast if it exists
-        const loadingToast = document.querySelector('[style*="Generuje se PDF report"]');
+        const loadingToast = document.querySelector('[style*="Generuje se"]');
         if (loadingToast && loadingToast.parentElement) {
           loadingToast.parentElement.removeChild(loadingToast);
         }
@@ -1316,7 +1431,7 @@ const PaintPro = () => {
         const errorToast = document.createElement('div');
         errorToast.innerHTML = `
           <div style="position: fixed; top: 20px; right: 20px; background: #EF4444; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
-            ❌ Chyba při exportu PDF: ${error.message}
+            ❌ Chyba: ${error.message}
           </div>
         `;
         document.body.appendChild(errorToast);
