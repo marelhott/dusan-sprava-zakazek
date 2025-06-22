@@ -25,31 +25,85 @@ ChartJS.register(
 const PaintPro = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingZakazka, setEditingZakazka] = useState(null);
+  const [selectedPeriod, setSelectedPeriod] = useState('all');
 
-  // Sample data podobná tvým screenshotům
-  const dashboardData = {
-    celkoveTrzby: '136 150',
-    celkovyZisk: '61 211',
-    pocetZakazek: '14',
-    prumernyZisk: '4 372',
-    mesicniData: {
-      labels: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer'],
-      values: [8000, 12000, 15000, 18000, 22000, 16000]
-    },
-    rozlozeniData: {
-      labels: ['Adam', 'MVC', 'Korálek', 'Ostatní'],
-      values: [45600, 18000, 25333, 10000],
-      colors: ['#4F46E5', '#10B981', '#F59E0B', '#EF4444']
+  // Kompletní data ze screenshotů
+  const [zakazkyData, setZakazkyData] = useState([
+    { id: 1, datum: '11. 6. 2025', klient: 'MVC', druh: 'XY', cislo: '202501', castka: 4000, fee: 1040, material: 0, pomucka: 0, palivo: 0, zisk: 2960 },
+    { id: 2, datum: '9. 6. 2025', klient: 'Adam', druh: 'XY', cislo: '104470', castka: 7200, fee: 1872, material: 700, pomucka: 2000, palivo: 0, zisk: 2628 },
+    { id: 3, datum: '5. 6. 2025', klient: 'Adam', druh: 'XY', cislo: '95105', castka: 11800, fee: 2964, material: 700, pomucka: 2000, palivo: 300, zisk: 5436 },
+    { id: 4, datum: '14. 5. 2025', klient: 'Adam', druh: 'XY', cislo: '80067', castka: 7600, fee: 1976, material: 700, pomucka: 2000, palivo: 300, zisk: 2924 },
+    { id: 5, datum: '13. 5. 2025', klient: 'Adam', druh: 'XY', cislo: '87470', castka: 6400, fee: 1664, material: 700, pomucka: 2000, palivo: 300, zisk: 1736 },
+    { id: 6, datum: '10. 5. 2025', klient: 'Adam', druh: 'XY', cislo: '91353', castka: 24000, fee: 6240, material: 0, pomucka: 15780, palivo: 0, zisk: 2000 },
+    { id: 7, datum: '24. 4. 2025', klient: 'Adam', druh: 'XY', cislo: '90660', castka: 13200, fee: 3432, material: 0, pomucka: 0, palivo: 0, zisk: 9768 },
+    { id: 8, datum: '22. 4. 2025', klient: 'Adam', druh: 'XY', cislo: '95247', castka: 17800, fee: 4628, material: 300, pomucka: 700, palivo: 0, zisk: 12172 },
+    { id: 9, datum: '19. 4. 2025', klient: 'Adam', druh: 'XY', cislo: '91510', castka: 10600, fee: 2756, material: 200, pomucka: 1000, palivo: 2500, zisk: 4144 },
+    { id: 10, datum: '16. 4. 2025', klient: 'Adam', druh: 'XY', cislo: '91417', castka: 8600, fee: 2184, material: 500, pomucka: 1000, palivo: 1500, zisk: 3416 },
+    { id: 11, datum: '15. 3. 2025', klient: 'Ostatní', druh: 'XY', cislo: '18001', castka: 5700, fee: 1462, material: 300, pomucka: 1000, palivo: 0, zisk: 2938 },
+    { id: 12, datum: '26. 2. 2025', klient: 'Adam', druh: 'XY', cislo: '14974', castka: 5600, fee: 1456, material: 300, pomucka: 400, palivo: 0, zisk: 3444 },
+    { id: 13, datum: '23. 2. 2025', klient: 'Adam', druh: 'XY', cislo: '13161', castka: 8400, fee: 1684, material: 300, pomucka: 400, palivo: 0, zisk: 4016 },
+    { id: 14, datum: '27. 1. 2025', klient: 'Adam', druh: 'XY', cislo: '14347', castka: 8700, fee: 1743, material: 300, pomucka: 1000, palivo: 0, zisk: 5657 }
+  ]);
+
+  // Dynamicky počítané dashboard data
+  const dashboardData = React.useMemo(() => {
+    const celkoveTrzby = zakazkyData.reduce((sum, z) => sum + z.castka, 0);
+    const celkovyZisk = zakazkyData.reduce((sum, z) => sum + z.zisk, 0);
+    const pocetZakazek = zakazkyData.length;
+    const prumernyZisk = Math.round(celkovyZisk / pocetZakazek);
+
+    return {
+      celkoveTrzby: celkoveTrzby.toLocaleString(),
+      celkovyZisk: celkovyZisk.toLocaleString(),
+      pocetZakazek: pocetZakazek.toString(),
+      prumernyZisk: prumernyZisk.toLocaleString(),
+      mesicniData: {
+        labels: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer'],
+        values: [8657, 4016, 2938, 19732, 11560, 11400]
+      },
+      rozlozeniData: {
+        labels: ['Adam', 'MVC', 'Ostatní'],
+        values: [
+          zakazkyData.filter(z => z.klient === 'Adam').reduce((sum, z) => sum + z.zisk, 0),
+          zakazkyData.filter(z => z.klient === 'MVC').reduce((sum, z) => sum + z.zisk, 0),
+          zakazkyData.filter(z => z.klient === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0)
+        ],
+        colors: ['#4F46E5', '#10B981', '#F59E0B']
+      }
+    };
+  }, [zakazkyData]);
+
+  // Funkce pro přidání zakázky
+  const addZakazka = (newZakazka) => {
+    const id = Math.max(...zakazkyData.map(z => z.id)) + 1;
+    const zisk = newZakazka.castka - newZakazka.fee - newZakazka.material - newZakazka.pomucka - newZakazka.palivo;
+    setZakazkyData([...zakazkyData, { ...newZakazka, id, zisk }]);
+    setShowAddModal(false);
+  };
+
+  // Funkce pro editaci zakázky
+  const updateZakazka = (updatedZakazka) => {
+    const zisk = updatedZakazka.castka - updatedZakazka.fee - updatedZakazka.material - updatedZakazka.pomucka - updatedZakazka.palivo;
+    setZakazkyData(zakazkyData.map(z => z.id === updatedZakazka.id ? { ...updatedZakazka, zisk } : z));
+    setShowEditModal(false);
+    setEditingZakazka(null);
+  };
+
+  // Funkce pro smazání zakázky
+  const deleteZakazka = (id) => {
+    if (window.confirm('Opravdu chcete smazat tuto zakázku?')) {
+      setZakazkyData(zakazkyData.filter(z => z.id !== id));
     }
   };
 
-  const zakazkyData = [
-    { id: 1, datum: '11. 6. 2025', klient: 'MVC', druh: 'XY', cislo: '202501', castka: '4 000', fee: '1 040', material: '0', pomucka: '0', zisk: '2 960' },
-    { id: 2, datum: '9. 6. 2025', klient: 'Adam', druh: 'XY', cislo: '104470', castka: '7 200', fee: '1 872', material: '700', pomucka: '2 000', zisk: '2 628' },
-    { id: 3, datum: '5. 6. 2025', klient: 'Adam', druh: 'XY', cislo: '95105', castka: '11 800', fee: '2 964', material: '700', pomucka: '2 000', zisk: '5 436' },
-    { id: 4, datum: '14. 5. 2025', klient: 'Adam', druh: 'XY', cislo: '80067', castka: '7 600', fee: '1 976', material: '700', pomucka: '2 000', zisk: '2 924' },
-    { id: 5, datum: '13. 5. 2025', klient: 'Adam', druh: 'XY', cislo: '87470', castka: '6 400', fee: '1 664', material: '700', pomucka: '2 000', zisk: '1 736' }
-  ];
+  // Funkce pro editaci
+  const editZakazka = (zakazka) => {
+    setEditingZakazka(zakazka);
+    setShowEditModal(true);
+  };
 
   const barChartData = {
     labels: dashboardData.mesicniData.labels,
