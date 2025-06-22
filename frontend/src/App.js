@@ -1796,31 +1796,29 @@ const PaintPro = () => {
         {/* 5 statistických buněk */}
         <div className="stats-row">
           <div className="stat-cell">
-            <div className="stat-icon-large blue">💰</div>
+            <div className="modern-icon size-large icon-revenue"></div>
             <div className="stat-value-large">{allPeriods.all.celkoveTrzby.toLocaleString()}</div>
             <div className="stat-label-large">Celkové tržby</div>
           </div>
           <div className="stat-cell">
-            <div className="stat-icon-large green">📈</div>
+            <div className="modern-icon size-large icon-profit"></div>
             <div className="stat-value-large">{allPeriods.all.celkovyZisk.toLocaleString()}</div>
             <div className="stat-label-large">Celkový zisk</div>
           </div>
           <div className="stat-cell">
-            <div className="stat-icon-large purple">📋</div>
-            <div className="stat-value-large">
-              {allPeriods.all.celkoveTrzby > 0 ? Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100) : 0}%
-            </div>
-            <div className="stat-label-large">Zisková marže</div>
-          </div>
-          <div className="stat-cell">
-            <div className="stat-icon-large orange">🎯</div>
+            <div className="modern-icon size-large icon-count"></div>
             <div className="stat-value-large">{allPeriods.all.pocetZakazek}</div>
             <div className="stat-label-large">Počet zakázek</div>
           </div>
           <div className="stat-cell">
-            <div className="stat-icon-large red">💎</div>
+            <div className="modern-icon size-large icon-average"></div>
             <div className="stat-value-large">{Math.round(allPeriods.all.celkovyZisk / allPeriods.all.pocetZakazek).toLocaleString()}</div>
             <div className="stat-label-large">Průměrný zisk</div>
+          </div>
+          <div className="stat-cell">
+            <div className="modern-icon size-large icon-profit"></div>
+            <div className="stat-value-large">{Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100)}%</div>
+            <div className="stat-label-large">Zisková marže</div>
           </div>
         </div>
 
