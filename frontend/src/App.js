@@ -98,35 +98,7 @@ const PaintPro = () => {
     setShowEditModal(true);
   };
 
-  // Funkce pro upload souborů
-  const handleFileUpload = (zakazkaId, files) => {
-    const fileList = Array.from(files).map(file => ({
-      id: Date.now() + Math.random(),
-      name: file.name,
-      size: file.size,
-      type: file.type,
-      uploadDate: new Date().toLocaleDateString('cs-CZ')
-    }));
 
-    setZakazkyData(prevData => 
-      prevData.map(zakazka => 
-        zakazka.id === zakazkaId 
-          ? { ...zakazka, soubory: [...zakazka.soubory, ...fileList] }
-          : zakazka
-      )
-    );
-  };
-
-  // Funkce pro odstranění souboru
-  const removeFile = (zakazkaId, fileId) => {
-    setZakazkyData(prevData => 
-      prevData.map(zakazka => 
-        zakazka.id === zakazkaId 
-          ? { ...zakazka, soubory: zakazka.soubory.filter(file => file.id !== fileId) }
-          : zakazka
-      )
-    );
-  };
 
   // Komponenta pro upload souborů
   const FileUpload = ({ zakazka }) => {
