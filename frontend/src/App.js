@@ -1842,7 +1842,7 @@ const PaintPro = () => {
         {/* Akční tlačítka */}
         <div className="action-buttons-row">
           <div className="action-button-card" onClick={exportToPDF}>
-            <div className="action-button-icon">📄</div>
+            <div className="modern-icon size-large icon-export"></div>
             <div className="action-button-content">
               <div className="action-button-title">Export do PDF</div>
               <div className="action-button-subtitle">Kompletní report s daty</div>
@@ -1850,14 +1850,20 @@ const PaintPro = () => {
           </div>
           
           <div className="action-button-card" onClick={exportToCSV}>
-            <div className="action-button-icon">📊</div>
+            <div className="modern-icon size-large icon-export"></div>
             <div className="action-button-content">
               <div className="action-button-title">Export do CSV</div>
-              <div className="action-button-subtitle">Všechna data pro Excel</div>
+              <div className="action-button-subtitle">Data pro další analýzu</div>
             </div>
           </div>
           
-          <div className="action-button-card" onClick={() => setActiveTab('nastaveni')}>
+          <div className="action-button-card" onClick={() => setShowAddModal(true)}>
+            <div className="modern-icon size-large icon-add"></div>
+            <div className="action-button-content">
+              <div className="action-button-title">Nová zakázka</div>
+              <div className="action-button-subtitle">Rychlé přidání</div>
+            </div>
+          </div>>
             <div className="action-button-icon">⚙️</div>
             <div className="action-button-content">
               <div className="action-button-title">Nastavení</div>
