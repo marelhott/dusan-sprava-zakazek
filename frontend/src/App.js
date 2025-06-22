@@ -135,8 +135,6 @@ const PaintPro = () => {
     }
   };
 
-
-
   // Aktualizovaná data pro kombinovaný graf
   const getCombinedChartData = () => {
     const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer'];
