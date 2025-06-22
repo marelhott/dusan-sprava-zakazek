@@ -213,8 +213,10 @@ body {
   padding: 12px 24px;
   border-radius: 12px;
   border: none;
+  font-family: var(--font-primary);
   font-weight: 600;
   font-size: 14px;
+  letter-spacing: -0.01em;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
