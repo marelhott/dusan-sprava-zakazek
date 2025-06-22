@@ -758,20 +758,24 @@ const PaintPro = () => {
                   <td>{zakazka.klient}</td>
                   <td>{zakazka.druh}</td>
                   <td>{zakazka.cislo}</td>
-                  <td>{zakazka.castka} Kč</td>
-                  <td>{zakazka.fee} Kč</td>
-                  <td>{(parseInt(zakazka.castka.replace(' ', '')) - parseInt(zakazka.fee.replace(' ', ''))).toLocaleString()} Kč</td>
-                  <td>0 Kč</td>
-                  <td>{zakazka.material} Kč</td>
-                  <td>{zakazka.pomucka} Kč</td>
-                  <td className="profit">{zakazka.zisk} Kč</td>
+                  <td>{zakazka.castka.toLocaleString()} Kč</td>
+                  <td>{zakazka.fee.toLocaleString()} Kč</td>
+                  <td>{(zakazka.castka - zakazka.fee).toLocaleString()} Kč</td>
+                  <td>{zakazka.palivo.toLocaleString()} Kč</td>
+                  <td>{zakazka.material.toLocaleString()} Kč</td>
+                  <td>{zakazka.pomucka.toLocaleString()} Kč</td>
+                  <td className="profit">{zakazka.zisk.toLocaleString()} Kč</td>
                   <td>
                     <span className="status-badge">Přidat soubor</span>
                   </td>
                   <td>
                     <div className="action-buttons">
-                      <button className="btn-icon">✏️</button>
-                      <button className="btn-icon">🗑️</button>
+                      <button className="btn-icon" onClick={() => editZakazka(zakazka)} title="Upravit">
+                        ✏️
+                      </button>
+                      <button className="btn-icon" onClick={() => deleteZakazka(zakazka.id)} title="Smazat">
+                        🗑️
+                      </button>
                     </div>
                   </td>
                 </tr>
