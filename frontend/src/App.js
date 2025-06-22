@@ -843,7 +843,7 @@ const PaintPro = () => {
   );
 
   const Reporty = () => {
-    // Příprava dat pro všechny 4 období najednou
+    // Příprava dat pro všechny 4 období
     const getAllPeriodsData = () => {
       const now = new Date();
       const periods = ['week', 'month', 'year', 'all'];
@@ -882,155 +882,110 @@ const PaintPro = () => {
 
     const allPeriods = getAllPeriodsData();
 
-    // Příprava dat pro line chart - všechny období
-    const getMultiPeriodChartData = () => {
-      // Posledních 12 měsíců pro všechny trendy
-      const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
-      const labels = [];
-      const weekData = [];
-      const monthData = [];
-      const yearData = [];
-      const allData = [];
+    // Individuální grafy pro každé období
+    const getPeriodSpecificData = (period) => {
+      const data = allPeriods[period].data;
+      const chartData = { labels: [], values: [] };
       
-      // Posledních 12 měsíců
-      for (let i = 11; i >= 0; i--) {
-        const date = new Date();
-        date.setMonth(date.getMonth() - i);
-        labels.push(months[date.getMonth()]);
-        
-        // Week data (pouze poslední týden)
-        const weekFilter = zakazkyData.filter(z => {
+      if (period === 'week') {
+        // Posledních 7 dní
+        for (let i = 6; i >= 0; i--) {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          const dayData = data.filter(z => {
+            const zDate = new Date(z.datum.split('. ').reverse().join('-'));
+            return zDate.toDateString() === date.toDateString();
+          });
+          chartData.labels.push(date.toLocaleDateString('cs-CZ', { weekday: 'short' }));
+          chartData.values.push(dayData.reduce((sum, z) => sum + z.zisk, 0));
+        }
+      } else if (period === 'month') {
+        // Posledních 4 týdny
+        for (let i = 3; i >= 0; i--) {
+          const endDate = new Date();
+          endDate.setDate(endDate.getDate() - i * 7);
+          const startDate = new Date(endDate);
+          startDate.setDate(startDate.getDate() - 6);
+          
+          const weekData = data.filter(z => {
+            const zDate = new Date(z.datum.split('. ').reverse().join('-'));
+            return zDate >= startDate && zDate <= endDate;
+          });
+          
+          chartData.labels.push(`Týden ${4-i}`);
+          chartData.values.push(weekData.reduce((sum, z) => sum + z.zisk, 0));
+        }
+      } else if (period === 'year') {
+        // Posledních 12 měsíců
+        const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+        for (let i = 11; i >= 0; i--) {
+          const date = new Date();
+          date.setMonth(date.getMonth() - i);
+          const monthData = data.filter(z => {
+            const zDate = new Date(z.datum.split('. ').reverse().join('-'));
+            return zDate.getMonth() === date.getMonth() && zDate.getFullYear() === date.getFullYear();
+          });
+          chartData.labels.push(months[date.getMonth()]);
+          chartData.values.push(monthData.reduce((sum, z) => sum + z.zisk, 0));
+        }
+      } else {
+        // Celá doba - po měsících
+        const monthlyData = {};
+        data.forEach(z => {
           const zDate = new Date(z.datum.split('. ').reverse().join('-'));
-          const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-          return zDate >= weekAgo && zDate.getMonth() === date.getMonth();
+          const key = `${zDate.getFullYear()}-${zDate.getMonth()}`;
+          if (!monthlyData[key]) {
+            monthlyData[key] = { sum: 0, month: zDate.getMonth(), year: zDate.getFullYear() };
+          }
+          monthlyData[key].sum += z.zisk;
         });
-        weekData.push(weekFilter.reduce((sum, z) => sum + z.zisk, 0));
         
-        // Month data
-        const monthFilter = zakazkyData.filter(z => {
-          const zDate = new Date(z.datum.split('. ').reverse().join('-'));
-          return zDate.getMonth() === date.getMonth() && zDate.getFullYear() === date.getFullYear();
-        });
-        monthData.push(monthFilter.reduce((sum, z) => sum + z.zisk, 0));
-        
-        // Year data 
-        const yearFilter = zakazkyData.filter(z => {
-          const zDate = new Date(z.datum.split('. ').reverse().join('-'));
-          return zDate.getFullYear() === date.getFullYear();
-        });
-        yearData.push(yearFilter.reduce((sum, z) => sum + z.zisk, 0));
-        
-        // All data
-        const allFilter = zakazkyData.filter(z => {
-          const zDate = new Date(z.datum.split('. ').reverse().join('-'));
-          return zDate.getMonth() === date.getMonth();
-        });
-        allData.push(allFilter.reduce((sum, z) => sum + z.zisk, 0));
+        const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer'];
+        Object.values(monthlyData)
+          .sort((a, b) => a.year - b.year || a.month - b.month)
+          .slice(-6)
+          .forEach(item => {
+            chartData.labels.push(`${months[item.month]} ${item.year}`);
+            chartData.values.push(item.sum);
+          });
       }
       
-      return { labels, weekData, monthData, yearData, allData };
+      return chartData;
     };
 
-    const chartData = getMultiPeriodChartData();
-
-    // Gradient creation function
-    const createGradient = (ctx, colorStart, colorEnd) => {
-      const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-      gradient.addColorStop(0, colorStart);
-      gradient.addColorStop(1, colorEnd);
-      return gradient;
-    };
-
-    const multiLineChartData = {
-      labels: chartData.labels,
-      datasets: [
-        {
-          label: 'Týden',
-          data: chartData.weekData,
-          borderColor: '#4F46E5',
+    // Vytvoření line chart dat
+    const createLineChartData = (period, color) => {
+      const periodData = getPeriodSpecificData(period);
+      return {
+        labels: periodData.labels,
+        datasets: [{
+          data: periodData.values,
+          borderColor: color,
           backgroundColor: (context) => {
             const chart = context.chart;
             const {ctx, chartArea} = chart;
             if (!chartArea) return;
-            return createGradient(ctx, 'rgba(79, 70, 229, 0.3)', 'rgba(79, 70, 229, 0.05)');
+            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            gradient.addColorStop(0, color.replace('1)', '0.3)'));
+            gradient.addColorStop(1, color.replace('1)', '0.05)'));
+            return gradient;
           },
           fill: true,
           tension: 0.4,
-          pointBackgroundColor: '#4F46E5',
-          pointBorderColor: '#4F46E5',
-          pointRadius: 4,
-          pointHoverRadius: 6,
-        },
-        {
-          label: 'Měsíc',
-          data: chartData.monthData,
-          borderColor: '#10B981',
-          backgroundColor: (context) => {
-            const chart = context.chart;
-            const {ctx, chartArea} = chart;
-            if (!chartArea) return;
-            return createGradient(ctx, 'rgba(16, 185, 129, 0.3)', 'rgba(16, 185, 129, 0.05)');
-          },
-          fill: true,
-          tension: 0.4,
-          pointBackgroundColor: '#10B981',
-          pointBorderColor: '#10B981',
-          pointRadius: 4,
-          pointHoverRadius: 6,
-        },
-        {
-          label: 'Rok',
-          data: chartData.yearData,
-          borderColor: '#F59E0B',
-          backgroundColor: (context) => {
-            const chart = context.chart;
-            const {ctx, chartArea} = chart;
-            if (!chartArea) return;
-            return createGradient(ctx, 'rgba(245, 158, 11, 0.3)', 'rgba(245, 158, 11, 0.05)');
-          },
-          fill: true,
-          tension: 0.4,
-          pointBackgroundColor: '#F59E0B',
-          pointBorderColor: '#F59E0B',
-          pointRadius: 4,
-          pointHoverRadius: 6,
-        },
-        {
-          label: 'Od začátku',
-          data: chartData.allData,
-          borderColor: '#8B5CF6',
-          backgroundColor: (context) => {
-            const chart = context.chart;
-            const {ctx, chartArea} = chart;
-            if (!chartArea) return;
-            return createGradient(ctx, 'rgba(139, 92, 246, 0.3)', 'rgba(139, 92, 246, 0.05)');
-          },
-          fill: true,
-          tension: 0.4,
-          pointBackgroundColor: '#8B5CF6',
-          pointBorderColor: '#8B5CF6',
-          pointRadius: 4,
-          pointHoverRadius: 6,
-        },
-      ],
+          pointBackgroundColor: color,
+          pointBorderColor: color,
+          pointRadius: 3,
+          pointHoverRadius: 5,
+          borderWidth: 2,
+        }],
+      };
     };
 
     const lineChartOptions = {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          position: 'top',
-          labels: {
-            color: 'rgba(255, 255, 255, 0.8)',
-            padding: 20,
-            usePointStyle: true,
-            font: {
-              size: 12,
-              weight: '500',
-            },
-          },
-        },
+        legend: { display: false },
         tooltip: {
           backgroundColor: 'rgba(31, 31, 83, 0.95)',
           titleColor: '#fff',
@@ -1038,54 +993,137 @@ const PaintPro = () => {
           borderColor: 'rgba(79, 70, 229, 0.5)',
           borderWidth: 1,
           cornerRadius: 8,
-          displayColors: true,
           callbacks: {
             label: function(context) {
-              return `${context.dataset.label}: ${context.parsed.y.toLocaleString()} Kč`;
+              return `${context.parsed.y.toLocaleString()} Kč`;
             }
           }
         },
       },
-      interaction: {
-        mode: 'index',
-        intersect: false,
-      },
       scales: {
         x: {
-          grid: {
-            color: 'rgba(255, 255, 255, 0.1)',
-            drawBorder: false,
-          },
-          ticks: {
-            color: 'rgba(255, 255, 255, 0.7)',
-            font: {
-              size: 11,
-            },
-          },
+          grid: { color: 'rgba(255, 255, 255, 0.1)', drawBorder: false },
+          ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 10 } },
         },
         y: {
           beginAtZero: true,
-          grid: {
-            color: 'rgba(255, 255, 255, 0.1)',
-            drawBorder: false,
-          },
-          ticks: {
-            color: 'rgba(255, 255, 255, 0.7)',
-            font: {
-              size: 11,
-            },
+          grid: { color: 'rgba(255, 255, 255, 0.1)', drawBorder: false },
+          ticks: { 
+            color: 'rgba(255, 255, 255, 0.7)', 
+            font: { size: 10 },
             callback: function(value) {
-              return value.toLocaleString() + ' Kč';
+              return value.toLocaleString();
             }
           },
         },
       },
-      elements: {
-        point: {
-          hoverBackgroundColor: '#fff',
-          hoverBorderWidth: 2,
-        },
-      },
+    };
+
+    // Top klienti graf
+    const getTopClientsData = () => {
+      const clientTotals = zakazkyData.reduce((acc, z) => {
+        acc[z.klient] = (acc[z.klient] || 0) + z.zisk;
+        return acc;
+      }, {});
+      
+      const sorted = Object.entries(clientTotals)
+        .sort(([,a], [,b]) => b - a)
+        .slice(0, 5);
+      
+      return {
+        labels: sorted.map(([name]) => name),
+        datasets: [{
+          data: sorted.map(([,value]) => value),
+          borderColor: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'],
+          backgroundColor: (context) => {
+            const colors = ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'];
+            const color = colors[context.dataIndex];
+            const chart = context.chart;
+            const {ctx, chartArea} = chart;
+            if (!chartArea) return;
+            const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            gradient.addColorStop(0, color.replace(')', ', 0.3)').replace('#', 'rgba(').replace(/(.{2})(.{2})(.{2})/, '$1,$2,$3'));
+            gradient.addColorStop(1, color.replace(')', ', 0.05)').replace('#', 'rgba(').replace(/(.{2})(.{2})(.{2})/, '$1,$2,$3'));
+            return gradient;
+          },
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'],
+          pointBorderColor: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'],
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          borderWidth: 2,
+        }],
+      };
+    };
+
+    // Export funkce
+    const exportToPDF = () => {
+      // Simulace PDF exportu
+      const printContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>PaintPro - Finanční Report</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            .header { text-align: center; margin-bottom: 30px; }
+            .stats { display: flex; justify-content: space-between; margin: 20px 0; }
+            .stat { text-align: center; padding: 10px; border: 1px solid #ccc; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>PaintPro - Finanční Report</h1>
+            <p>Datum: ${new Date().toLocaleDateString('cs-CZ')}</p>
+          </div>
+          <div class="stats">
+            <div class="stat">
+              <h3>Celkové tržby</h3>
+              <p>${allPeriods.all.celkoveTrzby.toLocaleString()} Kč</p>
+            </div>
+            <div class="stat">
+              <h3>Celkový zisk</h3>
+              <p>${allPeriods.all.celkovyZisk.toLocaleString()} Kč</p>
+            </div>
+            <div class="stat">
+              <h3>Počet zakázek</h3>
+              <p>${allPeriods.all.pocetZakazek}</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+      
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(printContent);
+      printWindow.document.close();
+      printWindow.print();
+    };
+
+    const exportToCSV = () => {
+      const headers = ['Datum', 'Klient', 'Druh', 'Číslo', 'Částka', 'Fee', 'Materiál', 'Pomůcka', 'Palivo', 'Zisk'];
+      const csvContent = [
+        headers.join(','),
+        ...zakazkyData.map(z => [
+          z.datum,
+          z.klient,
+          z.druh,
+          z.cislo,
+          z.castka,
+          z.fee,
+          z.material,
+          z.pomucka,
+          z.palivo,
+          z.zisk
+        ].join(','))
+      ].join('\n');
+      
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `paintpro-export-${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
     };
 
     return (
@@ -1093,148 +1131,120 @@ const PaintPro = () => {
         <div className="page-header">
           <div>
             <h1>Finanční reporty</h1>
-            <p>Komplexní analýza výkonnosti všech období najednou</p>
-          </div>
-          <div className="page-actions">
-            <button className="btn btn-secondary">Stáhnout PDF</button>
-            <button className="btn btn-primary">Export do Excel</button>
+            <p>Komplexní analýza všech období s detailními grafy</p>
           </div>
         </div>
 
-        <div className="report-main-full">
-          <div className="chart-card-full">
-            <div className="chart-header">
-              <div>
-                <h3>SROVNÁNÍ VŠECH OBDOBÍ</h3>
-                <div className="chart-subtitle">Týden • Měsíc • Rok • Od začátku</div>
-                <div className="chart-value-large">{allPeriods.all.celkovyZisk.toLocaleString()} Kč</div>
-                <div className="chart-value-subtitle">Celkový zisk od začátku</div>
-              </div>
-              <div className="period-overview">
-                <div className="period-stat">
-                  <div className="period-label">Týden</div>
-                  <div className="period-value blue">{allPeriods.week.celkovyZisk.toLocaleString()} Kč</div>
-                </div>
-                <div className="period-stat">
-                  <div className="period-label">Měsíc</div>
-                  <div className="period-value green">{allPeriods.month.celkovyZisk.toLocaleString()} Kč</div>
-                </div>
-                <div className="period-stat">
-                  <div className="period-label">Rok</div>
-                  <div className="period-value orange">{allPeriods.year.celkovyZisk.toLocaleString()} Kč</div>
-                </div>
-                <div className="period-stat">
-                  <div className="period-label">Od začátku</div>
-                  <div className="period-value purple">{allPeriods.all.celkovyZisk.toLocaleString()} Kč</div>
-                </div>
-              </div>
+        {/* 4 grafy v gridu 2x2 */}
+        <div className="charts-grid-4">
+          <div className="chart-card-small">
+            <div className="chart-header-small">
+              <h3>TÝDEN</h3>
+              <div className="chart-value-small blue">{allPeriods.week.celkovyZisk.toLocaleString()} Kč</div>
             </div>
-            <div className="chart-container-large">
-              <Line data={multiLineChartData} options={lineChartOptions} />
+            <div className="chart-container-small">
+              <Line data={createLineChartData('week', 'rgba(79, 70, 229, 1)')} options={lineChartOptions} />
+            </div>
+          </div>
+
+          <div className="chart-card-small">
+            <div className="chart-header-small">
+              <h3>MĚSÍC</h3>
+              <div className="chart-value-small green">{allPeriods.month.celkovyZisk.toLocaleString()} Kč</div>
+            </div>
+            <div className="chart-container-small">
+              <Line data={createLineChartData('month', 'rgba(16, 185, 129, 1)')} options={lineChartOptions} />
+            </div>
+          </div>
+
+          <div className="chart-card-small">
+            <div className="chart-header-small">
+              <h3>ROK</h3>
+              <div className="chart-value-small orange">{allPeriods.year.celkovyZisk.toLocaleString()} Kč</div>
+            </div>
+            <div className="chart-container-small">
+              <Line data={createLineChartData('year', 'rgba(245, 158, 11, 1)')} options={lineChartOptions} />
+            </div>
+          </div>
+
+          <div className="chart-card-small">
+            <div className="chart-header-small">
+              <h3>OD ZAČÁTKU</h3>
+              <div className="chart-value-small purple">{allPeriods.all.celkovyZisk.toLocaleString()} Kč</div>
+            </div>
+            <div className="chart-container-small">
+              <Line data={createLineChartData('all', 'rgba(139, 92, 246, 1)')} options={lineChartOptions} />
             </div>
           </div>
         </div>
 
-        <div className="report-grid">
-          <div className="report-stats-card">
-            <div className="stats-header">
-              <h3>CELKOVÉ STATISTIKY</h3>
-              <div className="stats-title">Přehled všech období</div>
+        {/* 5 statistických buněk */}
+        <div className="stats-row">
+          <div className="stat-cell">
+            <div className="stat-icon-large blue">💰</div>
+            <div className="stat-value-large">{allPeriods.all.celkoveTrzby.toLocaleString()}</div>
+            <div className="stat-label-large">Celkové tržby</div>
+          </div>
+          <div className="stat-cell">
+            <div className="stat-icon-large green">📈</div>
+            <div className="stat-value-large">{allPeriods.all.celkovyZisk.toLocaleString()}</div>
+            <div className="stat-label-large">Celkový zisk</div>
+          </div>
+          <div className="stat-cell">
+            <div className="stat-icon-large purple">📋</div>
+            <div className="stat-value-large">
+              {allPeriods.all.celkoveTrzby > 0 ? Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100) : 0}%
             </div>
-            <div className="stats-list">
-              <div className="stats-item">
-                <div className="stats-icon blue">💰</div>
-                <div className="stats-content">
-                  <div className="stats-label">Celkové tržby</div>
-                  <div className="stats-value">{allPeriods.all.celkoveTrzby.toLocaleString()} Kč</div>
-                </div>
-              </div>
-              <div className="stats-item">
-                <div className="stats-icon green">📈</div>
-                <div className="stats-content">
-                  <div className="stats-label">Celkový zisk</div>
-                  <div className="stats-value">{allPeriods.all.celkovyZisk.toLocaleString()} Kč</div>
-                </div>
-              </div>
-              <div className="stats-item">
-                <div className="stats-icon purple">📋</div>
-                <div className="stats-content">
-                  <div className="stats-label">Ziskové marže</div>
-                  <div className="stats-value">
-                    {allPeriods.all.celkoveTrzby > 0 ? Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100) : 0}%
-                  </div>
-                </div>
-              </div>
-              <div className="stats-item">
-                <div className="stats-icon orange">🎯</div>
-                <div className="stats-content">
-                  <div className="stats-label">Počet zakázek</div>
-                  <div className="stats-value">{allPeriods.all.pocetZakazek}</div>
-                </div>
-              </div>
-              <div className="stats-item">
-                <div className="stats-icon purple">💎</div>
-                <div className="stats-content">
-                  <div className="stats-label">Průměrný zisk</div>
-                  <div className="stats-value">{Math.round(allPeriods.all.celkovyZisk / allPeriods.all.pocetZakazek).toLocaleString()} Kč</div>
-                </div>
-              </div>
+            <div className="stat-label-large">Zisková marže</div>
+          </div>
+          <div className="stat-cell">
+            <div className="stat-icon-large orange">🎯</div>
+            <div className="stat-value-large">{allPeriods.all.pocetZakazek}</div>
+            <div className="stat-label-large">Počet zakázek</div>
+          </div>
+          <div className="stat-cell">
+            <div className="stat-icon-large red">💎</div>
+            <div className="stat-value-large">{Math.round(allPeriods.all.celkovyZisk / allPeriods.all.pocetZakazek).toLocaleString()}</div>
+            <div className="stat-label-large">Průměrný zisk</div>
+          </div>
+        </div>
+
+        {/* Graf top klientů */}
+        <div className="chart-card-full">
+          <div className="chart-header">
+            <div>
+              <h3>TOP KLIENTI PODLE VÝKONNOSTI</h3>
+              <div className="chart-subtitle">Celkový zisk podle klientů</div>
             </div>
           </div>
+          <div className="chart-container-large">
+            <Line data={getTopClientsData()} options={lineChartOptions} />
+          </div>
+        </div>
 
-          <div className="quick-actions-card">
-            <div className="actions-header">
-              <h3>RYCHLÉ AKCE</h3>
-              <div className="actions-title">Nástroje</div>
-            </div>
-            <div className="actions-list">
-              <div className="action-item" onClick={() => setShowAddModal(true)}>
-                <div className="action-icon">📊</div>
-                <div className="action-content">
-                  <div className="action-label">Nová zakázka</div>
-                </div>
-              </div>
-              <div className="action-item">
-                <div className="action-icon">📥</div>
-                <div className="action-content">
-                  <div className="action-label">Import CSV</div>
-                </div>
-              </div>
-              <div className="action-item" onClick={() => setActiveTab('nastaveni')}>
-                <div className="action-icon">⚙️</div>
-                <div className="action-content">
-                  <div className="action-label">Nastavení</div>
-                </div>
-              </div>
+        {/* Akční tlačítka */}
+        <div className="action-buttons-row">
+          <div className="action-button-card" onClick={exportToPDF}>
+            <div className="action-button-icon">📄</div>
+            <div className="action-button-content">
+              <div className="action-button-title">Export do PDF</div>
+              <div className="action-button-subtitle">Stáhněte kompletní report</div>
             </div>
           </div>
-
-          <div className="activity-card">
-            <div className="activity-header">
-              <h3>TOP KLIENTI</h3>
-              <div className="activity-title">Podle celkového zisku</div>
+          
+          <div className="action-button-card" onClick={exportToCSV}>
+            <div className="action-button-icon">📊</div>
+            <div className="action-button-content">
+              <div className="action-button-title">Export do CSV</div>
+              <div className="action-button-subtitle">Exportujte data do Excelu</div>
             </div>
-            <div className="activity-list">
-              {Object.entries(
-                zakazkyData.reduce((acc, z) => {
-                  acc[z.klient] = (acc[z.klient] || 0) + z.zisk;
-                  return acc;
-                }, {})
-              )
-              .sort(([,a], [,b]) => b - a)
-              .slice(0, 5)
-              .map(([klient, zisk]) => (
-                <div key={klient} className="activity-item">
-                  <div className="customer-avatar">{klient[0]}</div>
-                  <div className="activity-content">
-                    <div className="activity-title">{klient}</div>
-                    <div className="activity-subtitle">
-                      {zakazkyData.filter(z => z.klient === klient).length} zakázek
-                    </div>
-                  </div>
-                  <div className="activity-value">{zisk.toLocaleString()} Kč</div>
-                </div>
-              ))}
+          </div>
+          
+          <div className="action-button-card" onClick={() => setActiveTab('nastaveni')}>
+            <div className="action-button-icon">⚙️</div>
+            <div className="action-button-content">
+              <div className="action-button-title">Nastavení</div>
+              <div className="action-button-subtitle">Konfigurace aplikace</div>
             </div>
           </div>
         </div>
