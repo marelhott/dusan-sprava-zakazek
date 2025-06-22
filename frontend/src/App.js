@@ -356,7 +356,7 @@ const PaintPro = () => {
     <div className="sidebar">
       <div className="sidebar-header">
         <div className="logo">
-          <div className="logo-icon">🎨</div>
+          <div className="modern-icon size-medium icon-dashboard"></div>
           <div className="logo-text">
             <div className="logo-title">PaintPro</div>
             <div className="logo-subtitle">Project Manager</div>
