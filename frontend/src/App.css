@@ -1288,6 +1288,102 @@ body {
   border-top: 1px solid var(--border-color);
 }
 
+/* Reports Full Width Layout */
+.report-main-full {
+  margin-bottom: 32px;
+}
+
+.chart-card-full {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 32px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s;
+}
+
+.chart-card-full:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.chart-card-full .chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.chart-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.chart-value-large {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.chart-value-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.period-overview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  min-width: 240px;
+}
+
+.period-stat {
+  text-align: center;
+  padding: 16px;
+  background: var(--surface-bg);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.period-stat:hover {
+  background: var(--secondary-bg);
+  transform: translateY(-2px);
+}
+
+.period-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.period-value {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.period-value.blue { color: var(--accent-blue); }
+.period-value.green { color: var(--accent-green); }
+.period-value.orange { color: var(--accent-orange); }
+.period-value.purple { color: var(--accent-purple); }
+
+.chart-container-large {
+  height: 400px;
+  position: relative;
+  background: var(--surface-bg);
+  border-radius: 12px;
+  padding: 16px;
+}
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
