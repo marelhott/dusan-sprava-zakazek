@@ -1231,7 +1231,7 @@ const PaintPro = () => {
             </div>
           </div>
           <div className="chart-container-large">
-            <Line data={getTopClientsData()} options={lineChartOptions} />
+            <Line key="top-clients-chart" data={getTopClientsData()} options={lineChartOptions} />
           </div>
         </div>
 
