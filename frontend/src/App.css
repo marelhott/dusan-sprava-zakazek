@@ -538,15 +538,11 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-  display: flex;
-  align-items: center;
-  z-index: 10;
-}
 
 .label-top-left {
   top: 15%;
-  left: 10%;
-  flex-direction: row;
+  left: 15%;
+  transform: translate(-50%, -50%);
 }
 
 .label-top-right {
