@@ -1076,17 +1076,17 @@ const PaintPro = () => {
               <tr>
                 <th></th>
                 <th>DATUM</th>
-                <th>KLIENT</th>
                 <th>DRUH PRÁCE</th>
+                <th>KLIENT</th>
                 <th>ID ZAKÁZKY</th>
                 <th>ČÁSTKA</th>
                 <th>FEE</th>
-                <th>ČÁSTKA PO ODEČTENÍ FEE</th>
+                <th>FEE OFF</th>
                 <th>PALIVO</th>
                 <th>MATERIÁL</th>
-                <th>POMŮCKA</th>
+                <th>POMOCNÍK</th>
                 <th>ČISTÝ ZISK</th>
-                <th>SOUDNOST</th>
+                <th>SOUBORY</th>
                 <th>AKCE</th>
               </tr>
             </thead>
@@ -1097,18 +1097,18 @@ const PaintPro = () => {
                     <input type="checkbox" />
                   </td>
                   <td>{zakazka.datum}</td>
-                  <td>{zakazka.klient}</td>
                   <td>{zakazka.druh}</td>
+                  <td>{zakazka.klient}</td>
                   <td>{zakazka.cislo}</td>
                   <td>{zakazka.castka.toLocaleString()} Kč</td>
                   <td>{zakazka.fee.toLocaleString()} Kč</td>
                   <td>{(zakazka.castka - zakazka.fee).toLocaleString()} Kč</td>
                   <td>{zakazka.palivo.toLocaleString()} Kč</td>
                   <td>{zakazka.material.toLocaleString()} Kč</td>
-                  <td>{zakazka.pomucka.toLocaleString()} Kč</td>
-                  <td className="profit">{zakazka.zisk.toLocaleString()} Kč</td>
+                  <td>{zakazka.pomocnik.toLocaleString()} Kč</td>
+                  <td className="profit-amount">{zakazka.zisk.toLocaleString()} Kč</td>
                   <td>
-                    <span className="status-badge">Přidat soubor</span>
+                    <FileUpload zakazka={zakazka} />
                   </td>
                   <td>
                     <div className="action-buttons">
