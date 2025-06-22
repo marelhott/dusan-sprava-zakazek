@@ -986,10 +986,136 @@ body {
   background: var(--surface-bg);
 }
 
-.profit {
-  color: var(--accent-green);
-  font-weight: 600;
+.profit-amount {
+  font-family: var(--font-heading);
+  color: #F4D03F;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
+
+/* File Upload Component */
+.file-upload-container {
+  position: relative;
+}
+
+.file-upload-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.upload-btn {
+  background: var(--accent-blue);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: var(--font-primary);
+}
+
+.upload-btn:hover {
+  background: #3730A3;
+  transform: translateY(-1px);
+}
+
+.files-count {
+  background: var(--accent-green);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-mono);
+}
+
+.files-count:hover {
+  background: #059669;
+}
+
+.files-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 100;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 250px;
+  box-shadow: var(--shadow-md);
+  margin-top: 4px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  background: var(--surface-bg);
+  transition: all 0.2s;
+}
+
+.file-item:hover {
+  background: var(--secondary-bg);
+}
+
+.file-item:last-child {
+  margin-bottom: 0;
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.file-name {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.file-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.file-remove {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-red);
+  color: var(--text-primary);
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.file-remove:hover {
+  background: #DC2626;
+  transform: scale(1.1);
+}
+
+/* Table styling */
 
 .status-badge {
   display: inline-block;
