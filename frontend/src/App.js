@@ -509,7 +509,7 @@ const PaintPro = () => {
               <div className="activity-time">2 hod</div>
             </div>
             <div className="activity-item">
-              <div className="activity-icon blue">📋</div>
+              <div className="modern-icon size-small icon-orders"></div>
               <div className="activity-content">
                 <div className="activity-title">Zakázka dokončena</div>
                 <div className="activity-subtitle">Adam</div>
