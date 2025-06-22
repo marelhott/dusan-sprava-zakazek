@@ -434,6 +434,7 @@ const PaintPro = () => {
           iconClass="icon-orders"
           color="purple"
           index={2}
+          showCurrency={false}
         />
         <StatCard
           title="PRŮMĚRNÝ ZISK"
