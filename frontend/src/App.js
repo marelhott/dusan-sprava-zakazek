@@ -1556,7 +1556,7 @@ const PaintPro = () => {
             <div className="action-button-icon">📄</div>
             <div className="action-button-content">
               <div className="action-button-title">Export do PDF</div>
-              <div className="action-button-subtitle">Stáhněte kompletní report</div>
+              <div className="action-button-subtitle">Kompletní report s daty</div>
             </div>
           </div>
           
@@ -1564,7 +1564,7 @@ const PaintPro = () => {
             <div className="action-button-icon">📊</div>
             <div className="action-button-content">
               <div className="action-button-title">Export do CSV</div>
-              <div className="action-button-subtitle">Exportujte data do Excelu</div>
+              <div className="action-button-subtitle">Všechna data pro Excel</div>
             </div>
           </div>
           
