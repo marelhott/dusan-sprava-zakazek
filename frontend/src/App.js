@@ -370,28 +370,28 @@ const PaintPro = () => {
           className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
           onClick={() => setActiveTab('dashboard')}
         >
-          <span className="nav-icon">📊</span>
+          <div className="modern-icon icon-dashboard"></div>
           Dashboard
         </div>
         <div
           className={`nav-item ${activeTab === 'zakazky' ? 'active' : ''}`}
           onClick={() => setActiveTab('zakazky')}
         >
-          <span className="nav-icon">📋</span>
+          <div className="modern-icon icon-orders"></div>
           Zakázky
         </div>
         <div
           className={`nav-item ${activeTab === 'reporty' ? 'active' : ''}`}
           onClick={() => setActiveTab('reporty')}
         >
-          <span className="nav-icon">📈</span>
+          <div className="modern-icon icon-reports"></div>
           Reporty
         </div>
         <div
           className={`nav-item ${activeTab === 'nastaveni' ? 'active' : ''}`}
           onClick={() => setActiveTab('nastaveni')}
         >
-          <span className="nav-icon">⚙️</span>
+          <div className="modern-icon icon-settings"></div>
           Nastavení
         </div>
       </nav>
