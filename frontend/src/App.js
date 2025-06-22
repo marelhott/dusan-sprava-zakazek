@@ -309,11 +309,6 @@ const PaintPro = () => {
     >
       <div className="stat-header">
         <div className="stat-title">{title}</div>
-        <div className="stat-period">
-          <span>1D</span>
-          <span>7D</span>
-          <span className="active">ALL</span>
-        </div>
       </div>
       <div className="stat-content">
         <div className={`stat-icon ${color}`}>
