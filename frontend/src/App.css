@@ -404,10 +404,11 @@ body {
 }
 
 .chart-header h3 {
+  font-family: var(--font-primary);
   font-size: 14px;
   font-weight: 600;
   color: var(--text-muted);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
@@ -419,23 +420,29 @@ body {
 }
 
 .chart-value-main {
+  font-family: var(--font-heading);
   font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .chart-value-secondary {
+  font-family: var(--font-primary);
   font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .chart-value {
+  font-family: var(--font-heading);
   font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.02em;
 }
 
 .chart-container-large {
