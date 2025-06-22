@@ -409,6 +409,111 @@ body {
   position: relative;
 }
 
+/* 3D Donut Chart with External Labels */
+.chart-container-donut {
+  height: 320px;
+  position: relative;
+  padding: 20px;
+}
+
+.donut-chart-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.external-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.label-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+}
+
+.label-top-left {
+  top: 15%;
+  left: 10%;
+  flex-direction: row;
+}
+
+.label-top-right {
+  top: 15%;
+  right: 10%;
+  flex-direction: row-reverse;
+}
+
+.label-bottom-left {
+  bottom: 15%;
+  left: 10%;
+  flex-direction: row;
+}
+
+.label-bottom-right {
+  bottom: 15%;
+  right: 10%;
+  flex-direction: row-reverse;
+}
+
+.label-line {
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.8));
+  margin: 0 8px;
+  position: relative;
+}
+
+.label-line::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: -1.5px;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+}
+
+.label-top-right .label-line::after,
+.label-bottom-right .label-line::after {
+  right: auto;
+  left: -2px;
+}
+
+.label-content {
+  text-align: center;
+  background: rgba(42, 45, 95, 0.9);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  min-width: 60px;
+}
+
+.label-percentage {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.label-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Chart container adjustments */
 .chart-container {
   height: 300px;
   position: relative;
