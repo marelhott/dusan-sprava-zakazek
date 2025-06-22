@@ -74,13 +74,14 @@ const PaintPro = () => {
         values: [8657, 4016, 2938, 19732, 11560, 11400]
       },
       rozlozeniData: {
-        labels: ['Adam', 'MVC', 'Ostatní'],
+        labels: ['Adam', 'MVČ', 'Korálek', 'Ostatní'],
         values: [
-          zakazkyData.filter(z => z.klient === 'Adam').reduce((sum, z) => sum + z.zisk, 0),
-          zakazkyData.filter(z => z.klient === 'MVC').reduce((sum, z) => sum + z.zisk, 0),
-          zakazkyData.filter(z => z.klient === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0)
+          zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0),
+          zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0),
+          zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0),
+          zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0)
         ],
-        colors: ['#4F46E5', '#10B981', '#F59E0B']
+        colors: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6']
       }
     };
   }, [zakazkyData]);
