@@ -1,118 +1,128 @@
-/* Modern 3D Gradient Icons - Inspired by Contemporary UI Design */
+/* Modern 3D Readable Icons - Enhanced Version */
 
 .modern-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 16px;
   position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: visible;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modern-icon::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
   border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent, rgba(255, 255, 255, 0.1));
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: xor;
-  -webkit-mask-composite: xor;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent, rgba(255, 255, 255, 0.2));
+  z-index: -1;
+  opacity: 0.6;
 }
 
 /* Navigation Icons */
 .icon-dashboard {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), 
-              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .icon-dashboard::after {
   content: '';
-  width: 16px;
-  height: 16px;
-  background: linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
-  border-radius: 2px;
-  position: relative;
-  box-shadow: 
-    4px 0 0 rgba(255, 255, 255, 0.7),
-    0 4px 0 rgba(255, 255, 255, 0.7),
-    4px 4px 0 rgba(255, 255, 255, 0.7),
-    8px 0 0 rgba(255, 255, 255, 0.5),
-    8px 4px 0 rgba(255, 255, 255, 0.5);
+  width: 14px;
+  height: 14px;
+  background: 
+    linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0px, rgba(255, 255, 255, 0.9) 2px, transparent 2px, transparent 4px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.9) 0px, rgba(255, 255, 255, 0.9) 2px, transparent 2px, transparent 4px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
+  background-size: 4px 4px, 4px 4px, 100% 100%;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .icon-orders {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299c2 100%);
-  box-shadow: 0 8px 32px rgba(168, 237, 234, 0.4),
-              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
 }
 
 .icon-orders::after {
   content: '';
-  width: 14px;
-  height: 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
-  border-radius: 2px;
+  width: 12px;
+  height: 16px;
+  background: 
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  border-radius: 2px 2px 0 0;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   position: relative;
   box-shadow: 
-    inset 2px 2px 0 rgba(255, 255, 255, 0.3),
-    0 2px 4px rgba(0, 0, 0, 0.1);
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .icon-orders::before {
   content: '';
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 8px;
+  width: 6px;
   height: 1px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(168, 237, 234, 0.8);
   box-shadow: 
-    0 3px 0 rgba(0, 0, 0, 0.3),
-    0 6px 0 rgba(0, 0, 0, 0.3);
+    0 2px 0 rgba(168, 237, 234, 0.8),
+    0 4px 0 rgba(168, 237, 234, 0.6),
+    0 6px 0 rgba(168, 237, 234, 0.4);
   z-index: 2;
 }
 
 .icon-reports {
-  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-  box-shadow: 0 8px 32px rgba(255, 154, 158, 0.4),
-              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
 }
 
 .icon-reports::after {
   content: '';
-  width: 3px;
-  height: 8px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));
-  border-radius: 1px;
-  position: relative;
-  box-shadow: 
-    4px 2px 0 0 rgba(255, 255, 255, 0.8),
-    8px -1px 0 0 rgba(255, 255, 255, 0.7),
-    12px 1px 0 0 rgba(255, 255, 255, 0.6);
-  transform: scaleX(1) scaleY(1);
+  width: 16px;
+  height: 12px;
+  background: 
+    linear-gradient(90deg, 
+      transparent 0%, transparent 20%,
+      rgba(255, 255, 255, 0.9) 20%, rgba(255, 255, 255, 0.9) 25%,
+      transparent 25%, transparent 45%,
+      rgba(255, 255, 255, 0.8) 45%, rgba(255, 255, 255, 0.8) 50%,
+      transparent 50%, transparent 70%,
+      rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 0.7) 75%,
+      transparent 75%, transparent 95%,
+      rgba(255, 255, 255, 0.6) 95%, rgba(255, 255, 255, 0.6) 100%
+    ),
+    linear-gradient(0deg, 
+      rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 10%,
+      transparent 10%, transparent 30%,
+      rgba(255, 255, 255, 0.8) 30%, rgba(255, 255, 255, 0.8) 50%,
+      transparent 50%, transparent 70%,
+      rgba(255, 255, 255, 0.7) 70%, rgba(255, 255, 255, 0.7) 90%,
+      transparent 90%, transparent 100%
+    );
+  border-radius: 2px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.9);
+  border-left: 2px solid rgba(255, 255, 255, 0.9);
 }
 
 .icon-settings {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4),
-              inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .icon-settings::after {
   content: '';
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 30%, transparent 30%);
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, transparent 30%, rgba(255, 255, 255, 0.9) 35%, rgba(255, 255, 255, 0.9) 65%, transparent 70%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 50%;
   position: relative;
 }
@@ -123,14 +133,152 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: 
+    linear-gradient(0deg, transparent 45%, rgba(255, 255, 255, 0.8) 45%, rgba(255, 255, 255, 0.8) 55%, transparent 55%),
+    linear-gradient(90deg, transparent 45%, rgba(255, 255, 255, 0.8) 45%, rgba(255, 255, 255, 0.8) 55%, transparent 55%),
+    linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.6) 45%, rgba(255, 255, 255, 0.6) 55%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, rgba(255, 255, 255, 0.6) 45%, rgba(255, 255, 255, 0.6) 55%, transparent 55%);
+  border-radius: 50%;
+}
+
+/* Stats Icons */
+.icon-revenue,
+.icon-money {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.icon-revenue::after,
+.icon-money::after {
+  content: '';
   width: 16px;
   height: 16px;
   background: 
-    linear-gradient(0deg, transparent 42%, rgba(255, 255, 255, 0.6) 42%, rgba(255, 255, 255, 0.6) 58%, transparent 58%),
-    linear-gradient(90deg, transparent 42%, rgba(255, 255, 255, 0.6) 42%, rgba(255, 255, 255, 0.6) 58%, transparent 58%),
-    linear-gradient(45deg, transparent 42%, rgba(255, 255, 255, 0.4) 42%, rgba(255, 255, 255, 0.4) 58%, transparent 58%),
-    linear-gradient(-45deg, transparent 42%, rgba(255, 255, 255, 0.4) 42%, rgba(255, 255, 255, 0.4) 58%, transparent 58%);
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 40%, transparent 45%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
   border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  position: relative;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.icon-revenue::before,
+.icon-money::before {
+  content: '$';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #667eea;
+  font-weight: 900;
+  font-size: 12px;
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.icon-chart,
+.icon-profit {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.icon-chart::after,
+.icon-profit::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 12px solid rgba(255, 255, 255, 0.9);
+  position: relative;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.icon-chart::before,
+.icon-profit::before {
+  content: '';
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 1px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.icon-count {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+.icon-count::after {
+  content: '';
+  width: 10px;
+  height: 14px;
+  background: 
+    linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+  border-radius: 2px 2px 0 0;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  position: relative;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.icon-count::before {
+  content: '';
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 1px;
+  background: rgba(252, 182, 159, 0.8);
+  box-shadow: 
+    0 2px 0 rgba(252, 182, 159, 0.7),
+    0 4px 0 rgba(252, 182, 159, 0.6),
+    0 6px 0 rgba(252, 182, 159, 0.5);
+  z-index: 2;
+}
+
+.icon-average,
+.icon-target {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+}
+
+.icon-average::after,
+.icon-target::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  background: 
+    radial-gradient(circle at 50% 50%, transparent 25%, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0.9) 70%, transparent 75%),
+    radial-gradient(circle at 50% 50%, transparent 40%, rgba(255, 255, 255, 0.7) 45%, rgba(255, 255, 255, 0.7) 55%, transparent 60%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.icon-average::before,
+.icon-target::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  background: #ff9a9e;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  z-index: 2;
 }
 
 /* Stats Icons */
