@@ -428,7 +428,7 @@ const PaintPro = () => {
             </div>
           </div>
           <div className="chart-container">
-            <Bar data={barChartData} options={barChartOptions} />
+            <Bar data={getCombinedChartData()} options={combinedChartOptions} />
           </div>
         </div>
 
