@@ -1247,7 +1247,7 @@ const PaintPro = () => {
         pdf.setFontSize(11);
         pdf.setTextColor(100, 100, 100);
         pdf.text(`Zisk za týden: ${allPeriods.week.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
-        pdf.text(`Počet zakázek: ${allPeriods.week.pocetZakazek}`, 25, yPosition + 7);
+        pdf.text(`Počet zakázek: ${allPeriods.week.pocetZakazek.toString()}`, 25, yPosition + 7);
         yPosition += 25;
 
         pdf.setFontSize(14);
@@ -1257,7 +1257,7 @@ const PaintPro = () => {
         pdf.setFontSize(11);
         pdf.setTextColor(100, 100, 100);
         pdf.text(`Zisk za měsíc: ${allPeriods.month.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
-        pdf.text(`Počet zakázek: ${allPeriods.month.pocetZakazek}`, 25, yPosition + 7);
+        pdf.text(`Počet zakázek: ${allPeriods.month.pocetZakazek.toString()}`, 25, yPosition + 7);
         yPosition += 25;
 
         pdf.setFontSize(14);
@@ -1267,7 +1267,7 @@ const PaintPro = () => {
         pdf.setFontSize(11);
         pdf.setTextColor(100, 100, 100);
         pdf.text(`Zisk za rok: ${allPeriods.year.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
-        pdf.text(`Počet zakázek: ${allPeriods.year.pocetZakazek}`, 25, yPosition + 7);
+        pdf.text(`Počet zakázek: ${allPeriods.year.pocetZakazek.toString()}`, 25, yPosition + 7);
         yPosition += 25;
 
         pdf.setFontSize(14);
@@ -1277,7 +1277,7 @@ const PaintPro = () => {
         pdf.setFontSize(11);
         pdf.setTextColor(100, 100, 100);
         pdf.text(`Celkový zisk: ${allPeriods.all.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
-        pdf.text(`Celkový počet zakázek: ${allPeriods.all.pocetZakazek}`, 25, yPosition + 7);
+        pdf.text(`Celkový počet zakázek: ${allPeriods.all.pocetZakazek.toString()}`, 25, yPosition + 7);
 
         // Footer na všech stránkách
         const totalPages = pdf.internal.getNumberOfPages();
