@@ -270,10 +270,10 @@ const PaintPro = () => {
       {
         data: dashboardData.rozlozeniData.values,
         backgroundColor: [
-          'rgba(59, 130, 246, 0.9)',   // Modrá - Adam (největší segment vpravo)
-          'rgba(34, 197, 194, 0.9)',   // Tyrkysová - MVČ (nahoře)  
-          'rgba(16, 185, 129, 0.9)',   // Zelená - Korálek (vlevo dole)
-          'rgba(236, 72, 153, 0.9)'    // Růžová - Ostatní (vlevo)
+          'rgba(59, 130, 246, 0.9)',   // Modrá - Adam
+          'rgba(34, 197, 194, 0.9)',   // Tyrkysová - MVČ  
+          'rgba(16, 185, 129, 0.9)',   // Zelená - Korálek
+          'rgba(236, 72, 153, 0.9)'    // Růžová - Ostatní
         ],
         borderColor: [
           'rgba(59, 130, 246, 1)',
@@ -285,9 +285,11 @@ const PaintPro = () => {
         hoverBorderWidth: 0,
         cutout: '65%',
         radius: '85%',
-        rotation: -90, // Start from top
+        rotation: -90,
         circumference: 360,
         spacing: 2,
+        borderRadius: 8, // Kulaté rohy sekcí
+        borderSkipped: false,
       }
     ]
   };
