@@ -803,7 +803,7 @@ const PaintPro = () => {
               <span className="active">ALL</span>
             </div>
           </div>
-          <div className="summary-value">136 150 Kč</div>
+          <div className="summary-value">{dashboardData.celkoveTrzby} Kč</div>
           <div className="summary-subtitle">Za posledních 30 dní</div>
         </div>
 
@@ -816,8 +816,8 @@ const PaintPro = () => {
               <span className="active">ALL</span>
             </div>
           </div>
-          <div className="summary-value">61 211 Kč</div>
-          <div className="summary-subtitle green">Marže 45%</div>
+          <div className="summary-value">{dashboardData.celkovyZisk} Kč</div>
+          <div className="summary-subtitle green">Marže {Math.round((parseInt(dashboardData.celkovyZisk.replace(/,/g, '')) / parseInt(dashboardData.celkoveTrzby.replace(/,/g, ''))) * 100)}%</div>
         </div>
 
         <div className="summary-card">
@@ -829,7 +829,7 @@ const PaintPro = () => {
               <span className="active">ALL</span>
             </div>
           </div>
-          <div className="summary-value">14</div>
+          <div className="summary-value">{dashboardData.pocetZakazek}</div>
           <div className="summary-subtitle">Aktivních zakázek</div>
         </div>
       </div>
