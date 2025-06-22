@@ -769,3 +769,12 @@
     border-radius: 14px;
   }
 }
+
+/* Activity item styling */
+.activity-item .modern-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
