@@ -411,7 +411,7 @@ const PaintPro = () => {
           title="CELKOVÉ TRŽBY"
           value={dashboardData.celkoveTrzby}
           subtitle="Za posledních 30 dní"
-          icon="💰"
+          iconClass="icon-money"
           color="blue"
           index={0}
         />
@@ -419,7 +419,7 @@ const PaintPro = () => {
           title="CELKOVÝ ZISK"
           value={dashboardData.celkovyZisk}
           subtitle="Marže 45%"
-          icon="📈"
+          iconClass="icon-chart"
           color="green"
           index={1}
         />
@@ -427,7 +427,7 @@ const PaintPro = () => {
           title="POČET ZAKÁZEK"
           value={dashboardData.pocetZakazek}
           subtitle="Aktivních zakázek"
-          icon="📋"
+          iconClass="icon-orders"
           color="purple"
           index={2}
         />
@@ -435,7 +435,7 @@ const PaintPro = () => {
           title="PRŮMĚRNÝ ZISK"
           value={dashboardData.prumernyZisk}
           subtitle="Na zakázku"
-          icon="🎯"
+          iconClass="icon-target"
           color="orange"
           index={3}
         />
