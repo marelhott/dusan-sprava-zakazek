@@ -547,13 +547,21 @@ body {
 
 .label-top-right {
   top: 15%;
-  right: 10%;
-  flex-direction: row-reverse;
+  right: 15%;
+  transform: translate(50%, -50%);
 }
 
 .label-bottom-left {
   bottom: 15%;
-  left: 10%;
+  left: 15%;
+  transform: translate(-50%, 50%);
+}
+
+.label-bottom-right {
+  bottom: 15%;
+  right: 15%;
+  transform: translate(50%, 50%);
+}
   flex-direction: row;
 }
 
