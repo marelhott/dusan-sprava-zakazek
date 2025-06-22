@@ -836,153 +836,305 @@ const PaintPro = () => {
     </div>
   );
 
-  const Reporty = () => (
-    <div className="reporty">
-      <div className="page-header">
-        <div>
-          <h1>Finanční reporty</h1>
-          <p>Komplexní analýza výkonnosti a zobrazování všech podnikání</p>
-        </div>
-        <div className="page-actions">
-          <button className="btn btn-secondary">Stáhnout PDF</button>
-          <button className="btn btn-primary">Export do Excel</button>
-        </div>
-      </div>
+  const Reporty = () => {
+    // Filtrovaná data podle vybraného období
+    const getFilteredData = () => {
+      const now = new Date();
+      const filteredData = zakazkyData.filter(zakazka => {
+        const zakazkaDate = new Date(zakazka.datum.split('. ').reverse().join('-'));
+        
+        switch(selectedPeriod) {
+          case 'week':
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            return zakazkaDate >= weekAgo;
+          case 'month':
+            const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+            return zakazkaDate >= monthAgo;
+          case 'year':
+            const yearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+            return zakazkaDate >= yearAgo;
+          case 'all':
+          default:
+            return true;
+        }
+      });
+      
+      return filteredData;
+    };
 
-      <div className="report-card">
-        <div className="report-header">
+    const filteredData = getFilteredData();
+    const periodData = {
+      celkoveTrzby: filteredData.reduce((sum, z) => sum + z.castka, 0),
+      celkovyZisk: filteredData.reduce((sum, z) => sum + z.zisk, 0),
+      pocetZakazek: filteredData.length,
+      prumernyZisk: filteredData.length > 0 ? Math.round(filteredData.reduce((sum, z) => sum + z.zisk, 0) / filteredData.length) : 0
+    };
+
+    // Grafy podle období
+    const getPeriodChartData = () => {
+      const chartData = { labels: [], values: [] };
+      
+      if (selectedPeriod === 'week') {
+        // Posledních 7 dní
+        for (let i = 6; i >= 0; i--) {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          const dayData = filteredData.filter(z => {
+            const zDate = new Date(z.datum.split('. ').reverse().join('-'));
+            return zDate.toDateString() === date.toDateString();
+          });
+          chartData.labels.push(date.toLocaleDateString('cs-CZ', { weekday: 'short' }));
+          chartData.values.push(dayData.reduce((sum, z) => sum + z.zisk, 0));
+        }
+      } else if (selectedPeriod === 'month') {
+        // Posledních 4 týdny
+        for (let i = 3; i >= 0; i--) {
+          const endDate = new Date();
+          endDate.setDate(endDate.getDate() - i * 7);
+          const startDate = new Date(endDate);
+          startDate.setDate(startDate.getDate() - 6);
+          
+          const weekData = filteredData.filter(z => {
+            const zDate = new Date(z.datum.split('. ').reverse().join('-'));
+            return zDate >= startDate && zDate <= endDate;
+          });
+          
+          chartData.labels.push(`Týden ${4-i}`);
+          chartData.values.push(weekData.reduce((sum, z) => sum + z.zisk, 0));
+        }
+      } else if (selectedPeriod === 'year') {
+        // Posledních 12 měsíců
+        const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+        for (let i = 11; i >= 0; i--) {
+          const date = new Date();
+          date.setMonth(date.getMonth() - i);
+          const monthData = filteredData.filter(z => {
+            const zDate = new Date(z.datum.split('. ').reverse().join('-'));
+            return zDate.getMonth() === date.getMonth() && zDate.getFullYear() === date.getFullYear();
+          });
+          chartData.labels.push(months[date.getMonth()]);
+          chartData.values.push(monthData.reduce((sum, z) => sum + z.zisk, 0));
+        }
+      } else {
+        // Celá doba - po měsících
+        const monthlyData = {};
+        filteredData.forEach(z => {
+          const zDate = new Date(z.datum.split('. ').reverse().join('-'));
+          const key = `${zDate.getFullYear()}-${zDate.getMonth()}`;
+          if (!monthlyData[key]) {
+            monthlyData[key] = { sum: 0, month: zDate.getMonth(), year: zDate.getFullYear() };
+          }
+          monthlyData[key].sum += z.zisk;
+        });
+        
+        const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+        Object.values(monthlyData)
+          .sort((a, b) => a.year - b.year || a.month - b.month)
+          .forEach(item => {
+            chartData.labels.push(`${months[item.month]} ${item.year}`);
+            chartData.values.push(item.sum);
+          });
+      }
+      
+      return chartData;
+    };
+
+    const periodChartData = getPeriodChartData();
+    const periodBarChartData = {
+      labels: periodChartData.labels,
+      datasets: [{
+        data: periodChartData.values,
+        backgroundColor: 'rgba(79, 70, 229, 0.8)',
+        borderColor: 'rgba(79, 70, 229, 1)',
+        borderWidth: 1,
+        borderRadius: 8,
+      }],
+    };
+
+    return (
+      <div className="reporty">
+        <div className="page-header">
           <div>
-            <h3>FILTRY REPORTŮ</h3>
-            <div className="report-title">Nastavení zobrazení</div>
+            <h1>Finanční reporty</h1>
+            <p>Komplexní analýza výkonnosti a zobrazování všech podnikání</p>
+          </div>
+          <div className="page-actions">
+            <button className="btn btn-secondary">Stáhnout PDF</button>
+            <button className="btn btn-primary">Export do Excel</button>
           </div>
         </div>
-        <div className="report-filters">
-          <div className="filter-group">
-            <button className="filter-btn active">Období</button>
-            <button className="filter-btn">Měsíční období</button>
-            <button className="filter-btn">Analýza nákladů</button>
-            <button className="filter-btn">Top klienti</button>
-          </div>
-        </div>
-      </div>
 
-      <div className="report-main">
-        <div className="chart-card large">
-          <div className="chart-header">
+        <div className="report-card">
+          <div className="report-header">
             <div>
-              <h3>MĚSÍČNÍ PŘEHLED ZISKU</h3>
-              <div className="chart-value">22 000 Kč</div>
-            </div>
-            <div className="chart-period">
-              <span>1D</span>
-              <span>7D</span>
-              <span className="active">ALL</span>
+              <h3>FILTRY REPORTŮ</h3>
+              <div className="report-title">Nastavení zobrazení</div>
             </div>
           </div>
-          <div className="chart-container">
-            <Bar data={barChartData} options={barChartOptions} />
+          <div className="report-filters">
+            <div className="filter-group">
+              <button 
+                className={`filter-btn ${selectedPeriod === 'week' ? 'active' : ''}`}
+                onClick={() => setSelectedPeriod('week')}
+              >
+                Týden
+              </button>
+              <button 
+                className={`filter-btn ${selectedPeriod === 'month' ? 'active' : ''}`}
+                onClick={() => setSelectedPeriod('month')}
+              >
+                Měsíc
+              </button>
+              <button 
+                className={`filter-btn ${selectedPeriod === 'year' ? 'active' : ''}`}
+                onClick={() => setSelectedPeriod('year')}
+              >
+                Rok
+              </button>
+              <button 
+                className={`filter-btn ${selectedPeriod === 'all' ? 'active' : ''}`}
+                onClick={() => setSelectedPeriod('all')}
+              >
+                Celá doba
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="report-grid">
-          <div className="report-stats-card">
-            <div className="stats-header">
-              <h3>CELKOVÉ STATISTIKY</h3>
-              <div className="stats-title">Přehled</div>
+        <div className="report-main">
+          <div className="chart-card large">
+            <div className="chart-header">
+              <div>
+                <h3>PŘEHLED ZISKU - {selectedPeriod === 'week' ? 'TÝDEN' : selectedPeriod === 'month' ? 'MĚSÍC' : selectedPeriod === 'year' ? 'ROK' : 'CELÁ DOBA'}</h3>
+                <div className="chart-value">{periodData.celkovyZisk.toLocaleString()} Kč</div>
+              </div>
+              <div className="chart-period">
+                <span 
+                  className={selectedPeriod === 'week' ? 'active' : ''}
+                  onClick={() => setSelectedPeriod('week')}
+                >7D</span>
+                <span 
+                  className={selectedPeriod === 'month' ? 'active' : ''}
+                  onClick={() => setSelectedPeriod('month')}
+                >1M</span>
+                <span 
+                  className={selectedPeriod === 'all' ? 'active' : ''}
+                  onClick={() => setSelectedPeriod('all')}
+                >ALL</span>
+              </div>
             </div>
-            <div className="stats-list">
-              <div className="stats-item">
-                <div className="stats-icon blue">💰</div>
-                <div className="stats-content">
-                  <div className="stats-label">Celkové tržby</div>
-                  <div className="stats-value">136 150 Kč</div>
-                </div>
-              </div>
-              <div className="stats-item">
-                <div className="stats-icon green">📈</div>
-                <div className="stats-content">
-                  <div className="stats-label">Celkový zisk</div>
-                  <div className="stats-value">61 211 Kč</div>
-                </div>
-              </div>
-              <div className="stats-item">
-                <div className="stats-icon purple">📋</div>
-                <div className="stats-content">
-                  <div className="stats-label">Ziskový marže</div>
-                  <div className="stats-value">45.0%</div>
-                </div>
-              </div>
-              <div className="stats-item">
-                <div className="stats-icon orange">🎯</div>
-                <div className="stats-content">
-                  <div className="stats-label">Počet zakázek</div>
-                  <div className="stats-value">14</div>
-                </div>
-              </div>
+            <div className="chart-container">
+              <Bar data={periodBarChartData} options={barChartOptions} />
             </div>
           </div>
 
-          <div className="quick-actions-card">
-            <div className="actions-header">
-              <h3>RYCHLÉ AKCE</h3>
-              <div className="actions-title">Nástroje</div>
+          <div className="report-grid">
+            <div className="report-stats-card">
+              <div className="stats-header">
+                <h3>STATISTIKY - {selectedPeriod === 'week' ? 'TÝDEN' : selectedPeriod === 'month' ? 'MĚSÍC' : selectedPeriod === 'year' ? 'ROK' : 'CELÁ DOBA'}</h3>
+                <div className="stats-title">Přehled</div>
+              </div>
+              <div className="stats-list">
+                <div className="stats-item">
+                  <div className="stats-icon blue">💰</div>
+                  <div className="stats-content">
+                    <div className="stats-label">Celkové tržby</div>
+                    <div className="stats-value">{periodData.celkoveTrzby.toLocaleString()} Kč</div>
+                  </div>
+                </div>
+                <div className="stats-item">
+                  <div className="stats-icon green">📈</div>
+                  <div className="stats-content">
+                    <div className="stats-label">Celkový zisk</div>
+                    <div className="stats-value">{periodData.celkovyZisk.toLocaleString()} Kč</div>
+                  </div>
+                </div>
+                <div className="stats-item">
+                  <div className="stats-icon purple">📋</div>
+                  <div className="stats-content">
+                    <div class`tats-label">Ziskové marže</div>
+                    <div className="stats-value">
+                      {periodData.celkoveTrzby > 0 ? Math.round((periodData.celkovyZisk / periodData.celkoveTrzby) * 100) : 0}%
+                    </div>
+                  </div>
+                </div>
+                <div className="stats-item">
+                  <div className="stats-icon orange">🎯</div>
+                  <div className="stats-content">
+                    <div className="stats-label">Počet zakázek</div>
+                    <div className="stats-value">{periodData.pocetZakazek}</div>
+                  </div>
+                </div>
+                <div className="stats-item">
+                  <div className="stats-icon purple">💎</div>
+                  <div className="stats-content">
+                    <div className="stats-label">Průměrný zisk</div>
+                    <div className="stats-value">{periodData.prumernyZisk.toLocaleString()} Kč</div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="actions-list">
-              <div className="action-item">
-                <div className="action-icon">📊</div>
-                <div className="action-content">
-                  <div className="action-label">Nová zakázka</div>
-                </div>
-              </div>
-              <div className="action-item">
-                <div className="action-icon">📥</div>
-                <div className="action-content">
-                  <div className="action-label">Import CSV</div>
-                </div>
-              </div>
-              <div className="action-item">
-                <div className="action-icon">⚙️</div>
-                <div className="action-content">
-                  <div className="action-label">Nastavení</div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div className="activity-card">
-            <div className="activity-header">
-              <h3>POSLEDNÍ AKTIVITA</h3>
-              <div className="activity-title">Historie</div>
-            </div>
-            <div className="activity-content">
-              <div className="activity-info">Zobrazit vše</div>
-            </div>
-            <div className="activity-list">
-              <div className="activity-item">
-                <div className="activity-text">
-                  <strong>Dokončena zakázka pro ROZNOV s.r.o.</strong>
-                  <br />
-                  <span className="green">Aktualizovaný náklady na materiál</span>
+            <div className="quick-actions-card">
+              <div className="actions-header">
+                <h3>RYCHLÉ AKCE</h3>
+                <div className="actions-title">Nástroje</div>
+              </div>
+              <div className="actions-list">
+                <div className="action-item" onClick={() => setShowAddModal(true)}>
+                  <div className="action-icon">📊</div>
+                  <div className="action-content">
+                    <div className="action-label">Nová zakázka</div>
+                  </div>
+                </div>
+                <div className="action-item">
+                  <div className="action-icon">📥</div>
+                  <div className="action-content">
+                    <div className="action-label">Import CSV</div>
+                  </div>
+                </div>
+                <div className="action-item" onClick={() => setActiveTab('nastaveni')}>
+                  <div className="action-icon">⚙️</div>
+                  <div className="action-content">
+                    <div className="action-label">Nastavení</div>
+                  </div>
                 </div>
               </div>
-              <div className="activity-item">
-                <div className="activity-text">
-                  <strong>Nová zakázka od Petra s.</strong>
-                  <br />
-                  <span className="green">Aktualizovaný náklady na materiál</span>
-                </div>
+            </div>
+
+            <div className="activity-card">
+              <div className="activity-header">
+                <h3>TOP KLIENTI - {selectedPeriod === 'week' ? 'TÝDEN' : selectedPeriod === 'month' ? 'MĚSÍC' : selectedPeriod === 'year' ? 'ROK' : 'CELÁ DOBA'}</h3>
+                <div className="activity-title">Podle zisku</div>
               </div>
-              <div className="activity-item">
-                <div className="activity-text">
-                  <strong>Aktualizovaný náklady na materiál</strong>
-                </div>
+              <div className="activity-list">
+                {Object.entries(
+                  filteredData.reduce((acc, z) => {
+                    acc[z.klient] = (acc[z.klient] || 0) + z.zisk;
+                    return acc;
+                  }, {})
+                )
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 5)
+                .map(([klient, zisk]) => (
+                  <div key={klient} className="activity-item">
+                    <div className="customer-avatar">{klient[0]}</div>
+                    <div className="activity-content">
+                      <div className="activity-title">{klient}</div>
+                      <div className="activity-subtitle">
+                        {filteredData.filter(z => z.klient === klient).length} zakázek
+                      </div>
+                    </div>
+                    <div className="activity-value">{zisk.toLocaleString()} Kč</div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const Nastaveni = () => (
     <div className="nastaveni">
