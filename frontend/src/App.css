@@ -302,25 +302,6 @@ body {
   text-transform: uppercase;
 }
 
-.stat-period {
-  display: flex;
-  gap: 8px;
-}
-
-.stat-period span {
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text-muted);
-}
-
-.stat-period span.active {
-  background: var(--accent-blue);
-  color: var(--text-primary);
-}
-
 .stat-content {
   display: flex;
   align-items: center;
