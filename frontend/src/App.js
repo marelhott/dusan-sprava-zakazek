@@ -414,15 +414,13 @@ const PaintPro = () => {
           <div className="chart-header">
             <div>
               <h3>PŘEHLED ZISKU</h3>
-              <div className="chart-value">22 000 Kč</div>
-            </div>
-            <div className="chart-period">
-              <span>1D</span>
-              <span>7D</span>
-              <span className="active">ALL</span>
+              <div className="chart-values-dual">
+                <div className="chart-value-main">{dashboardData.celkovyZisk} Kč</div>
+                <div className="chart-value-secondary">Měsíc: {Math.round(parseInt(dashboardData.celkovyZisk.replace(/,/g, '')) / 6).toLocaleString()} Kč</div>
+              </div>
             </div>
           </div>
-          <div className="chart-container">
+          <div className="chart-container-large">
             <Chart type='bar' data={getCombinedChartData()} options={combinedChartOptions} />
           </div>
         </div>
