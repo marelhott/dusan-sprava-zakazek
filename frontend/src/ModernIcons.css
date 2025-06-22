@@ -593,12 +593,13 @@
 
 /* Hover Effects */
 .modern-icon:hover {
-  transform: translateY(-2px) scale(1.05);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-1px) scale(1.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.modern-icon:hover::before {
-  opacity: 0.8;
+.modern-icon:hover::before,
+.modern-icon:hover::after {
+  opacity: 1;
 }
 
 /* Sizes */
@@ -617,29 +618,38 @@
   height: 56px;
 }
 
-/* Navigation specific sizing */
+/* Navigation specific styling */
 .nav-item .modern-icon {
   width: 20px;
   height: 20px;
   margin-right: 12px;
+  color: inherit;
 }
 
-/* Button specific sizing */
+/* Button specific styling */
 .btn .modern-icon {
   width: 16px;
   height: 16px;
   margin-right: 8px;
+  color: inherit;
 }
 
 .btn-icon .modern-icon {
   width: 16px;
   height: 16px;
+  color: inherit;
 }
 
-/* Action button card sizing */
+/* Action button card styling */
 .action-button-card .modern-icon {
   width: 48px;
   height: 48px;
+  color: inherit;
+}
+
+/* Stats card styling */
+.stat-card .modern-icon {
+  color: inherit;
 }
 
 /* Responsive adjustments */
@@ -650,7 +660,12 @@
   }
   
   .modern-icon.size-medium {
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
+  }
+  
+  .nav-item .modern-icon {
+    width: 18px;
+    height: 18px;
   }
 }
