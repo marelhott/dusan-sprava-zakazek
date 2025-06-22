@@ -230,57 +230,6 @@ const PaintPro = () => {
     }
   };
 
-  // Komponenta pro upload souborů
-  const FileUpload = ({ zakazka }) => {
-    const [showFiles, setShowFiles] = useState(false);
-    
-    return (
-      <div className="file-upload-container">
-        <div className="file-upload-trigger">
-          <input
-            type="file"
-            multiple
-            onChange={(e) => handleFileUpload(zakazka.id, e.target.files)}
-            style={{ display: 'none' }}
-            id={`file-upload-${zakazka.id}`}
-          />
-          <label htmlFor={`file-upload-${zakazka.id}`} className="upload-btn">
-            📎 Upload
-          </label>
-          {zakazka.soubory.length > 0 && (
-            <button 
-              className="files-count"
-              onClick={() => setShowFiles(!showFiles)}
-            >
-              {zakazka.soubory.length} souborů
-            </button>
-          )}
-        </div>
-        
-        {showFiles && zakazka.soubory.length > 0 && (
-          <div className="files-list">
-            {zakazka.soubory.map(file => (
-              <div key={file.id} className="file-item">
-                <div className="file-info">
-                  <span className="file-name">{file.name}</span>
-                  <span className="file-meta">
-                    {(file.size / 1024).toFixed(1)} KB • {file.uploadDate}
-                  </span>
-                </div>
-                <button 
-                  className="file-remove"
-                  onClick={() => removeFile(zakazka.id, file.id)}
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
-
   // Aktualizovaná data pro kombinovaný graf
   const getCombinedChartData = () => {
     const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer'];
