@@ -87,14 +87,14 @@ const PaintPro = () => {
   // Funkce pro přidání zakázky
   const addZakazka = (newZakazka) => {
     const id = Math.max(...zakazkyData.map(z => z.id)) + 1;
-    const zisk = newZakazka.castka - newZakazka.fee - newZakazka.material - newZakazka.pomucka - newZakazka.palivo;
-    setZakazkyData([...zakazkyData, { ...newZakazka, id, zisk }]);
+    const zisk = newZakazka.castka - newZakazka.fee - newZakazka.material - newZakazka.pomocnik - newZakazka.palivo;
+    setZakazkyData([...zakazkyData, { ...newZakazka, id, zisk, soubory: [] }]);
     setShowAddModal(false);
   };
 
   // Funkce pro editaci zakázky
   const updateZakazka = (updatedZakazka) => {
-    const zisk = updatedZakazka.castka - updatedZakazka.fee - updatedZakazka.material - updatedZakazka.pomucka - updatedZakazka.palivo;
+    const zisk = updatedZakazka.castka - updatedZakazka.fee - updatedZakazka.material - updatedZakazka.pomocnik - updatedZakazka.palivo;
     setZakazkyData(zakazkyData.map(z => z.id === updatedZakazka.id ? { ...updatedZakazka, zisk } : z));
     setShowEditModal(false);
     setEditingZakazka(null);
