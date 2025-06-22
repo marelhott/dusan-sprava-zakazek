@@ -275,8 +275,24 @@ const PaintPro = () => {
     datasets: [
       {
         data: dashboardData.rozlozeniData.values,
-        backgroundColor: dashboardData.rozlozeniData.colors,
-        borderWidth: 0,
+        backgroundColor: [
+          'rgba(59, 130, 246, 0.9)',   // Modrá - Market
+          'rgba(34, 197, 194, 0.9)',   // Tyrkysová - Rewards  
+          'rgba(168, 85, 247, 0.9)',   // Fialová - Founders
+          'rgba(236, 72, 153, 0.9)'    // Růžová - Partners
+        ],
+        borderColor: [
+          'rgba(59, 130, 246, 1)',
+          'rgba(34, 197, 194, 1)', 
+          'rgba(168, 85, 247, 1)',
+          'rgba(236, 72, 153, 1)'
+        ],
+        borderWidth: 3,
+        hoverBorderWidth: 4,
+        cutout: '60%',
+        spacing: 4,
+        borderRadius: 8,
+        hoverOffset: 8,
       },
     ],
   };
@@ -284,21 +300,45 @@ const PaintPro = () => {
   const doughnutChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
+    layout: {
+      padding: 40
+    },
     plugins: {
       legend: {
-        position: 'bottom',
-        labels: {
-          color: 'rgba(255, 255, 255, 0.8)',
-          padding: 20,
-          usePointStyle: true,
-        },
+        display: false // Disable default legend, we'll create custom external labels
       },
       tooltip: {
-        backgroundColor: 'rgba(31, 31, 83, 0.9)',
+        backgroundColor: 'rgba(31, 31, 83, 0.95)',
         titleColor: '#fff',
         bodyColor: '#fff',
+        borderColor: 'rgba(79, 70, 229, 0.5)',
+        borderWidth: 1,
+        cornerRadius: 12,
+        displayColors: true,
+        callbacks: {
+          label: function(context) {
+            const total = context.dataset.data.reduce((sum, value) => sum + value, 0);
+            const percentage = Math.round((context.raw / total) * 100);
+            return `${context.label}: ${percentage}% (${context.raw.toLocaleString()} Kč)`;
+          }
+        }
       },
     },
+    elements: {
+      arc: {
+        borderJoinStyle: 'round',
+      }
+    },
+    interaction: {
+      intersect: false,
+      mode: 'point'
+    },
+    animation: {
+      animateRotate: true,
+      animateScale: true,
+      duration: 1000,
+      easing: 'easeOutCubic'
+    }
   };
 
   const StatCard = ({ title, value, subtitle, icon, color, index }) => (
