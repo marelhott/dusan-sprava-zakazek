@@ -1110,8 +1110,8 @@ const PaintPro = () => {
           ['Celkové tržby:', `${allPeriods.all.celkoveTrzby.toLocaleString()} Kč`],
           ['Celkový zisk:', `${allPeriods.all.celkovyZisk.toLocaleString()} Kč`],
           ['Zisková marže:', `${allPeriods.all.celkoveTrzby > 0 ? Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100) : 0}%`],
-          ['Počet zakázek:', `${allPeriods.all.pocetZakazek}`],
-          ['Průměrný zisk:', `${Math.round(allPeriods.all.celkovyZisk / allPeriods.all.pocetZakazek).toLocaleString()} Kč`]
+          ['Počet zakázek:', `${allPeriods.all.pocetZakazek.toString()}`],
+          ['Průměrný zisk:', `${Math.round(allPeriods.all.celkovyZisk / (allPeriods.all.pocetZakazek || 1)).toLocaleString()} Kč`]
         ];
 
         pdf.setFontSize(11);
