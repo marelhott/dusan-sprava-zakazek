@@ -472,21 +472,53 @@ const PaintPro = () => {
               <div className="chart-value">76 000 Kč</div>
             </div>
           </div>
-          <div className="chart-container">
-            <Doughnut data={doughnutChartData} options={doughnutChartOptions} />
+          <div className="chart-container-donut">
+            <div className="donut-chart-wrapper">
+              <Doughnut data={doughnutChartData} options={doughnutChartOptions} />
+              <div className="external-labels">
+                <div className="label-item label-top-left">
+                  <div className="label-line"></div>
+                  <div className="label-content">
+                    <div className="label-percentage">45%</div>
+                    <div className="label-name">Adam</div>
+                  </div>
+                </div>
+                <div className="label-item label-top-right">
+                  <div className="label-line"></div>
+                  <div className="label-content">
+                    <div className="label-percentage">30%</div>
+                    <div className="label-name">MVC</div>
+                  </div>
+                </div>
+                <div className="label-item label-bottom-left">
+                  <div className="label-line"></div>
+                  <div className="label-content">
+                    <div className="label-percentage">20%</div>
+                    <div className="label-name">Korálek</div>
+                  </div>
+                </div>
+                <div className="label-item label-bottom-right">
+                  <div className="label-line"></div>
+                  <div className="label-content">
+                    <div className="label-percentage">5%</div>
+                    <div className="label-name">Ostatní</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div className="chart-details">
             <div className="detail-row">
               <span>KATEGORIÍ</span>
-              <span>3</span>
+              <span>4</span>
             </div>
             <div className="detail-row">
-              <span>Nejvyšší náklady</span>
-              <span>25 333 Kč</span>
+              <span>Největší podíl</span>
+              <span>Adam (45%)</span>
             </div>
             <div className="detail-row">
-              <span>Adam</span>
-              <span>45 600 Kč</span>
+              <span>Celková suma</span>
+              <span>76 000 Kč</span>
             </div>
           </div>
         </div>
