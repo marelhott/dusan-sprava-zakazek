@@ -397,29 +397,35 @@ body {
   margin-bottom: 8px;
 }
 
+.chart-values-dual {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chart-value-main {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.chart-value-secondary {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
 .chart-value {
   font-size: 24px;
   font-weight: 700;
   color: var(--text-primary);
 }
 
-.chart-period {
-  display: flex;
-  gap: 8px;
-}
-
-.chart-period span {
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  color: var(--text-muted);
-}
-
-.chart-period span.active {
-  background: var(--accent-blue);
-  color: var(--text-primary);
+.chart-container-large {
+  height: 380px;
+  position: relative;
 }
 
 .chart-container {
