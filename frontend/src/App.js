@@ -946,7 +946,7 @@ const PaintPro = () => {
                   <td>{zakazka.pomocnik.toLocaleString()} Kč</td>
                   <td className="profit-amount">{zakazka.zisk.toLocaleString()} Kč</td>
                   <td>
-                    <FileUpload zakazka={zakazka} />
+                    <span className="file-placeholder">-</span>
                   </td>
                   <td>
                     <div className="action-buttons">
