@@ -500,7 +500,7 @@ const PaintPro = () => {
           </div>
           <div className="activity-list">
             <div className="activity-item">
-              <div className="activity-icon green">✓</div>
+              <div className="modern-icon size-small icon-orders"></div>
               <div className="activity-content">
                 <div className="activity-title">Dokončena zakázka pro ROZNOV s.r.o.</div>
                 <div className="activity-subtitle">Malířské práce</div>
