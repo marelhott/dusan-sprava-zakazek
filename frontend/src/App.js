@@ -1156,7 +1156,7 @@ const PaintPro = () => {
               <div className="chart-value-small blue">{allPeriods.week.celkovyZisk.toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line data={createLineChartData('week', 'rgba(79, 70, 229, 1)')} options={lineChartOptions} />
+              <Line key="week-chart" data={createLineChartData('week', 'rgba(79, 70, 229, 1)')} options={lineChartOptions} />
             </div>
           </div>
 
@@ -1166,7 +1166,7 @@ const PaintPro = () => {
               <div className="chart-value-small green">{allPeriods.month.celkovyZisk.toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line data={createLineChartData('month', 'rgba(16, 185, 129, 1)')} options={lineChartOptions} />
+              <Line key="month-chart" data={createLineChartData('month', 'rgba(16, 185, 129, 1)')} options={lineChartOptions} />
             </div>
           </div>
 
@@ -1176,7 +1176,7 @@ const PaintPro = () => {
               <div className="chart-value-small orange">{allPeriods.year.celkovyZisk.toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line data={createLineChartData('year', 'rgba(245, 158, 11, 1)')} options={lineChartOptions} />
+              <Line key="year-chart" data={createLineChartData('year', 'rgba(245, 158, 11, 1)')} options={lineChartOptions} />
             </div>
           </div>
 
@@ -1186,7 +1186,7 @@ const PaintPro = () => {
               <div className="chart-value-small purple">{allPeriods.all.celkovyZisk.toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line data={createLineChartData('all', 'rgba(139, 92, 246, 1)')} options={lineChartOptions} />
+              <Line key="all-chart" data={createLineChartData('all', 'rgba(139, 92, 246, 1)')} options={lineChartOptions} />
             </div>
           </div>
         </div>
