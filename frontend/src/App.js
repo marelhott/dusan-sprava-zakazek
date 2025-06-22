@@ -1073,72 +1073,367 @@ const PaintPro = () => {
     };
 
     // Export funkce
-    const exportToPDF = () => {
-      // Simulace PDF exportu
-      const printContent = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>PaintPro - Finanční Report</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            .header { text-align: center; margin-bottom: 30px; }
-            .stats { display: flex; justify-content: space-between; margin: 20px 0; }
-            .stat { text-align: center; padding: 10px; border: 1px solid #ccc; }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <h1>PaintPro - Finanční Report</h1>
-            <p>Datum: ${new Date().toLocaleDateString('cs-CZ')}</p>
+    const exportToPDF = async () => {
+      try {
+        // Zobrazit loading
+        const loadingToast = document.createElement('div');
+        loadingToast.innerHTML = `
+          <div style="position: fixed; top: 20px; right: 20px; background: #1F1F53; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
+            📄 Generuje se PDF report...
           </div>
-          <div class="stats">
-            <div class="stat">
-              <h3>Celkové tržby</h3>
-              <p>${allPeriods.all.celkoveTrzby.toLocaleString()} Kč</p>
-            </div>
-            <div class="stat">
-              <h3>Celkový zisk</h3>
-              <p>${allPeriods.all.celkovyZisk.toLocaleString()} Kč</p>
-            </div>
-            <div class="stat">
-              <h3>Počet zakázek</h3>
-              <p>${allPeriods.all.pocetZakazek}</p>
-            </div>
+        `;
+        document.body.appendChild(loadingToast);
+
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        
+        // Header
+        pdf.setFontSize(24);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('PaintPro - Finanční Report', 20, 30);
+        
+        pdf.setFontSize(12);
+        pdf.setTextColor(139, 139, 167);
+        pdf.text(`Datum exportu: ${new Date().toLocaleDateString('cs-CZ')}`, 20, 40);
+        pdf.text(`Čas exportu: ${new Date().toLocaleTimeString('cs-CZ')}`, 20, 47);
+
+        let yPosition = 60;
+
+        // Celkové statistiky
+        pdf.setFontSize(16);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('CELKOVÉ STATISTIKY', 20, yPosition);
+        yPosition += 10;
+
+        const stats = [
+          ['Celkové tržby:', `${allPeriods.all.celkoveTrzby.toLocaleString()} Kč`],
+          ['Celkový zisk:', `${allPeriods.all.celkovyZisk.toLocaleString()} Kč`],
+          ['Zisková marže:', `${allPeriods.all.celkoveTrzby > 0 ? Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100) : 0}%`],
+          ['Počet zakázek:', `${allPeriods.all.pocetZakazek}`],
+          ['Průměrný zisk:', `${Math.round(allPeriods.all.celkovyZisk / allPeriods.all.pocetZakazek).toLocaleString()} Kč`]
+        ];
+
+        pdf.setFontSize(11);
+        stats.forEach(([label, value]) => {
+          pdf.setTextColor(100, 100, 100);
+          pdf.text(label, 25, yPosition);
+          pdf.setTextColor(31, 31, 83);
+          pdf.text(value, 80, yPosition);
+          yPosition += 8;
+        });
+
+        yPosition += 10;
+
+        // Statistiky podle období
+        pdf.setFontSize(16);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('STATISTIKY PODLE OBDOBÍ', 20, yPosition);
+        yPosition += 15;
+
+        const periodStats = [
+          ['Období', 'Tržby (Kč)', 'Zisk (Kč)', 'Zakázky'],
+          ['Týden', allPeriods.week.celkoveTrzby.toLocaleString(), allPeriods.week.celkovyZisk.toLocaleString(), allPeriods.week.pocetZakazek],
+          ['Měsíc', allPeriods.month.celkoveTrzby.toLocaleString(), allPeriods.month.celkovyZisk.toLocaleString(), allPeriods.month.pocetZakazek],
+          ['Rok', allPeriods.year.celkoveTrzby.toLocaleString(), allPeriods.year.celkovyZisk.toLocaleString(), allPeriods.year.pocetZakazek],
+          ['Od začátku', allPeriods.all.celkoveTrzby.toLocaleString(), allPeriods.all.celkovyZisk.toLocaleString(), allPeriods.all.pocetZakazek]
+        ];
+
+        pdf.setFontSize(10);
+        periodStats.forEach((row, index) => {
+          const x = 20;
+          if (index === 0) {
+            pdf.setTextColor(31, 31, 83);
+            pdf.setFont(undefined, 'bold');
+          } else {
+            pdf.setTextColor(100, 100, 100);
+            pdf.setFont(undefined, 'normal');
+          }
+          
+          pdf.text(row[0], x, yPosition);
+          pdf.text(row[1], x + 35, yPosition);
+          pdf.text(row[2], x + 75, yPosition);
+          pdf.text(row[3], x + 115, yPosition);
+          yPosition += 8;
+        });
+
+        yPosition += 15;
+
+        // Top klienti
+        pdf.setFontSize(16);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('TOP KLIENTI', 20, yPosition);
+        yPosition += 15;
+
+        const topClients = Object.entries(
+          zakazkyData.reduce((acc, z) => {
+            acc[z.klient] = (acc[z.klient] || 0) + z.zisk;
+            return acc;
+          }, {})
+        ).sort(([,a], [,b]) => b - a).slice(0, 10);
+
+        pdf.setFontSize(10);
+        pdf.setTextColor(31, 31, 83);
+        pdf.setFont(undefined, 'bold');
+        pdf.text('Klient', 25, yPosition);
+        pdf.text('Celkový zisk', 100, yPosition);
+        pdf.text('Počet zakázek', 140, yPosition);
+        yPosition += 8;
+
+        pdf.setFont(undefined, 'normal');
+        topClients.forEach(([klient, zisk]) => {
+          const pocetZakazek = zakazkyData.filter(z => z.klient === klient).length;
+          pdf.setTextColor(100, 100, 100);
+          pdf.text(klient, 25, yPosition);
+          pdf.text(`${zisk.toLocaleString()} Kč`, 100, yPosition);
+          pdf.text(pocetZakazek.toString(), 140, yPosition);
+          yPosition += 6;
+        });
+
+        // Nová stránka pro detailní data
+        pdf.addPage();
+        yPosition = 30;
+
+        pdf.setFontSize(18);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('DETAILNÍ PŘEHLED ZAKÁZEK', 20, yPosition);
+        yPosition += 15;
+
+        // Tabulka zakázek
+        const headers = ['Datum', 'Klient', 'Částka', 'Fee', 'Materiál', 'Zisk'];
+        pdf.setFontSize(9);
+        pdf.setFont(undefined, 'bold');
+        pdf.setTextColor(31, 31, 83);
+        
+        headers.forEach((header, index) => {
+          pdf.text(header, 20 + (index * 28), yPosition);
+        });
+        yPosition += 8;
+
+        pdf.setFont(undefined, 'normal');
+        pdf.setFontSize(8);
+        
+        zakazkyData.slice(0, 30).forEach((zakazka) => {
+          if (yPosition > 270) {
+            pdf.addPage();
+            yPosition = 30;
+          }
+          
+          pdf.setTextColor(100, 100, 100);
+          pdf.text(zakazka.datum, 20, yPosition);
+          pdf.text(zakazka.klient, 48, yPosition);
+          pdf.text(`${zakazka.castka.toLocaleString()}`, 76, yPosition);
+          pdf.text(`${zakazka.fee.toLocaleString()}`, 104, yPosition);
+          pdf.text(`${zakazka.material.toLocaleString()}`, 132, yPosition);
+          pdf.setTextColor(16, 185, 129);
+          pdf.text(`${zakazka.zisk.toLocaleString()}`, 160, yPosition);
+          yPosition += 6;
+        });
+
+        // Capture charts
+        const chartsElement = document.querySelector('.charts-grid-4');
+        if (chartsElement) {
+          pdf.addPage();
+          yPosition = 30;
+          
+          pdf.setFontSize(18);
+          pdf.setTextColor(31, 31, 83);
+          pdf.text('GRAFY PODLE OBDOBÍ', 20, yPosition);
+          yPosition += 20;
+
+          try {
+            const canvas = await html2canvas(chartsElement, {
+              backgroundColor: '#0F0F23',
+              scale: 2,
+              logging: false,
+              allowTaint: true,
+              useCORS: true
+            });
+            
+            const imgData = canvas.toDataURL('image/png');
+            const imgWidth = pageWidth - 40;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            
+            if (imgHeight + yPosition > pageHeight) {
+              pdf.addPage();
+              yPosition = 30;
+            }
+            
+            pdf.addImage(imgData, 'PNG', 20, yPosition, imgWidth, imgHeight);
+          } catch (error) {
+            console.log('Error capturing charts:', error);
+            pdf.setTextColor(139, 139, 167);
+            pdf.text('Grafy se nepodařilo exportovat', 20, yPosition);
+          }
+        }
+
+        // Footer na všech stránkách
+        const totalPages = pdf.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+          pdf.setFontSize(8);
+          pdf.setTextColor(139, 139, 167);
+          pdf.text(`Stránka ${i} z ${totalPages}`, pageWidth - 40, pageHeight - 10);
+          pdf.text('Generováno PaintPro systémem', 20, pageHeight - 10);
+        }
+
+        // Uložit PDF
+        pdf.save(`paintpro-report-${new Date().toISOString().split('T')[0]}.pdf`);
+        
+        document.body.removeChild(loadingToast);
+        
+        // Success toast
+        const successToast = document.createElement('div');
+        successToast.innerHTML = `
+          <div style="position: fixed; top: 20px; right: 20px; background: #10B981; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
+            ✅ PDF report byl úspěšně stažen!
           </div>
-        </body>
-        </html>
-      `;
-      
-      const printWindow = window.open('', '_blank');
-      printWindow.document.write(printContent);
-      printWindow.document.close();
-      printWindow.print();
+        `;
+        document.body.appendChild(successToast);
+        setTimeout(() => document.body.removeChild(successToast), 3000);
+
+      } catch (error) {
+        console.error('Chyba při exportu PDF:', error);
+        
+        const errorToast = document.createElement('div');
+        errorToast.innerHTML = `
+          <div style="position: fixed; top: 20px; right: 20px; background: #EF4444; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
+            ❌ Chyba při exportu PDF
+          </div>
+        `;
+        document.body.appendChild(errorToast);
+        setTimeout(() => document.body.removeChild(errorToast), 3000);
+      }
     };
 
     const exportToCSV = () => {
-      const headers = ['Datum', 'Klient', 'Druh', 'Číslo', 'Částka', 'Fee', 'Materiál', 'Pomůcka', 'Palivo', 'Zisk'];
-      const csvContent = [
-        headers.join(','),
-        ...zakazkyData.map(z => [
-          z.datum,
-          z.klient,
-          z.druh,
-          z.cislo,
-          z.castka,
-          z.fee,
-          z.material,
-          z.pomucka,
-          z.palivo,
-          z.zisk
-        ].join(','))
-      ].join('\n');
-      
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `paintpro-export-${new Date().toISOString().split('T')[0]}.csv`;
-      link.click();
+      try {
+        const timestamp = new Date().toISOString().split('T')[0];
+        
+        // Hlavní data zakázek
+        const zakázkyHeaders = [
+          'Datum', 'Klient', 'Druh práce', 'Číslo zakázky', 'Částka (Kč)', 
+          'Fee (Kč)', 'Materiál (Kč)', 'Pomůcka (Kč)', 'Palivo (Kč)', 'Zisk (Kč)'
+        ];
+        
+        const zakázkyData = zakazkyData.map(z => [
+          z.datum, z.klient, z.druh, z.cislo, z.castka, z.fee, 
+          z.material, z.pomucka, z.palivo, z.zisk
+        ]);
+
+        // Statistiky podle období
+        const periodStatsHeaders = ['Období', 'Celkové tržby (Kč)', 'Celkový zisk (Kč)', 'Počet zakázek', 'Průměrný zisk (Kč)'];
+        const periodStatsData = [
+          ['Týden', allPeriods.week.celkoveTrzby, allPeriods.week.celkovyZisk, allPeriods.week.pocetZakazek, Math.round(allPeriods.week.celkovyZisk / (allPeriods.week.pocetZakazek || 1))],
+          ['Měsíc', allPeriods.month.celkoveTrzby, allPeriods.month.celkovyZisk, allPeriods.month.pocetZakazek, Math.round(allPeriods.month.celkovyZisk / (allPeriods.month.pocetZakazek || 1))],
+          ['Rok', allPeriods.year.celkoveTrzby, allPeriods.year.celkovyZisk, allPeriods.year.pocetZakazek, Math.round(allPeriods.year.celkovyZisk / (allPeriods.year.pocetZakazek || 1))],
+          ['Od začátku', allPeriods.all.celkoveTrzby, allPeriods.all.celkovyZisk, allPeriods.all.pocetZakazek, Math.round(allPeriods.all.celkovyZisk / (allPeriods.all.pocetZakazek || 1))]
+        ];
+
+        // Top klienti
+        const topClientsHeaders = ['Klient', 'Celkový zisk (Kč)', 'Počet zakázek', 'Průměrný zisk na zakázku (Kč)'];
+        const topClientsData = Object.entries(
+          zakazkyData.reduce((acc, z) => {
+            if (!acc[z.klient]) {
+              acc[z.klient] = { zisk: 0, pocet: 0 };
+            }
+            acc[z.klient].zisk += z.zisk;
+            acc[z.klient].pocet += 1;
+            return acc;
+          }, {})
+        )
+        .sort(([,a], [,b]) => b.zisk - a.zisk)
+        .map(([klient, data]) => [
+          klient, 
+          data.zisk, 
+          data.pocet, 
+          Math.round(data.zisk / data.pocet)
+        ]);
+
+        // Měsíční rozpis
+        const monthlyHeaders = ['Rok-Měsíc', 'Tržby (Kč)', 'Zisk (Kč)', 'Počet zakázek'];
+        const monthlyData = {};
+        
+        zakazkyData.forEach(z => {
+          const date = new Date(z.datum.split('. ').reverse().join('-'));
+          const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+          if (!monthlyData[key]) {
+            monthlyData[key] = { trzby: 0, zisk: 0, pocet: 0 };
+          }
+          monthlyData[key].trzby += z.castka;
+          monthlyData[key].zisk += z.zisk;
+          monthlyData[key].pocet += 1;
+        });
+
+        const monthlyExportData = Object.entries(monthlyData)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([period, data]) => [period, data.trzby, data.zisk, data.pocet]);
+
+        // Sestavení CSV
+        const csvSections = [
+          '=== PAINTPRO FINANČNÍ REPORT ===',
+          `Export datum: ${new Date().toLocaleDateString('cs-CZ')}`,
+          `Export čas: ${new Date().toLocaleTimeString('cs-CZ')}`,
+          '',
+          '=== VŠECHNY ZAKÁZKY ===',
+          zakázkyHeaders.join(','),
+          ...zakázkyData.map(row => row.join(',')),
+          '',
+          '=== STATISTIKY PODLE OBDOBÍ ===',
+          periodStatsHeaders.join(','),
+          ...periodStatsData.map(row => row.join(',')),
+          '',
+          '=== TOP KLIENTI ===',
+          topClientsHeaders.join(','),
+          ...topClientsData.map(row => row.join(',')),
+          '',
+          '=== MĚSÍČNÍ ROZPIS ===',
+          monthlyHeaders.join(','),
+          ...monthlyExportData.map(row => row.join(',')),
+          '',
+          '=== CELKOVÉ SOUHRNY ===',
+          'Metrika,Hodnota',
+          `Celkové tržby,${allPeriods.all.celkoveTrzby} Kč`,
+          `Celkový zisk,${allPeriods.all.celkovyZisk} Kč`,
+          `Zisková marže,${allPeriods.all.celkoveTrzby > 0 ? Math.round((allPeriods.all.celkovyZisk / allPeriods.all.celkoveTrzby) * 100) : 0}%`,
+          `Počet zakázek,${allPeriods.all.pocetZakazek}`,
+          `Průměrný zisk,${Math.round(allPeriods.all.celkovyZisk / allPeriods.all.pocetZakazek)} Kč`,
+          `Nejlepší klient,${topClientsData[0] ? topClientsData[0][0] : 'N/A'}`,
+          `Nejlepší měsíc,${monthlyExportData.reduce((best, current) => current[2] > best[2] ? current : best, ['', 0, 0, 0])[0]}`
+        ];
+
+        const csvContent = csvSections.join('\n');
+        
+        // BOM pro správné zobrazení češtiny v Excelu
+        const BOM = '\uFEFF';
+        const blob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `paintpro-complete-export-${timestamp}.csv`;
+        link.click();
+
+        // Success toast
+        const successToast = document.createElement('div');
+        successToast.innerHTML = `
+          <div style="position: fixed; top: 20px; right: 20px; background: #10B981; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
+            📊 CSV export byl úspěšně stažen!
+          </div>
+        `;
+        document.body.appendChild(successToast);
+        setTimeout(() => document.body.removeChild(successToast), 3000);
+
+      } catch (error) {
+        console.error('Chyba při exportu CSV:', error);
+        
+        const errorToast = document.createElement('div');
+        errorToast.innerHTML = `
+          <div style="position: fixed; top: 20px; right: 20px; background: #EF4444; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
+            ❌ Chyba při exportu CSV
+          </div>
+        `;
+        document.body.appendChild(errorToast);
+        setTimeout(() => document.body.removeChild(errorToast), 3000);
+      }
     };
 
     return (
