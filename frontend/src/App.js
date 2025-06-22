@@ -1213,7 +1213,7 @@ const PaintPro = () => {
         pdf.setFont(undefined, 'normal');
         pdf.setFontSize(8);
         
-        zakazkyData.slice(0, 30).forEach((zakazka) => {
+        zakazkyData.forEach((zakazka) => {
           if (yPosition > 270) {
             pdf.addPage();
             yPosition = 30;
@@ -1230,42 +1230,54 @@ const PaintPro = () => {
           yPosition += 6;
         });
 
-        // Capture charts
-        const chartsElement = document.querySelector('.charts-grid-4');
-        if (chartsElement) {
-          pdf.addPage();
-          yPosition = 30;
-          
-          pdf.setFontSize(18);
-          pdf.setTextColor(31, 31, 83);
-          pdf.text('GRAFY PODLE OBDOBÍ', 20, yPosition);
-          yPosition += 20;
+        // Grafy info stránka
+        pdf.addPage();
+        yPosition = 30;
+        
+        pdf.setFontSize(18);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('PŘEHLED GRAFŮ', 20, yPosition);
+        yPosition += 20;
 
-          try {
-            const canvas = await html2canvas(chartsElement, {
-              backgroundColor: '#0F0F23',
-              scale: 2,
-              logging: false,
-              allowTaint: true,
-              useCORS: true
-            });
-            
-            const imgData = canvas.toDataURL('image/png');
-            const imgWidth = pageWidth - 40;
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            
-            if (imgHeight + yPosition > pageHeight) {
-              pdf.addPage();
-              yPosition = 30;
-            }
-            
-            pdf.addImage(imgData, 'PNG', 20, yPosition, imgWidth, imgHeight);
-          } catch (error) {
-            console.log('Error capturing charts:', error);
-            pdf.setTextColor(139, 139, 167);
-            pdf.text('Grafy se nepodařilo exportovat', 20, yPosition);
-          }
-        }
+        // Info o grafech místo screenshotu
+        pdf.setFontSize(14);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('TÝDENNÍ TREND', 20, yPosition);
+        yPosition += 10;
+        pdf.setFontSize(11);
+        pdf.setTextColor(100, 100, 100);
+        pdf.text(`Zisk za týden: ${allPeriods.week.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
+        pdf.text(`Počet zakázek: ${allPeriods.week.pocetZakazek}`, 25, yPosition + 7);
+        yPosition += 25;
+
+        pdf.setFontSize(14);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('MĚSÍČNÍ TREND', 20, yPosition);
+        yPosition += 10;
+        pdf.setFontSize(11);
+        pdf.setTextColor(100, 100, 100);
+        pdf.text(`Zisk za měsíc: ${allPeriods.month.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
+        pdf.text(`Počet zakázek: ${allPeriods.month.pocetZakazek}`, 25, yPosition + 7);
+        yPosition += 25;
+
+        pdf.setFontSize(14);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('ROČNÍ TREND', 20, yPosition);
+        yPosition += 10;
+        pdf.setFontSize(11);
+        pdf.setTextColor(100, 100, 100);
+        pdf.text(`Zisk za rok: ${allPeriods.year.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
+        pdf.text(`Počet zakázek: ${allPeriods.year.pocetZakazek}`, 25, yPosition + 7);
+        yPosition += 25;
+
+        pdf.setFontSize(14);
+        pdf.setTextColor(31, 31, 83);
+        pdf.text('CELKOVÝ TREND', 20, yPosition);
+        yPosition += 10;
+        pdf.setFontSize(11);
+        pdf.setTextColor(100, 100, 100);
+        pdf.text(`Celkový zisk: ${allPeriods.all.celkovyZisk.toLocaleString()} Kč`, 25, yPosition);
+        pdf.text(`Celkový počet zakázek: ${allPeriods.all.pocetZakazek}`, 25, yPosition + 7);
 
         // Footer na všech stránkách
         const totalPages = pdf.internal.getNumberOfPages();
@@ -1295,14 +1307,20 @@ const PaintPro = () => {
       } catch (error) {
         console.error('Chyba při exportu PDF:', error);
         
+        // Remove loading toast if it exists
+        const loadingToast = document.querySelector('[style*="Generuje se PDF report"]');
+        if (loadingToast && loadingToast.parentElement) {
+          loadingToast.parentElement.removeChild(loadingToast);
+        }
+        
         const errorToast = document.createElement('div');
         errorToast.innerHTML = `
           <div style="position: fixed; top: 20px; right: 20px; background: #EF4444; color: white; padding: 16px 24px; border-radius: 12px; z-index: 10000; font-family: Inter, sans-serif;">
-            ❌ Chyba při exportu PDF
+            ❌ Chyba při exportu PDF: ${error.message}
           </div>
         `;
         document.body.appendChild(errorToast);
-        setTimeout(() => document.body.removeChild(errorToast), 3000);
+        setTimeout(() => document.body.removeChild(errorToast), 5000);
       }
     };
 
