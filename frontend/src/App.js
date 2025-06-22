@@ -431,11 +431,6 @@ const PaintPro = () => {
               <h3>ROZLOŽENÍ PODLE DRUHU PŘÍJMŮ</h3>
               <div className="chart-value">76 000 Kč</div>
             </div>
-            <div className="chart-period">
-              <span>1D</span>
-              <span>7D</span>
-              <span className="active">ALL</span>
-            </div>
           </div>
           <div className="chart-container">
             <Doughnut data={doughnutChartData} options={doughnutChartOptions} />
