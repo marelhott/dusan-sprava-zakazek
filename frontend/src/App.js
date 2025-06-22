@@ -394,8 +394,295 @@ const PaintPro = () => {
     </div>
   );
 
+  // Modal komponenty
+  const AddZakazkaModal = () => {
+    const [formData, setFormData] = useState({
+      datum: new Date().toISOString().split('T')[0],
+      klient: '',
+      druh: 'XY',
+      cislo: '',
+      castka: 0,
+      fee: 0,
+      material: 0,
+      pomucka: 0,
+      palivo: 0
+    });
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const processedData = {
+        ...formData,
+        datum: new Date(formData.datum).toLocaleDateString('cs-CZ'),
+        castka: Number(formData.castka),
+        fee: Number(formData.fee),
+        material: Number(formData.material),
+        pomucka: Number(formData.pomucka),
+        palivo: Number(formData.palivo)
+      };
+      addZakazka(processedData);
+    };
+
+    if (!showAddModal) return null;
+
+    return (
+      <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
+        <div className="modal-content" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h2>Přidat novou zakázku</h2>
+            <button className="modal-close" onClick={() => setShowAddModal(false)}>×</button>
+          </div>
+          <form onSubmit={handleSubmit} className="modal-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label>Datum *</label>
+                <input
+                  type="date"
+                  value={formData.datum}
+                  onChange={e => setFormData({...formData, datum: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Klient *</label>
+                <input
+                  type="text"
+                  value={formData.klient}
+                  onChange={e => setFormData({...formData, klient: e.target.value})}
+                  placeholder="Jméno klienta"
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Druh práce</label>
+                <select
+                  value={formData.druh}
+                  onChange={e => setFormData({...formData, druh: e.target.value})}
+                >
+                  <option value="XY">XY</option>
+                  <option value="Malování">Malování</option>
+                  <option value="Rekonstrukce">Rekonstrukce</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Číslo zakázky *</label>
+                <input
+                  type="text"
+                  value={formData.cislo}
+                  onChange={e => setFormData({...formData, cislo: e.target.value})}
+                  placeholder="Číslo zakázky"
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Částka (Kč) *</label>
+                <input
+                  type="number"
+                  value={formData.castka}
+                  onChange={e => setFormData({...formData, castka: e.target.value})}
+                  placeholder="0"
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Fee (Kč)</label>
+                <input
+                  type="number"
+                  value={formData.fee}
+                  onChange={e => setFormData({...formData, fee: e.target.value})}
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Materiál (Kč)</label>
+                <input
+                  type="number"
+                  value={formData.material}
+                  onChange={e => setFormData({...formData, material: e.target.value})}
+                  placeholder="0"
+                />
+              </div>
+              <div className="form-group">
+                <label>Pomůcka (Kč)</label>
+                <input
+                  type="number"
+                  value={formData.pomucka}
+                  onChange={e => setFormData({...formData, pomucka: e.target.value})}
+                  placeholder="0"
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Palivo (Kč)</label>
+              <input
+                type="number"
+                value={formData.palivo}
+                onChange={e => setFormData({...formData, palivo: e.target.value})}
+                placeholder="0"
+              />
+            </div>
+            <div className="modal-actions">
+              <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>
+                Zrušit
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Přidat zakázku
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
+  const EditZakazkaModal = () => {
+    const [formData, setFormData] = useState(editingZakazka || {});
+
+    React.useEffect(() => {
+      if (editingZakazka) {
+        const dateStr = editingZakazka.datum.split('. ').reverse().join('-').replace(' ', '');
+        setFormData({
+          ...editingZakazka,
+          datum: dateStr
+        });
+      }
+    }, [editingZakazka]);
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const processedData = {
+        ...formData,
+        datum: new Date(formData.datum).toLocaleDateString('cs-CZ'),
+        castka: Number(formData.castka),
+        fee: Number(formData.fee),
+        material: Number(formData.material),
+        pomucka: Number(formData.pomucka),
+        palivo: Number(formData.palivo)
+      };
+      updateZakazka(processedData);
+    };
+
+    if (!showEditModal || !editingZakazka) return null;
+
+    return (
+      <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
+        <div className="modal-content" onClick={e => e.stopPropagation()}>
+          <div className="modal-header">
+            <h2>Upravit zakázku</h2>
+            <button className="modal-close" onClick={() => setShowEditModal(false)}>×</button>
+          </div>
+          <form onSubmit={handleSubmit} className="modal-form">
+            <div className="form-row">
+              <div className="form-group">
+                <label>Datum *</label>
+                <input
+                  type="date"
+                  value={formData.datum}
+                  onChange={e => setFormData({...formData, datum: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Klient *</label>
+                <input
+                  type="text"
+                  value={formData.klient}
+                  onChange={e => setFormData({...formData, klient: e.target.value})}
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Druh práce</label>
+                <select
+                  value={formData.druh}
+                  onChange={e => setFormData({...formData, druh: e.target.value})}
+                >
+                  <option value="XY">XY</option>
+                  <option value="Malování">Malování</option>
+                  <option value="Rekonstrukce">Rekonstrukce</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Číslo zakázky *</label>
+                <input
+                  type="text"
+                  value={formData.cislo}
+                  onChange={e => setFormData({...formData, cislo: e.target.value})}
+                  required
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Částka (Kč) *</label>
+                <input
+                  type="number"
+                  value={formData.castka}
+                  onChange={e => setFormData({...formData, castka: e.target.value})}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Fee (Kč)</label>
+                <input
+                  type="number"
+                  value={formData.fee}
+                  onChange={e => setFormData({...formData, fee: e.target.value})}
+                />
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Materiál (Kč)</label>
+                <input
+                  type="number"
+                  value={formData.material}
+                  onChange={e => setFormData({...formData, material: e.target.value})}
+                />
+              </div>
+              <div className="form-group">
+                <label>Pomůcka (Kč)</label>
+                <input
+                  type="number"
+                  value={formData.pomucka}
+                  onChange={e => setFormData({...formData, pomucka: e.target.value})}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Palivo (Kč)</label>
+              <input
+                type="number"
+                value={formData.palivo}
+                onChange={e => setFormData({...formData, palivo: e.target.value})}
+              />
+            </div>
+            <div className="modal-actions">
+              <button type="button" className="btn btn-secondary" onClick={() => setShowEditModal(false)}>
+                Zrušit
+              </button>
+              <button type="submit" className="btn btn-primary">
+                Uložit změny
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  };
+
   const Zakazky = () => (
     <div className="zakazky">
+      <AddZakazkaModal />
+      <EditZakazkaModal />
+      
       <div className="page-header">
         <div>
           <h1>Správa zakázek</h1>
@@ -403,7 +690,9 @@ const PaintPro = () => {
         </div>
         <div className="page-actions">
           <button className="btn btn-secondary">Export CSV</button>
-          <button className="btn btn-primary">Přidat zakázku</button>
+          <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
+            Přidat zakázku
+          </button>
         </div>
       </div>
 
