@@ -473,7 +473,15 @@ const PaintPro = () => {
                 {dashboardData.rozlozeniData.labels.map((label, index) => {
                   const total = dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0);
                   const percentage = total > 0 ? Math.round((dashboardData.rozlozeniData.values[index] / total) * 100) : 0;
-                  const positions = ['label-top-left', 'label-top-right', 'label-bottom-left', 'label-bottom-right'];
+                  
+                  // Správné pozice podle skutečných segmentů grafu
+                  // Pořadí: Adam (největší), MVČ, Korálek, Ostatní
+                  const positions = [
+                    'label-top-right',    // Adam - největší segment vpravo nahoře
+                    'label-top-left',     // MVČ - segment vlevo nahoře  
+                    'label-bottom-left',  // Korálek - segment vlevo dole
+                    'label-bottom-right'  // Ostatní - malý segment vpravo dole
+                  ];
                   
                   return (
                     <div key={label} className={`label-item ${positions[index] || 'label-top-left'}`}>
