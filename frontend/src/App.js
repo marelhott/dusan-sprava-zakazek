@@ -1030,26 +1030,39 @@ const PaintPro = () => {
         .sort(([,a], [,b]) => b - a)
         .slice(0, 5);
       
+      const colors = ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'];
+      
       return {
         labels: sorted.map(([name]) => name),
         datasets: [{
           data: sorted.map(([,value]) => value),
-          borderColor: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'],
+          borderColor: colors,
           backgroundColor: (context) => {
-            const colors = ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'];
-            const color = colors[context.dataIndex];
+            const dataIndex = context.dataIndex;
+            if (dataIndex >= colors.length) return colors[0];
+            
+            const color = colors[dataIndex];
             const chart = context.chart;
             const {ctx, chartArea} = chart;
-            if (!chartArea) return;
+            if (!chartArea || !color) return color;
+            
+            // Převod hex na rgba
+            const hexToRgba = (hex, alpha) => {
+              const r = parseInt(hex.slice(1, 3), 16);
+              const g = parseInt(hex.slice(3, 5), 16);
+              const b = parseInt(hex.slice(5, 7), 16);
+              return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            };
+            
             const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-            gradient.addColorStop(0, color.replace(')', ', 0.3)').replace('#', 'rgba(').replace(/(.{2})(.{2})(.{2})/, '$1,$2,$3'));
-            gradient.addColorStop(1, color.replace(')', ', 0.05)').replace('#', 'rgba(').replace(/(.{2})(.{2})(.{2})/, '$1,$2,$3'));
+            gradient.addColorStop(0, hexToRgba(color, 0.3));
+            gradient.addColorStop(1, hexToRgba(color, 0.05));
             return gradient;
           },
           fill: true,
           tension: 0.4,
-          pointBackgroundColor: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'],
-          pointBorderColor: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6', '#EF4444'],
+          pointBackgroundColor: colors,
+          pointBorderColor: colors,
           pointRadius: 4,
           pointHoverRadius: 6,
           borderWidth: 2,
