@@ -418,7 +418,7 @@ const PaintPro = () => {
         <div className="chart-card large">
           <div className="chart-header">
             <div>
-              <h3>MĚSÍČNÍ PŘEHLED ZISKU</h3>
+              <h3>PŘEHLED ZISKU</h3>
               <div className="chart-value">22 000 Kč</div>
             </div>
             <div className="chart-period">
@@ -428,7 +428,7 @@ const PaintPro = () => {
             </div>
           </div>
           <div className="chart-container">
-            <Bar data={getCombinedChartData()} options={combinedChartOptions} />
+            <Chart type='bar' data={getCombinedChartData()} options={combinedChartOptions} />
           </div>
         </div>
 
