@@ -562,14 +562,6 @@ body {
   right: 15%;
   transform: translate(50%, 50%);
 }
-  flex-direction: row;
-}
-
-.label-bottom-right {
-  bottom: 15%;
-  right: 10%;
-  flex-direction: row-reverse;
-}
 
 .label-line {
   width: 30px;
