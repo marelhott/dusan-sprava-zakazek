@@ -584,13 +584,13 @@ const PaintPro = () => {
   const AddZakazkaModal = () => {
     const [formData, setFormData] = useState({
       datum: new Date().toISOString().split('T')[0],
+      druh: 'Adam',
       klient: '',
-      druh: 'XY',
       cislo: '',
       castka: 0,
       fee: 0,
       material: 0,
-      pomucka: 0,
+      pomocnik: 0,
       palivo: 0
     });
 
@@ -602,7 +602,7 @@ const PaintPro = () => {
         castka: Number(formData.castka),
         fee: Number(formData.fee),
         material: Number(formData.material),
-        pomucka: Number(formData.pomucka),
+        pomocnik: Number(formData.pomocnik),
         palivo: Number(formData.palivo)
       };
       addZakazka(processedData);
@@ -629,6 +629,21 @@ const PaintPro = () => {
                 />
               </div>
               <div className="form-group">
+                <label>Druh práce *</label>
+                <select
+                  value={formData.druh}
+                  onChange={e => setFormData({...formData, druh: e.target.value})}
+                  required
+                >
+                  <option value="Adam">Adam</option>
+                  <option value="MVČ">MVČ</option>
+                  <option value="Korálek">Korálek</option>
+                  <option value="Ostatní">Ostatní</option>
+                </select>
+              </div>
+            </div>
+            <div className="form-row">
+              <div className="form-group">
                 <label>Klient *</label>
                 <input
                   type="text"
@@ -637,19 +652,6 @@ const PaintPro = () => {
                   placeholder="Jméno klienta"
                   required
                 />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Druh práce</label>
-                <select
-                  value={formData.druh}
-                  onChange={e => setFormData({...formData, druh: e.target.value})}
-                >
-                  <option value="XY">XY</option>
-                  <option value="Malování">Malování</option>
-                  <option value="Rekonstrukce">Rekonstrukce</option>
-                </select>
               </div>
               <div className="form-group">
                 <label>Číslo zakázky *</label>
@@ -694,11 +696,11 @@ const PaintPro = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Pomůcka (Kč)</label>
+                <label>Pomocník (Kč)</label>
                 <input
                   type="number"
-                  value={formData.pomucka}
-                  onChange={e => setFormData({...formData, pomucka: e.target.value})}
+                  value={formData.pomocnik}
+                  onChange={e => setFormData({...formData, pomocnik: e.target.value})}
                   placeholder="0"
                 />
               </div>
