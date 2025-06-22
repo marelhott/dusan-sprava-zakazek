@@ -1446,7 +1446,7 @@ const PaintPro = () => {
         </div>
 
         {/* 4 grafy v gridu 2x2 */}
-        <div className="charts-grid-4">
+        <div className="charts-grid-4" id="charts-export">
           <div className="chart-card-small">
             <div className="chart-header-small">
               <h3>TÝDEN</h3>
