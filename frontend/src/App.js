@@ -472,29 +472,37 @@ const PaintPro = () => {
                 <div className="label-item label-top-left">
                   <div className="label-line"></div>
                   <div className="label-content">
-                    <div className="label-percentage">45%</div>
-                    <div className="label-name">Adam</div>
+                    <div className="label-percentage">
+                      {Math.round((dashboardData.rozlozeniData.values[0] / dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0)) * 100)}%
+                    </div>
+                    <div className="label-name">{dashboardData.rozlozeniData.labels[0]}</div>
                   </div>
                 </div>
                 <div className="label-item label-top-right">
                   <div className="label-line"></div>
                   <div className="label-content">
-                    <div className="label-percentage">30%</div>
-                    <div className="label-name">MVC</div>
+                    <div className="label-percentage">
+                      {Math.round((dashboardData.rozlozeniData.values[1] / dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0)) * 100)}%
+                    </div>
+                    <div className="label-name">{dashboardData.rozlozeniData.labels[1]}</div>
                   </div>
                 </div>
                 <div className="label-item label-bottom-left">
                   <div className="label-line"></div>
                   <div className="label-content">
-                    <div className="label-percentage">20%</div>
-                    <div className="label-name">Korálek</div>
+                    <div className="label-percentage">
+                      {Math.round((dashboardData.rozlozeniData.values[2] / dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0)) * 100)}%
+                    </div>
+                    <div className="label-name">{dashboardData.rozlozeniData.labels[2]}</div>
                   </div>
                 </div>
                 <div className="label-item label-bottom-right">
                   <div className="label-line"></div>
                   <div className="label-content">
-                    <div className="label-percentage">5%</div>
-                    <div className="label-name">Ostatní</div>
+                    <div className="label-percentage">
+                      {Math.round((dashboardData.rozlozeniData.values[3] / dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0)) * 100)}%
+                    </div>
+                    <div className="label-name">{dashboardData.rozlozeniData.labels[3]}</div>
                   </div>
                 </div>
               </div>
