@@ -269,12 +269,25 @@ const PaintPro = () => {
     datasets: [
       {
         data: dashboardData.rozlozeniData.values,
-        backgroundColor: dashboardData.rozlozeniData.colors,
-        borderColor: dashboardData.rozlozeniData.colors.map(color => color.replace('0.9', '1')),
-        borderWidth: 2,
-        hoverOffset: 8,
-        cutout: '70%',
-        radius: '80%',
+        backgroundColor: [
+          'rgba(59, 130, 246, 0.9)',   // Modrá - Adam (největší segment vpravo)
+          'rgba(34, 197, 194, 0.9)',   // Tyrkysová - MVČ (nahoře)  
+          'rgba(16, 185, 129, 0.9)',   // Zelená - Korálek (vlevo dole)
+          'rgba(236, 72, 153, 0.9)'    // Růžová - Ostatní (vlevo)
+        ],
+        borderColor: [
+          'rgba(59, 130, 246, 1)',
+          'rgba(34, 197, 194, 1)', 
+          'rgba(16, 185, 129, 1)',
+          'rgba(236, 72, 153, 1)'
+        ],
+        borderWidth: 0,
+        hoverBorderWidth: 0,
+        cutout: '65%',
+        radius: '85%',
+        rotation: -90, // Start from top
+        circumference: 360,
+        spacing: 2,
       }
     ]
   };
