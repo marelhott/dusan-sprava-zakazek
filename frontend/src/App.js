@@ -422,7 +422,7 @@ const PaintPro = () => {
         <StatCard
           title="CELKOVÝ ZISK"
           value={dashboardData.celkovyZisk}
-          subtitle="Marže 45%"
+          subtitle={`Marže ${Math.round((parseInt(dashboardData.celkovyZisk.replace(/,/g, '')) / parseInt(dashboardData.celkoveTrzby.replace(/,/g, ''))) * 100)}%`}
           iconClass="icon-chart"
           color="green"
           index={1}
