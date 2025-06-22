@@ -452,15 +452,21 @@ body {
 
 /* 3D Donut Chart with External Labels */
 .chart-container-donut {
-  height: 320px;
+  height: 350px;
   position: relative;
-  padding: 20px;
+  padding: 30px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+  border-radius: 20px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .donut-chart-wrapper {
   position: relative;
   height: 100%;
   width: 100%;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
 }
 
 .external-labels {
@@ -474,6 +480,64 @@ body {
 
 .label-item {
   position: absolute;
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.label-top-left {
+  top: 15%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+}
+
+.label-top-right {
+  top: 15%;
+  right: 15%;
+  transform: translate(50%, -50%);
+}
+
+.label-bottom-left {
+  bottom: 15%;
+  left: 15%;
+  transform: translate(-50%, 50%);
+}
+
+.label-bottom-right {
+  bottom: 15%;
+  right: 15%;
+  transform: translate(50%, 50%);
+}
+
+.label-line {
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%);
+  margin-right: 12px;
+}
+
+.label-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.label-percentage {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 1);
+  margin-bottom: 2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.label-name {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
   display: flex;
   align-items: center;
   z-index: 10;
