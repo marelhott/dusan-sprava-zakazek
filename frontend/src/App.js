@@ -785,7 +785,7 @@ const PaintPro = () => {
         </div>
         
         <div className="table-footer">
-          <div className="table-info">Zobrazeno 1 - 14 z 14 zakázek</div>
+          <div className="table-info">Zobrazeno 1 - {zakazkyData.length} z {zakazkyData.length} zakázek</div>
           <div className="pagination">
             <button className="btn-page active">1</button>
             <button className="btn-page">Další</button>
