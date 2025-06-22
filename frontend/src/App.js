@@ -1863,12 +1863,6 @@ const PaintPro = () => {
               <div className="action-button-title">Nová zakázka</div>
               <div className="action-button-subtitle">Rychlé přidání</div>
             </div>
-          </div>>
-            <div className="action-button-icon">⚙️</div>
-            <div className="action-button-content">
-              <div className="action-button-title">Nastavení</div>
-              <div className="action-button-subtitle">Konfigurace aplikace</div>
-            </div>
           </div>
         </div>
       </div>
