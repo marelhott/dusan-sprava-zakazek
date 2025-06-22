@@ -709,10 +709,17 @@
 
 /* Navigation specific styling */
 .nav-item .modern-icon {
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   margin-right: 12px;
-  border-radius: 10px;
+  border-radius: 14px;
+}
+
+/* Logo specific styling */
+.logo .modern-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 16px;
 }
 
 /* Button specific styling */
