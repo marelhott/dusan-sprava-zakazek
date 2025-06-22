@@ -269,26 +269,14 @@ const PaintPro = () => {
     datasets: [
       {
         data: dashboardData.rozlozeniData.values,
-        backgroundColor: [
-          'rgba(59, 130, 246, 0.9)',   // Modrá - Market
-          'rgba(34, 197, 194, 0.9)',   // Tyrkysová - Rewards  
-          'rgba(168, 85, 247, 0.9)',   // Fialová - Founders
-          'rgba(236, 72, 153, 0.9)'    // Růžová - Partners
-        ],
-        borderColor: [
-          'rgba(59, 130, 246, 1)',
-          'rgba(34, 197, 194, 1)', 
-          'rgba(168, 85, 247, 1)',
-          'rgba(236, 72, 153, 1)'
-        ],
-        borderWidth: 3,
-        hoverBorderWidth: 4,
-        cutout: '60%',
-        spacing: 4,
-        borderRadius: 8,
+        backgroundColor: dashboardData.rozlozeniData.colors,
+        borderColor: dashboardData.rozlozeniData.colors.map(color => color.replace('0.9', '1')),
+        borderWidth: 2,
         hoverOffset: 8,
-      },
-    ],
+        cutout: '70%',
+        radius: '80%',
+      }
+    ]
   };
 
   const doughnutChartOptions = {
