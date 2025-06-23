@@ -312,10 +312,10 @@ const PaintPro = () => {
         display: false // Disable default legend, we'll create custom external labels
       },
       tooltip: {
-        backgroundColor: 'rgba(31, 31, 83, 0.95)',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        borderColor: 'rgba(79, 70, 229, 0.5)',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        titleColor: 'var(--text-primary)',
+        bodyColor: 'var(--text-primary)',
+        borderColor: 'rgba(139, 92, 246, 0.3)',
         borderWidth: 1,
         cornerRadius: 12,
         displayColors: true,
