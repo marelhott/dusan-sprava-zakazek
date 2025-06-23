@@ -348,7 +348,7 @@ const PaintPro = () => {
     }
   };
 
-  const StatCard = ({ title, value, subtitle, iconClass, color, index, showCurrency = true, blueSubtitle = false }) => (
+  const StatCard = ({ title, value, subtitle, iconClass, color, index, showCurrency = true, blueSubtitle = false, smallSubtitle = false }) => (
     <div
       className={`stat-card ${hoveredCard === index ? 'hovered' : ''}`}
       onMouseEnter={() => setHoveredCard(index)}
@@ -367,11 +367,13 @@ const PaintPro = () => {
       <div className="stat-content">
         <div className="stat-value-row">
           <div className={`stat-icon ${iconClass}`}></div>
-          <div className="stat-value">{value}{showCurrency ? ' Kč' : ''}</div>
+          <div className="stat-value-with-subtitle">
+            <div className="stat-value">{value}{showCurrency ? ' Kč' : ''}</div>
+            {subtitle && (
+              <div className={`stat-subtitle ${blueSubtitle ? 'blue' : ''} ${smallSubtitle ? 'small' : ''}`}>{subtitle}</div>
+            )}
+          </div>
         </div>
-        {subtitle && (
-          <div className={`stat-subtitle ${blueSubtitle ? 'blue' : ''}`}>{subtitle}</div>
-        )}
       </div>
     </div>
   );
