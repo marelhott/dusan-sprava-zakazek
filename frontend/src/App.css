@@ -1051,14 +1051,16 @@ body::after {
 
 .progress-group {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row;
+  gap: 32px;
+  align-items: flex-start;
 }
 
 .progress-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  flex: 1;
 }
 
 .progress-label {
@@ -1079,9 +1081,9 @@ body::after {
 }
 
 .progress-bar {
-  height: 8px;
+  height: 12px;
   background: rgba(148, 163, 184, 0.2);
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
