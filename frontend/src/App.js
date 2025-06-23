@@ -1332,7 +1332,19 @@ const PaintPro = () => {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: { display: false },
+        legend: { 
+          display: true,
+          position: 'bottom',
+          labels: {
+            color: 'rgba(255, 255, 255, 0.8)',
+            padding: 15,
+            usePointStyle: true,
+            font: {
+              size: 10,
+              weight: '500',
+            },
+          },
+        },
         tooltip: {
           backgroundColor: 'rgba(31, 31, 83, 0.95)',
           titleColor: '#fff',
@@ -1342,7 +1354,7 @@ const PaintPro = () => {
           cornerRadius: 8,
           callbacks: {
             label: function(context) {
-              return `${context.parsed.y.toLocaleString()} Kč`;
+              return `${context.dataset.label}: ${context.parsed.y.toLocaleString()} Kč`;
             }
           }
         },
@@ -1350,14 +1362,18 @@ const PaintPro = () => {
       scales: {
         x: {
           grid: { color: 'rgba(255, 255, 255, 0.1)', drawBorder: false },
-          ticks: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 10 } },
+          ticks: { 
+            color: 'rgba(255, 255, 255, 0.7)', 
+            font: { size: 9 },
+            maxTicksLimit: 8,
+          },
         },
         y: {
           beginAtZero: true,
           grid: { color: 'rgba(255, 255, 255, 0.1)', drawBorder: false },
           ticks: { 
             color: 'rgba(255, 255, 255, 0.7)', 
-            font: { size: 10 },
+            font: { size: 9 },
             callback: function(value) {
               return value.toLocaleString();
             }
