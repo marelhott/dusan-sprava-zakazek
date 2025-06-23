@@ -677,7 +677,7 @@ body::before {
 .label-percentage {
   font-size: 16px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 1);
+  color: var(--text-primary);
   margin-bottom: 2px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
