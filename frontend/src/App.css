@@ -180,9 +180,9 @@ body {
 .main-content {
   flex: 1;
   margin-left: 280px;
-  background: var(--primary-bg);
+  padding: 40px 48px;
+  background: var(--surface-bg);
   min-height: 100vh;
-  padding: 32px;
 }
 
 /* Page Header */
