@@ -428,12 +428,11 @@ body {
 .stat-icon.orange { background: rgba(245, 158, 11, 0.2); }
 
 .stat-value {
-  font-family: var(--font-heading);
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 700;
   color: var(--text-primary);
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+  line-height: 1.1;
 }
 
 .stat-subtitle {
