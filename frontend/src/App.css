@@ -2174,13 +2174,13 @@ body {
 
 /* Table Amount and Profit Styling */
 .amount-bold-blue {
-  font-weight: 700;
-  color: #3B82F6;
+  font-weight: 700 !important;
+  color: #3B82F6 !important;
 }
 
 .profit-bold-orange {
-  font-weight: 700;
-  color: #F59E0B;
+  font-weight: 700 !important;
+  color: #F59E0B !important;
 }
 
 /* Helper Classes */
