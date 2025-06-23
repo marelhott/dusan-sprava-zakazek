@@ -1819,41 +1819,41 @@ const PaintPro = () => {
         <div className="charts-grid-4" id="charts-export">
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>ADAM</h3>
-              <div className="chart-value-small blue">{zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
+              <h3>HLAVNÍ UKAZATELE - CELÁ DOBA</h3>
+              <div className="chart-value-small blue">{zakazkyData.reduce((sum, z) => sum + z.castka, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="adam-chart" data={createMultiLineChartData(getDruhyPraceData())} options={lineChartOptions} />
+              <Line key="main-all-time-chart" data={createMultiLineChartData(getMainFinancialData())} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>MVČ</h3>
-              <div className="chart-value-small green">{zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
+              <h3>HLAVNÍ UKAZATELE - POSLEDNÍ MĚSÍC</h3>
+              <div className="chart-value-small green">{allPeriods.month.celkoveTrzby.toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="mvc-chart" data={createMultiLineChartData(getMainFinancialData())} options={lineChartOptions} />
+              <Line key="main-month-chart" data={createMultiLineChartData(getMainFinancialDataLastMonth())} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>KORÁLEK</h3>
-              <div className="chart-value-small orange">{zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
+              <h3>NÁKLADY - CELÁ DOBA</h3>
+              <div className="chart-value-small orange">{zakazkyData.reduce((sum, z) => sum + z.fee + z.pomocnik + z.material + z.palivo, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="koralek-chart" data={createMultiLineChartData(getMainFinancialDataLastMonth())} options={lineChartOptions} />
+              <Line key="costs-chart" data={createMultiLineChartData(getCostsData())} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>OSTATNÍ</h3>
-              <div className="chart-value-small purple">{zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
+              <h3>DRUHY PRÁCE - CELÁ DOBA</h3>
+              <div className="chart-value-small purple">{zakazkyData.reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="ostatni-chart" data={createMultiLineChartData(getCostsData())} options={lineChartOptions} />
+              <Line key="work-types-chart" data={createMultiLineChartData(getDruhyPraceData())} options={lineChartOptions} />
             </div>
           </div>
         </div>
