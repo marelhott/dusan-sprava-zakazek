@@ -672,12 +672,18 @@ body::after {
   font-weight: 400;
   color: var(--text-secondary);
   line-height: 1.4;
+  margin-top: 2px;
 }
 
 .stat-subtitle.blue {
   color: var(--accent-blue);
   font-weight: 500;
-  text-align: left;
+}
+
+.stat-subtitle.small {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
 }
 
 /* Charts */
