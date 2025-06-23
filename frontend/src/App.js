@@ -1735,7 +1735,7 @@ const PaintPro = () => {
             </div>
           </div>
           
-          <div className="action-button-card" onClick={exportToCSV}>
+          <div className="action-button-card" onClick={() => {}}>
             <div className="modern-icon size-large icon-export"></div>
             <div className="action-button-content">
               <div className="action-button-title">Export do CSV</div>
