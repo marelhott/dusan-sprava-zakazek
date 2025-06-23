@@ -927,11 +927,15 @@ const PaintPro = () => {
             <div className="filter-row">
               <div className="filter-item">
                 <label>Druh práce</label>
-                <select>
-                  <option>Adam</option>
-                  <option>MVČ</option>
-                  <option>Korálek</option>
-                  <option>Ostatní</option>
+                <select 
+                  value={filterDruhPrace}
+                  onChange={(e) => setFilterDruhPrace(e.target.value)}
+                >
+                  <option value="">Všechny druhy</option>
+                  <option value="Adam">Adam</option>
+                  <option value="MVČ">MVČ</option>
+                  <option value="Korálek">Korálek</option>
+                  <option value="Ostatní">Ostatní</option>
                 </select>
               </div>
               <div className="filter-item">
@@ -945,11 +949,19 @@ const PaintPro = () => {
               </div>
               <div className="filter-item">
                 <label>Datum od</label>
-                <input type="date" />
+                <input 
+                  type="date" 
+                  value={filterDateFrom}
+                  onChange={(e) => setFilterDateFrom(e.target.value)}
+                />
               </div>
               <div className="filter-item">
                 <label>Datum do</label>
-                <input type="date" />
+                <input 
+                  type="date" 
+                  value={filterDateTo}
+                  onChange={(e) => setFilterDateTo(e.target.value)}
+                />
               </div>
             </div>
           </div>
