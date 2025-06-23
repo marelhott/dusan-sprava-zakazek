@@ -964,6 +964,19 @@ const PaintPro = () => {
                 />
               </div>
             </div>
+            <div className="filter-actions">
+              <button 
+                className="btn btn-secondary btn-small"
+                onClick={() => {
+                  setSearchClient('');
+                  setFilterDruhPrace('');
+                  setFilterDateFrom('');
+                  setFilterDateTo('');
+                }}
+              >
+                Vymazat filtry
+              </button>
+            </div>
           </div>
         </div>
       </div>
