@@ -1083,6 +1083,7 @@ const PaintPro = () => {
           <div className="table-info">Zobrazeno 1 - {zakazkyData.length} z {zakazkyData.length} zakázek</div>
         </div>
       </div>
+      </div>
 
       <div className="summary-cards">
         <div className="summary-card">
