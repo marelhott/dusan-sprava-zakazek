@@ -1914,7 +1914,7 @@ const PaintPro = () => {
               <div className="chart-value-small orange">{zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="koralek-chart" data={createLineChartData('year', 'rgba(245, 158, 11, 1)')} options={lineChartOptions} />
+              <Line key="koralek-chart" data={createMultiLineChartData(getMainFinancialDataLastMonth())} options={lineChartOptions} />
             </div>
           </div>
 
@@ -1924,7 +1924,7 @@ const PaintPro = () => {
               <div className="chart-value-small purple">{zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="ostatni-chart" data={createLineChartData('all', 'rgba(139, 92, 246, 1)')} options={lineChartOptions} />
+              <Line key="ostatni-chart" data={createMultiLineChartData(getCostsData())} options={lineChartOptions} />
             </div>
           </div>
         </div>
