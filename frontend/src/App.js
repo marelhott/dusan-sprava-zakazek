@@ -37,6 +37,75 @@ const PaintPro = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingZakazka, setEditingZakazka] = useState(null);
+
+  // Funkce pro měsíční výkonnost
+  const getMonthlyPerformance = () => {
+    const monthNames = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+    const monthlyData = {};
+    
+    // Inicializace všech měsíců
+    for (let i = 0; i < 12; i++) {
+      const key = `2025-${String(i + 1).padStart(2, '0')}`;
+      monthlyData[key] = { revenue: 0, orders: 0, month: i, year: 2025 };
+    }
+    
+    // Agregace dat ze zakázek
+    zakazkyData.forEach(zakazka => {
+      const date = new Date(zakazka.datum.split('. ').reverse().join('-'));
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      
+      if (monthlyData[key]) {
+        monthlyData[key].revenue += zakazka.castka;
+        monthlyData[key].orders += 1;
+      }
+    });
+    
+    // Získání max hodnot pro procentuální výpočet
+    const maxRevenue = Math.max(...Object.values(monthlyData).map(m => m.revenue));
+    const maxOrders = Math.max(...Object.values(monthlyData).map(m => m.orders));
+    
+    // Posledních 6 měsíců s daty
+    return Object.keys(monthlyData)
+      .filter(key => monthlyData[key].revenue > 0 || monthlyData[key].orders > 0)
+      .slice(-6)
+      .map(key => {
+        const data = monthlyData[key];
+        return {
+          name: monthNames[data.month],
+          year: data.year,
+          revenue: data.revenue,
+          orders: data.orders,
+          revenuePercent: maxRevenue > 0 ? (data.revenue / maxRevenue) * 100 : 0,
+          ordersPercent: maxOrders > 0 ? (data.orders / maxOrders) * 100 : 0
+        };
+      });
+  };
+
+  // Funkce pro roční výkonnost
+  const getYearlyData = () => {
+    const currentYear = 2025;
+    const yearData = zakazkyData
+      .filter(zakazka => {
+        const date = new Date(zakazka.datum.split('. ').reverse().join('-'));
+        return date.getFullYear() === currentYear;
+      })
+      .reduce((acc, zakazka) => {
+        acc.revenue += zakazka.castka;
+        acc.orders += 1;
+        return acc;
+      }, { revenue: 0, orders: 0 });
+    
+    // Pro procenta použijeme target hodnoty nebo max z dostupných dat
+    const revenueTarget = 200000; // 200k Kč target
+    const ordersTarget = 50; // 50 zakázek target
+    
+    return {
+      revenue: yearData.revenue,
+      orders: yearData.orders,
+      revenuePercent: Math.min((yearData.revenue / revenueTarget) * 100, 100),
+      ordersPercent: Math.min((yearData.orders / ordersTarget) * 100, 100)
+    };
+  };
   const [selectedPeriod, setSelectedPeriod] = useState('all');
 
   const [searchClient, setSearchClient] = useState('');
