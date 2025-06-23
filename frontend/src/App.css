@@ -49,10 +49,10 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   font-weight: 400;
-  letter-spacing: -0.025em;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
 
 .app-container {
@@ -64,13 +64,16 @@ body {
 /* Sidebar Styles */
 .sidebar {
   width: 280px;
-  background: var(--secondary-bg);
-  border-right: 1px solid var(--border-color);
+  background: var(--glass-bg);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border-right: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
   position: fixed;
   height: 100vh;
   z-index: 100;
+  box-shadow: var(--shadow-md);
 }
 
 .sidebar-header {
