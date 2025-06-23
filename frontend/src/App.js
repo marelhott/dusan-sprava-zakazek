@@ -1156,32 +1156,247 @@ const PaintPro = () => {
       return chartData;
     };
 
-    // Vytvoření line chart dat
-    const createLineChartData = (period, color) => {
-      const periodData = getPeriodSpecificData(period);
+    // Vytvoření multi-line chart dat
+    const createMultiLineChartData = (datasets) => {
       return {
-        labels: periodData.labels,
-        datasets: [{
-          data: periodData.values,
-          borderColor: color,
+        labels: datasets[0].labels, // Všechny datasety by měly mít stejné labely
+        datasets: datasets.map(dataset => ({
+          label: dataset.label,
+          data: dataset.values,
+          borderColor: dataset.color,
           backgroundColor: (context) => {
             const chart = context.chart;
             const {ctx, chartArea} = chart;
             if (!chartArea) return;
             const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-            gradient.addColorStop(0, color.replace('1)', '0.3)'));
-            gradient.addColorStop(1, color.replace('1)', '0.05)'));
+            gradient.addColorStop(0, dataset.color.replace('1)', '0.1)'));
+            gradient.addColorStop(1, dataset.color.replace('1)', '0.02)'));
             return gradient;
           },
           fill: true,
           tension: 0.4,
-          pointBackgroundColor: color,
-          pointBorderColor: color,
+          pointBackgroundColor: dataset.color,
+          pointBorderColor: dataset.color,
           pointRadius: 3,
           pointHoverRadius: 5,
           borderWidth: 2,
-        }],
+        }))
       };
+    };
+
+    // Data pro graf podle druhů práce (celá doba - měsíce)
+    const getDruhyPraceData = () => {
+      const monthlyData = {};
+      
+      // Agregace dat podle měsíců
+      zakazkyData.forEach(z => {
+        const date = new Date(z.datum.split('. ').reverse().join('-'));
+        const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        
+        if (!monthlyData[key]) {
+          monthlyData[key] = { 
+            Adam: 0, 
+            MVČ: 0, 
+            Korálek: 0, 
+            Ostatní: 0,
+            month: date.getMonth(),
+            year: date.getFullYear()
+          };
+        }
+        monthlyData[key][z.druh] += z.zisk;
+      });
+
+      const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+      const sortedData = Object.values(monthlyData)
+        .sort((a, b) => a.year - b.year || a.month - b.month);
+
+      const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
+
+      return [
+        {
+          label: 'Adam',
+          values: sortedData.map(item => item.Adam),
+          color: 'rgba(79, 70, 229, 1)',
+          labels: labels
+        },
+        {
+          label: 'MVČ',
+          values: sortedData.map(item => item.MVČ),
+          color: 'rgba(16, 185, 129, 1)',
+          labels: labels
+        },
+        {
+          label: 'Korálek',
+          values: sortedData.map(item => item.Korálek),
+          color: 'rgba(245, 158, 11, 1)',
+          labels: labels
+        },
+        {
+          label: 'Ostatní',
+          values: sortedData.map(item => item.Ostatní),
+          color: 'rgba(139, 92, 246, 1)',
+          labels: labels
+        }
+      ];
+    };
+
+    // Data pro hlavní finanční ukazatele (celá doba)
+    const getMainFinancialData = () => {
+      const monthlyData = {};
+      
+      zakazkyData.forEach(z => {
+        const date = new Date(z.datum.split('. ').reverse().join('-'));
+        const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        
+        if (!monthlyData[key]) {
+          monthlyData[key] = { 
+            trzby: 0, 
+            zisk: 0, 
+            cistyZisk: 0,
+            month: date.getMonth(),
+            year: date.getFullYear()
+          };
+        }
+        monthlyData[key].trzby += z.castka;
+        monthlyData[key].zisk += z.zisk;
+        monthlyData[key].cistyZisk += (z.castka - z.fee); // Čistý zisk = tržby - fee
+      });
+
+      const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+      const sortedData = Object.values(monthlyData)
+        .sort((a, b) => a.year - b.year || a.month - b.month);
+
+      const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
+
+      return [
+        {
+          label: 'Celkové tržby',
+          values: sortedData.map(item => item.trzby),
+          color: 'rgba(59, 130, 246, 1)',
+          labels: labels
+        },
+        {
+          label: 'Celkový zisk',
+          values: sortedData.map(item => item.zisk),
+          color: 'rgba(16, 185, 129, 1)',
+          labels: labels
+        },
+        {
+          label: 'Čistý zisk',
+          values: sortedData.map(item => item.cistyZisk),
+          color: 'rgba(245, 158, 11, 1)',
+          labels: labels
+        }
+      ];
+    };
+
+    // Data pro hlavní finanční ukazatele (poslední měsíc)
+    const getMainFinancialDataLastMonth = () => {
+      const now = new Date();
+      const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+      
+      const dailyData = {};
+      
+      zakazkyData
+        .filter(z => {
+          const date = new Date(z.datum.split('. ').reverse().join('-'));
+          return date >= monthAgo;
+        })
+        .forEach(z => {
+          const date = new Date(z.datum.split('. ').reverse().join('-'));
+          const key = date.toISOString().split('T')[0];
+          
+          if (!dailyData[key]) {
+            dailyData[key] = { trzby: 0, zisk: 0, cistyZisk: 0, date: date };
+          }
+          dailyData[key].trzby += z.castka;
+          dailyData[key].zisk += z.zisk;
+          dailyData[key].cistyZisk += (z.castka - z.fee);
+        });
+
+      const sortedData = Object.values(dailyData)
+        .sort((a, b) => a.date - b.date);
+
+      const labels = sortedData.map(item => item.date.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'short' }));
+
+      return [
+        {
+          label: 'Celkové tržby',
+          values: sortedData.map(item => item.trzby),
+          color: 'rgba(59, 130, 246, 1)',
+          labels: labels
+        },
+        {
+          label: 'Celkový zisk',
+          values: sortedData.map(item => item.zisk),
+          color: 'rgba(16, 185, 129, 1)',
+          labels: labels
+        },
+        {
+          label: 'Čistý zisk',
+          values: sortedData.map(item => item.cistyZisk),
+          color: 'rgba(245, 158, 11, 1)',
+          labels: labels
+        }
+      ];
+    };
+
+    // Data pro náklady (celá doba)
+    const getCostsData = () => {
+      const monthlyData = {};
+      
+      zakazkyData.forEach(z => {
+        const date = new Date(z.datum.split('. ').reverse().join('-'));
+        const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        
+        if (!monthlyData[key]) {
+          monthlyData[key] = { 
+            fee: 0, 
+            pomocnik: 0, 
+            material: 0, 
+            palivo: 0,
+            month: date.getMonth(),
+            year: date.getFullYear()
+          };
+        }
+        monthlyData[key].fee += z.fee;
+        monthlyData[key].pomocnik += z.pomocnik;
+        monthlyData[key].material += z.material;
+        monthlyData[key].palivo += z.palivo;
+      });
+
+      const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+      const sortedData = Object.values(monthlyData)
+        .sort((a, b) => a.year - b.year || a.month - b.month);
+
+      const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
+
+      return [
+        {
+          label: 'Fee',
+          values: sortedData.map(item => item.fee),
+          color: 'rgba(239, 68, 68, 1)',
+          labels: labels
+        },
+        {
+          label: 'Pomocník',
+          values: sortedData.map(item => item.pomocnik),
+          color: 'rgba(168, 85, 247, 1)',
+          labels: labels
+        },
+        {
+          label: 'Materiál',
+          values: sortedData.map(item => item.material),
+          color: 'rgba(34, 197, 94, 1)',
+          labels: labels
+        },
+        {
+          label: 'Doprava',
+          values: sortedData.map(item => item.palivo),
+          color: 'rgba(251, 146, 60, 1)',
+          labels: labels
+        }
+      ];
     };
 
     const lineChartOptions = {
