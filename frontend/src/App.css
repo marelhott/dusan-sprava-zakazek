@@ -632,7 +632,7 @@ body::before {
   position: absolute;
   display: flex;
   align-items: center;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-secondary);
   font-weight: 600;
   font-size: 13px;
 }
