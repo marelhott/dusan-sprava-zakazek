@@ -265,7 +265,7 @@ const PaintPro = () => {
         borderRadius: 8,
       },
       point: {
-        hoverBackgroundColor: '#fff',
+        hoverBackgroundColor: 'var(--text-secondary)',
         hoverBorderWidth: 3,
       },
     },
