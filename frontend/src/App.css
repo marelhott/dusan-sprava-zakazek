@@ -452,6 +452,98 @@ body::before {
   z-index: 2;
 }
 
+.stat-value-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.stat-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.stat-icon.icon-money {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent-blue);
+}
+
+.stat-icon.icon-chart {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-green);
+}
+
+.stat-icon.icon-orders {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--accent-purple);
+}
+
+.stat-icon.icon-target {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-orange);
+}
+
+/* Moderní geometrické ikony místo emoji */
+.stat-icon.icon-money::before { 
+  content: "";
+  width: 8px;
+  height: 8px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  display: block;
+}
+
+.stat-icon.icon-chart::before { 
+  content: "";
+  width: 3px;
+  height: 8px;
+  background: currentColor;
+  border-radius: 1px;
+  box-shadow: 
+    4px 2px 0 currentColor,
+    8px -1px 0 currentColor;
+}
+
+.stat-icon.icon-orders::before { 
+  content: "";
+  width: 8px;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+  box-shadow: 
+    0 3px 0 currentColor,
+    0 6px 0 currentColor;
+}
+
+.stat-icon.icon-target::before { 
+  content: "";
+  width: 6px;
+  height: 6px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  position: relative;
+}
+
+.stat-icon.icon-target::after { 
+  content: "";
+  width: 2px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .stat-icon {
   width: 48px;
   height: 48px;
