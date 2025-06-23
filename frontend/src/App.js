@@ -205,12 +205,13 @@ const PaintPro = () => {
       legend: {
         position: 'bottom',
         labels: {
-          color: 'var(--text-secondary)',
+          color: 'var(--text-chart)',
           padding: 20,
           usePointStyle: true,
           font: {
             size: 12,
             weight: '500',
+            letterSpacing: '0.3px',
           },
         },
       },
