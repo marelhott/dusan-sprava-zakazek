@@ -177,9 +177,10 @@ body::after {
   backdrop-filter: var(--backdrop-blur);
   -webkit-backdrop-filter: var(--backdrop-blur);
   border-right: 1px solid var(--glass-border);
-  display: flex;
-  flex-direction: column;
+  padding: 32px 24px;
   position: fixed;
+  left: 0;
+  top: 0;
   height: 100vh;
   z-index: 100;
   box-shadow: var(--shadow-md);
