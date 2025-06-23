@@ -891,9 +891,12 @@ const PaintPro = () => {
           <div className="filter-content">
             <div className="filter-row">
               <div className="filter-item">
-                <label>Místní</label>
+                <label>Druh práce</label>
                 <select>
-                  <option>Všechny místní</option>
+                  <option>Adam</option>
+                  <option>MVČ</option>
+                  <option>Korálek</option>
+                  <option>Ostatní</option>
                 </select>
               </div>
               <div className="filter-item">
