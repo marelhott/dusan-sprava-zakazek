@@ -888,37 +888,7 @@ const PaintPro = () => {
         </div>
       </div>
 
-      {/* Statistiky - první řada */}
-      <div className="stats-grid-top">
-        <div className="stat-card-mini">
-          <div className="stat-title-mini">CELKOVÉ TRŽBY</div>
-          <div className="stat-value-mini">{zakazkyData.reduce((sum, z) => sum + z.castka, 0).toLocaleString()} Kč</div>
-        </div>
-        <div className="stat-card-mini">
-          <div className="stat-title-mini">CELKOVÝ ZISK</div>
-          <div className="stat-value-mini">{zakazkyData.reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
-        </div>
-        <div className="stat-card-mini">
-          <div className="stat-title-mini">POČET ZAKÁZEK</div>
-          <div className="stat-value-mini">{zakazkyData.length}</div>
-        </div>
-      </div>
 
-      {/* Statistiky - druhá řada */}
-      <div className="stats-grid-bottom">
-        <div className="stat-card-mini">
-          <div className="stat-title-mini">SOUČET POMOCNÍK</div>
-          <div className="stat-value-mini">{zakazkyData.reduce((sum, z) => sum + z.pomocnik, 0).toLocaleString()} Kč</div>
-        </div>
-        <div className="stat-card-mini">
-          <div className="stat-title-mini">SOUČET MATERIÁL</div>
-          <div className="stat-value-mini">{zakazkyData.reduce((sum, z) => sum + z.material, 0).toLocaleString()} Kč</div>
-        </div>
-        <div className="stat-card-mini">
-          <div className="stat-title-mini">SOUČET PALIVO</div>
-          <div className="stat-value-mini">{zakazkyData.reduce((sum, z) => sum + z.palivo, 0).toLocaleString()} Kč</div>
-        </div>
-      </div>
 
       <div className="filter-section">
         <div className="filter-card">
