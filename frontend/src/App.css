@@ -292,6 +292,52 @@ body {
   overflow: hidden;
 }
 
+/* Geometrické zdobení - tři průhledná kola */
+.geometric-decoration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.geometric-decoration .circle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.geometric-decoration .circle-1 {
+  width: 80px;
+  height: 80px;
+  top: -20px;
+  right: -20px;
+  background: rgba(79, 70, 229, 0.08);
+  border: 1px solid rgba(79, 70, 229, 0.12);
+}
+
+.geometric-decoration .circle-2 {
+  width: 60px;
+  height: 60px;
+  top: 10px;
+  right: 20px;
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.10);
+}
+
+.geometric-decoration .circle-3 {
+  width: 40px;
+  height: 40px;
+  top: 40px;
+  right: -5px;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.08);
+}
+
 .stat-card::before {
   content: '';
   position: absolute;
