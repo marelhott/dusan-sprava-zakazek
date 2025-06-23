@@ -62,7 +62,7 @@ body {
   position: relative;
 }
 
-/* Add subtle texture pattern */
+/* Soft flowing wave background */
 body::before {
   content: '';
   position: fixed;
@@ -74,7 +74,73 @@ body::before {
     radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
   background-size: 20px 20px;
   pointer-events: none;
+  z-index: -2;
+}
+
+/* Flowing gradient wave shape */
+body::after {
+  content: '';
+  position: fixed;
+  top: -10%;
+  right: -20%;
+  width: 70%;
+  height: 120%;
+  background: 
+    radial-gradient(ellipse 800px 600px at 60% 20%, 
+      rgba(196, 181, 253, 0.3) 0%, 
+      rgba(239, 168, 218, 0.25) 30%, 
+      rgba(243, 244, 246, 0.2) 60%, 
+      transparent 80%
+    ),
+    radial-gradient(ellipse 600px 400px at 80% 70%, 
+      rgba(219, 234, 254, 0.25) 0%, 
+      rgba(252, 231, 243, 0.2) 40%, 
+      transparent 70%
+    );
+  border-radius: 60% 40% 70% 30%;
+  filter: blur(40px);
+  transform: rotate(-15deg);
+  animation: gentle-float 20s ease-in-out infinite;
+  pointer-events: none;
   z-index: -1;
+}
+
+/* Additional wave element */
+.app-container::before {
+  content: '';
+  position: fixed;
+  bottom: -15%;
+  left: -25%;
+  width: 60%;
+  height: 80%;
+  background: 
+    radial-gradient(ellipse 700px 500px at 40% 80%, 
+      rgba(233, 213, 255, 0.25) 0%, 
+      rgba(251, 207, 232, 0.2) 35%, 
+      rgba(229, 231, 235, 0.15) 65%, 
+      transparent 85%
+    );
+  border-radius: 70% 30% 60% 40%;
+  filter: blur(35px);
+  transform: rotate(25deg);
+  animation: gentle-float 25s ease-in-out infinite reverse;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes gentle-float {
+  0%, 100% {
+    transform: rotate(-15deg) translateY(0px) scale(1);
+    opacity: 0.6;
+  }
+  33% {
+    transform: rotate(-12deg) translateY(-20px) scale(1.02);
+    opacity: 0.4;
+  }
+  66% {
+    transform: rotate(-18deg) translateY(15px) scale(0.98);
+    opacity: 0.5;
+  }
 }
 
 .app-container {
