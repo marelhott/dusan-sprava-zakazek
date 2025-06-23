@@ -131,15 +131,15 @@ body::after {
 @keyframes gentle-float {
   0%, 100% {
     transform: rotate(-15deg) translateY(0px) scale(1);
-    opacity: 0.6;
+    opacity: 0.8;
   }
   33% {
     transform: rotate(-12deg) translateY(-20px) scale(1.02);
-    opacity: 0.4;
+    opacity: 0.6;
   }
   66% {
     transform: rotate(-18deg) translateY(15px) scale(0.98);
-    opacity: 0.5;
+    opacity: 0.7;
   }
 }
 
