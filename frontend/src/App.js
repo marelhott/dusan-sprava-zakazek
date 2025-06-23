@@ -431,8 +431,8 @@ const PaintPro = () => {
       <div className="stats-grid">
         <StatCard
           title="CELKOVÉ TRŽBY"
-          value={dashboardData.celkoveTrzby}
-          subtitle="Kč"
+          value={`${dashboardData.celkoveTrzby} Kč`}
+          subtitle=""
           iconClass="icon-money"
           color="blue"
           index={0}
@@ -440,17 +440,18 @@ const PaintPro = () => {
         />
         <StatCard
           title="CELKOVÝ ZISK"
-          value={dashboardData.celkovyZisk}
-          subtitle={`Kč (Marže ${Math.round((parseInt(dashboardData.celkovyZisk.replace(/,/g, '')) / parseInt(dashboardData.celkoveTrzby.replace(/,/g, ''))) * 100)}%)`}
+          value={`${dashboardData.celkovyZisk} Kč`}
+          subtitle={`(Marže ${Math.round((parseInt(dashboardData.celkovyZisk.replace(/,/g, '')) / parseInt(dashboardData.celkoveTrzby.replace(/,/g, ''))) * 100)}%)`}
           iconClass="icon-chart"
           color="green"
           index={1}
           showCurrency={false}
+          blueSubtitle={true}
         />
         <StatCard
           title="POČET ZAKÁZEK"
-          value={dashboardData.pocetZakazek}
-          subtitle="Dokončených zakázek"
+          value={`${dashboardData.pocetZakazek} Dokončených zakázek`}
+          subtitle=""
           iconClass="icon-orders"
           color="purple"
           index={2}
@@ -458,12 +459,13 @@ const PaintPro = () => {
         />
         <StatCard
           title="PRŮMĚRNÝ ZISK"
-          value={dashboardData.prumernyZisk}
-          subtitle="Kč Na zakázku"
+          value={`${dashboardData.prumernyZisk} Kč`}
+          subtitle="Na zakázku"
           iconClass="icon-target"
           color="orange"
           index={3}
           showCurrency={false}
+          blueSubtitle={true}
         />
       </div>
 
