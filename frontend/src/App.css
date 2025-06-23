@@ -202,12 +202,10 @@ body {
 }
 
 .page-header p {
-  font-family: var(--font-primary);
-  color: var(--text-secondary);
   font-size: 16px;
-  line-height: 1.5;
   font-weight: 400;
-  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .page-actions {
