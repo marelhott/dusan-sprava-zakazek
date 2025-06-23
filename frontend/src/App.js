@@ -1081,11 +1081,6 @@ const PaintPro = () => {
         
         <div className="table-footer">
           <div className="table-info">Zobrazeno 1 - {zakazkyData.length} z {zakazkyData.length} zakázek</div>
-          <div className="pagination">
-            <button className="btn-page active">1</button>
-            <button className="btn-page">Další</button>
-          </div>
-        </div>
       </div>
 
       <div className="summary-cards">
