@@ -1347,12 +1347,13 @@ const PaintPro = () => {
           display: true,
           position: 'bottom',
           labels: {
-            color: 'var(--text-secondary)',
+            color: 'var(--text-chart)',
             padding: 15,
             usePointStyle: true,
             font: {
               size: 10,
               weight: '500',
+              letterSpacing: '0.3px',
             },
           },
         },
