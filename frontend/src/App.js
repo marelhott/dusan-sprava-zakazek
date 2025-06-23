@@ -543,55 +543,79 @@ const PaintPro = () => {
         </div>
       </div>
 
-      <div className="activity-grid">
-        <div className="activity-card">
-          <div className="activity-header">
-            <h3>Nedávná aktivita</h3>
-            <button className="view-all">Zobrazit vše</button>
+      <div className="performance-grid">
+        {/* Měsíční výkonnost */}
+        <div className="performance-card">
+          <div className="performance-header">
+            <h3>Měsíční výkonnost</h3>
           </div>
-          <div className="activity-list">
-            <div className="activity-item">
-              <div className="modern-icon size-small icon-orders"></div>
-              <div className="activity-content">
-                <div className="activity-title">Dokončena zakázka pro ROZNOV s.r.o.</div>
-                <div className="activity-subtitle">Malířské práce</div>
-                <div className="activity-value">+2 624 Kč zisk</div>
+          <div className="performance-months">
+            {getMonthlyPerformance().map((month, index) => (
+              <div key={index} className="month-performance">
+                <div className="month-title">{month.name} {month.year}</div>
+                <div className="progress-group">
+                  <div className="progress-item">
+                    <div className="progress-label">
+                      <span>Celková cena</span>
+                      <span className="progress-value">{month.revenue.toLocaleString()} Kč</span>
+                    </div>
+                    <div className="progress-bar">
+                      <div 
+                        className="progress-fill revenue" 
+                        style={{width: `${month.revenuePercent}%`}}
+                      ></div>
+                    </div>
+                  </div>
+                  <div className="progress-item">
+                    <div className="progress-label">
+                      <span>Zakázky</span>
+                      <span className="progress-value">{month.orders}</span>
+                    </div>
+                    <div className="progress-bar">
+                      <div 
+                        className="progress-fill orders" 
+                        style={{width: `${month.ordersPercent}%`}}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="activity-time">2 hod</div>
-            </div>
-            <div className="activity-item">
-              <div className="modern-icon size-small icon-orders"></div>
-              <div className="activity-content">
-                <div className="activity-title">Zakázka dokončena</div>
-                <div className="activity-subtitle">Adam</div>
-                <div className="activity-value">+2 624 Kč zisk</div>
-              </div>
-              <div className="activity-time">1 den</div>
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="activity-card">
-          <div className="activity-header">
-            <h3>Nejlepší zákazky</h3>
-            <button className="view-all">Zobrazit vše</button>
+        {/* Roční výkonnost */}
+        <div className="performance-card">
+          <div className="performance-header">
+            <h3>Roční výkonnost</h3>
           </div>
-          <div className="customer-list">
-            <div className="customer-item">
-              <div className="customer-avatar">A</div>
-              <div className="customer-content">
-                <div className="customer-name">Adam</div>
-                <div className="customer-subtitle">Celkem za 6 objednávek</div>
+          <div className="yearly-performance">
+            <div className="year-title">2025</div>
+            <div className="progress-group">
+              <div className="progress-item">
+                <div className="progress-label">
+                  <span>Celková cena</span>
+                  <span className="progress-value">{getYearlyData().revenue.toLocaleString()} Kč</span>
+                </div>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill revenue" 
+                    style={{width: `${getYearlyData().revenuePercent}%`}}
+                  ></div>
+                </div>
               </div>
-              <div className="customer-value">17 800 Kč</div>
-            </div>
-            <div className="customer-item">
-              <div className="customer-avatar">XY</div>
-              <div className="customer-content">
-                <div className="customer-name">XY</div>
-                <div className="customer-subtitle">Celkem za 3 objednávky</div>
+              <div className="progress-item">
+                <div className="progress-label">
+                  <span>Zakázky</span>
+                  <span className="progress-value">{getYearlyData().orders}</span>
+                </div>
+                <div className="progress-bar">
+                  <div 
+                    className="progress-fill orders" 
+                    style={{width: `${getYearlyData().ordersPercent}%`}}
+                  ></div>
+                </div>
               </div>
-              <div className="customer-value">11 400 Kč</div>
             </div>
           </div>
         </div>
