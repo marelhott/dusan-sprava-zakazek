@@ -1019,47 +1019,6 @@ const PaintPro = () => {
           <div className="table-info">Zobrazeno 1 - {zakazkyData.length} z {zakazkyData.length} zakázek</div>
         </div>
       </div>
-
-      <div className="summary-cards">
-        <div className="summary-card">
-          <div className="summary-header">
-            <h3>CELKOVÉ TRŽBY</h3>
-            <div className="summary-period">
-              <span>1D</span>
-              <span>7D</span>
-              <span className="active">ALL</span>
-            </div>
-          </div>
-          <div className="summary-value">{dashboardData.celkoveTrzby} Kč</div>
-          <div className="summary-subtitle">Za posledních 30 dní</div>
-        </div>
-
-        <div className="summary-card">
-          <div className="summary-header">
-            <h3>CELKOVÝ ZISK</h3>
-            <div className="summary-period">
-              <span>1D</span>
-              <span>7D</span>
-              <span className="active">ALL</span>
-            </div>
-          </div>
-          <div className="summary-value">{dashboardData.celkovyZisk} Kč</div>
-          <div className="summary-subtitle green">Marže {Math.round((parseInt(dashboardData.celkovyZisk.replace(/,/g, '')) / parseInt(dashboardData.celkoveTrzby.replace(/,/g, ''))) * 100)}%</div>
-        </div>
-
-        <div className="summary-card">
-          <div className="summary-header">
-            <h3>POČET ZAKÁZEK</h3>
-            <div className="summary-period">
-              <span>1D</span>
-              <span>7D</span>
-              <span className="active">ALL</span>
-            </div>
-          </div>
-          <div className="summary-value">{dashboardData.pocetZakazek}</div>
-          <div className="summary-subtitle">Aktivních zakázek</div>
-        </div>
-      </div>
     </div>
   );
 
