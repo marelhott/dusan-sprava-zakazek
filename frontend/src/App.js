@@ -237,10 +237,11 @@ const PaintPro = () => {
           drawBorder: false,
         },
         ticks: {
-          color: 'var(--text-secondary)',
+          color: 'var(--text-chart)',
           font: {
             size: 11,
             weight: '500',
+            letterSpacing: '0.2px',
           },
         },
       },
