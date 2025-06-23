@@ -1387,8 +1387,11 @@ const PaintPro = () => {
           beginAtZero: true,
           grid: { color: 'rgba(148, 163, 184, 0.2)', drawBorder: false },
           ticks: { 
-            color: 'var(--text-secondary)', 
-            font: { size: 9 },
+            color: 'var(--text-chart)', 
+            font: { 
+              size: 9,
+              letterSpacing: '0.2px',
+            },
             callback: function(value) {
               return value.toLocaleString();
             }
