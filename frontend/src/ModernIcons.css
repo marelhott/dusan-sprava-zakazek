@@ -1,18 +1,18 @@
-/* Glassmorphism Icons - Exact Match to Reference */
+/* Modern Gradient Icons - Inspired by Premium UI Design */
 
 .modern-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 16px;
   position: relative;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%);
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 
-    0 8px 32px rgba(139, 92, 246, 0.2),
+    0 8px 32px rgba(139, 92, 246, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.3),
-    0 0 20px rgba(236, 72, 153, 0.1);
+    0 0 20px rgba(6, 182, 212, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
@@ -24,12 +24,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
   border-radius: inherit;
   z-index: 1;
 }
 
-/* Home/Dashboard Icon */
+/* Dashboard/Home Icon - inspired by Lineage */
 .icon-dashboard::after {
   content: '';
   width: 16px;
@@ -57,7 +57,7 @@
   z-index: 3;
 }
 
-/* Document/Orders Icon */
+/* Orders/Document Icon - inspired by Catalog */
 .icon-orders::after {
   content: '';
   width: 12px;
@@ -84,36 +84,8 @@
   z-index: 3;
 }
 
-/* Chart/Reports Icon */
+/* Reports/Chart Icon - inspired by Observe */
 .icon-reports::after {
-  content: '';
-  width: 16px;
-  height: 12px;
-  background: transparent;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.9);
-  border-left: 2px solid rgba(255, 255, 255, 0.9);
-  position: relative;
-  z-index: 2;
-}
-
-.icon-reports::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 2px;
-  width: 12px;
-  height: 8px;
-  background: 
-    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 0 100%/2px 3px,
-    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 3px 100%/2px 6px,
-    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 6px 100%/2px 4px,
-    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 9px 100%/2px 8px;
-  background-repeat: no-repeat;
-  z-index: 3;
-}
-
-/* Settings/Gear Icon */
-.icon-settings::after {
   content: '';
   width: 14px;
   height: 14px;
@@ -124,28 +96,51 @@
   z-index: 2;
 }
 
-.icon-settings::before {
+.icon-reports::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 18px;
-  height: 18px;
-  background: 
-    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 50% 0/2px 5px,
-    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 50% 100%/2px 5px,
-    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 0 50%/5px 2px,
-    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 100% 50%/5px 2px,
-    linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 18% 18%/4px 2px,
-    linear-gradient(-45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 82% 18%/4px 2px,
-    linear-gradient(-45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 18% 82%/4px 2px,
-    linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)) 82% 82%/4px 2px;
-  background-repeat: no-repeat;
-  z-index: 1;
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  z-index: 3;
+}
+
+/* Settings/Gear Icon - inspired by Compliance */
+.icon-settings::after {
+  content: '';
+  width: 12px;
+  height: 14px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 3px;
+  position: relative;
+  z-index: 2;
+}
+
+.icon-settings::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  right: 30%;
+  transform: translate(50%, -50%);
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-top: 5px solid rgba(255, 255, 255, 0.9);
+  z-index: 3;
 }
 
 /* Money/Dollar Icon */
+.icon-revenue,
+.icon-money {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+}
+
 .icon-revenue::after,
 .icon-money::after {
   content: '';
@@ -171,7 +166,12 @@
   z-index: 3;
 }
 
-/* Arrow Up/Profit Icon */
+/* Chart/Analytics Icon */
+.icon-chart,
+.icon-profit {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+}
+
 .icon-chart::after,
 .icon-profit::after {
   content: '';
@@ -197,7 +197,11 @@
   z-index: 3;
 }
 
-/* Document Stack/Count Icon */
+/* Count Icon */
+.icon-count {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+}
+
 .icon-count::after {
   content: '';
   width: 10px;
@@ -226,6 +230,11 @@
 }
 
 /* Target/Average Icon */
+.icon-average,
+.icon-target {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+}
+
 .icon-average::after,
 .icon-target::after {
   content: '';
@@ -253,7 +262,11 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
 }
 
-/* Export Icon */
+/* Export Icon - inspired by ETL */
+.icon-export {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+}
+
 .icon-export::after {
   content: '';
   width: 12px;
@@ -280,6 +293,10 @@
 }
 
 /* Add/Plus Icon */
+.icon-add {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+}
+
 .icon-add::after {
   content: '';
   width: 2px;
@@ -304,6 +321,10 @@
 }
 
 /* Edit/Pencil Icon */
+.icon-edit {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+}
+
 .icon-edit::after {
   content: '';
   width: 10px;
@@ -328,6 +349,10 @@
 }
 
 /* Delete/Trash Icon */
+.icon-delete {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%);
+}
+
 .icon-delete::after {
   content: '';
   width: 10px;
