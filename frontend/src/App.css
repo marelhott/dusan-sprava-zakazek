@@ -667,6 +667,13 @@ body::after {
   line-height: 1.1;
 }
 
+/* Speciální styling pro třetí buňku s menším textem */
+.stat-value .small-text {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
 .stat-subtitle {
   font-size: 14px;
   font-weight: 400;
