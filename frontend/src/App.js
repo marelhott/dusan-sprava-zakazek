@@ -1746,41 +1746,41 @@ const PaintPro = () => {
         <div className="charts-grid-4" id="charts-export">
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>TÝDEN</h3>
-              <div className="chart-value-small blue">{allPeriods.week.celkovyZisk.toLocaleString()} Kč</div>
+              <h3>ADAM</h3>
+              <div className="chart-value-small blue">{zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="week-chart" data={createLineChartData('week', 'rgba(79, 70, 229, 1)')} options={lineChartOptions} />
+              <Line key="adam-chart" data={createLineChartData('week', 'rgba(79, 70, 229, 1)')} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>MĚSÍC</h3>
-              <div className="chart-value-small green">{allPeriods.month.celkovyZisk.toLocaleString()} Kč</div>
+              <h3>MVČ</h3>
+              <div className="chart-value-small green">{zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="month-chart" data={createLineChartData('month', 'rgba(16, 185, 129, 1)')} options={lineChartOptions} />
+              <Line key="mvc-chart" data={createLineChartData('month', 'rgba(16, 185, 129, 1)')} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>ROK</h3>
-              <div className="chart-value-small orange">{allPeriods.year.celkovyZisk.toLocaleString()} Kč</div>
+              <h3>KORÁLEK</h3>
+              <div className="chart-value-small orange">{zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="year-chart" data={createLineChartData('year', 'rgba(245, 158, 11, 1)')} options={lineChartOptions} />
+              <Line key="koralek-chart" data={createLineChartData('year', 'rgba(245, 158, 11, 1)')} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>OD ZAČÁTKU</h3>
-              <div className="chart-value-small purple">{allPeriods.all.celkovyZisk.toLocaleString()} Kč</div>
+              <h3>OSTATNÍ</h3>
+              <div className="chart-value-small purple">{zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="all-chart" data={createLineChartData('all', 'rgba(139, 92, 246, 1)')} options={lineChartOptions} />
+              <Line key="ostatni-chart" data={createLineChartData('all', 'rgba(139, 92, 246, 1)')} options={lineChartOptions} />
             </div>
           </div>
         </div>
