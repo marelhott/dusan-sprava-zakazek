@@ -751,7 +751,8 @@ const PaintPro = () => {
         pomucka: Number(formData.pomucka),
         palivo: Number(formData.palivo)
       };
-      updateZakazka(processedData);
+      setZakazkyData(zakazkyData.map(z => z.id === processedData.id ? processedData : z));
+      setShowEditModal(false);
     };
 
     if (!showEditModal || !editingZakazka) return null;
