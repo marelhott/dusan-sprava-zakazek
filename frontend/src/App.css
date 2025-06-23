@@ -652,6 +652,12 @@ body::after {
   line-height: 1.4;
 }
 
+.stat-subtitle.blue {
+  color: var(--accent-blue);
+  font-weight: 500;
+  text-align: left;
+}
+
 /* Charts */
 .charts-grid {
   display: grid;
