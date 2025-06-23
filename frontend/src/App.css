@@ -531,9 +531,15 @@ body::after {
 
 .stat-value-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
+}
+
+.stat-value-with-subtitle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .stat-icon {
@@ -546,6 +552,7 @@ body::after {
   font-size: 10px;
   flex-shrink: 0;
   position: relative;
+  margin-top: 2px;
 }
 
 .stat-icon.icon-money {
@@ -568,7 +575,7 @@ body::after {
   color: var(--accent-orange);
 }
 
-/* Moderní geometrické ikony místo emoji */
+/* Moderní geometrické ikony místo emoji - bez stínů */
 .stat-icon.icon-money::before { 
   content: "";
   width: 8px;
@@ -584,9 +591,17 @@ body::after {
   height: 8px;
   background: currentColor;
   border-radius: 1px;
-  box-shadow: 
-    4px 2px 0 currentColor,
-    8px -1px 0 currentColor;
+}
+
+.stat-icon.icon-chart::after { 
+  content: "";
+  width: 3px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 1px;
+  position: absolute;
+  left: 7px;
+  top: 8px;
 }
 
 .stat-icon.icon-orders::before { 
@@ -595,9 +610,16 @@ body::after {
   height: 1.5px;
   background: currentColor;
   border-radius: 1px;
-  box-shadow: 
-    0 3px 0 currentColor,
-    0 6px 0 currentColor;
+}
+
+.stat-icon.icon-orders::after { 
+  content: "";
+  width: 8px;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+  position: absolute;
+  top: 12px;
 }
 
 .stat-icon.icon-target::before { 
