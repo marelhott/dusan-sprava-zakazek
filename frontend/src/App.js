@@ -940,7 +940,12 @@ const PaintPro = () => {
               </tr>
             </thead>
             <tbody>
-              {zakazkyData.map((zakazka) => (
+              {zakazkyData
+                .filter(zakazka => 
+                  searchClient === '' || 
+                  zakazka.klient.toLowerCase().includes(searchClient.toLowerCase())
+                )
+                .map((zakazka) => (
                 <tr key={zakazka.id} className="table-row">
                   <td>
                     <input type="checkbox" />
