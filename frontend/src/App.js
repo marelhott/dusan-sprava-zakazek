@@ -1894,7 +1894,7 @@ const PaintPro = () => {
               <div className="chart-value-small blue">{zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="adam-chart" data={createLineChartData('week', 'rgba(79, 70, 229, 1)')} options={lineChartOptions} />
+              <Line key="adam-chart" data={createMultiLineChartData(getDruhyPraceData())} options={lineChartOptions} />
             </div>
           </div>
 
