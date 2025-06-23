@@ -1904,7 +1904,7 @@ const PaintPro = () => {
               <div className="chart-value-small green">{zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="mvc-chart" data={createLineChartData('month', 'rgba(16, 185, 129, 1)')} options={lineChartOptions} />
+              <Line key="mvc-chart" data={createMultiLineChartData(getMainFinancialData())} options={lineChartOptions} />
             </div>
           </div>
 
