@@ -397,12 +397,12 @@ body {
 }
 
 .stat-title {
-  font-family: var(--font-primary);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
-  letter-spacing: 0.05em;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
 }
 
 .stat-content {
