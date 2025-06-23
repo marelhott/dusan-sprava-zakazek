@@ -205,7 +205,7 @@ const PaintPro = () => {
       legend: {
         position: 'bottom',
         labels: {
-          color: 'rgba(255, 255, 255, 0.8)',
+          color: 'var(--text-secondary)',
           padding: 20,
           usePointStyle: true,
           font: {
@@ -215,10 +215,10 @@ const PaintPro = () => {
         },
       },
       tooltip: {
-        backgroundColor: 'rgba(31, 31, 83, 0.95)',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        borderColor: 'rgba(79, 70, 229, 0.5)',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        titleColor: 'var(--text-primary)',
+        bodyColor: 'var(--text-primary)',
+        borderColor: 'rgba(139, 92, 246, 0.3)',
         borderWidth: 1,
         cornerRadius: 12,
         displayColors: true,
@@ -232,11 +232,11 @@ const PaintPro = () => {
     scales: {
       x: {
         grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
+          color: 'rgba(148, 163, 184, 0.2)',
           drawBorder: false,
         },
         ticks: {
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: 'var(--text-secondary)',
           font: {
             size: 11,
             weight: '500',
@@ -246,11 +246,11 @@ const PaintPro = () => {
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(255, 255, 255, 0.1)',
+          color: 'rgba(148, 163, 184, 0.2)',
           drawBorder: false,
         },
         ticks: {
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: 'var(--text-secondary)',
           font: {
             size: 11,
           },
