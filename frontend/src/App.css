@@ -406,9 +406,8 @@ body {
 }
 
 .stat-content {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  position: relative;
+  z-index: 2;
 }
 
 .stat-icon {
