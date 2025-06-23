@@ -40,6 +40,9 @@ const PaintPro = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('all');
 
   const [searchClient, setSearchClient] = useState('');
+  const [filterDruhPrace, setFilterDruhPrace] = useState('');
+  const [filterDateFrom, setFilterDateFrom] = useState('');
+  const [filterDateTo, setFilterDateTo] = useState('');
 
   // Kompletní data ze screenshotů
   const [zakazkyData, setZakazkyData] = useState([
