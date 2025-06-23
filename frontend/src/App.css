@@ -277,7 +277,7 @@ body::after {
   background: transparent;
   min-height: 100vh;
   position: relative;
-  z-index: 10;
+  z-index: 100;
 }
 
 /* Transparent chart cards */
