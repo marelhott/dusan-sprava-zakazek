@@ -289,6 +289,8 @@ body::after {
   padding: 40px 48px;
   background: transparent;
   min-height: 100vh;
+  position: relative;
+  z-index: 10;
 }
 
 /* Transparent chart cards */
