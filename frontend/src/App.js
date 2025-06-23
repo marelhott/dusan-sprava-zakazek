@@ -365,7 +365,10 @@ const PaintPro = () => {
         <div className="stat-title">{title}</div>
       </div>
       <div className="stat-content">
-        <div className="stat-value">{value}{showCurrency ? ' Kč' : ''}</div>
+        <div className="stat-value-row">
+          <div className={`stat-icon ${iconClass}`}></div>
+          <div className="stat-value">{value}{showCurrency ? ' Kč' : ''}</div>
+        </div>
         <div className="stat-subtitle">{subtitle}</div>
       </div>
     </div>
