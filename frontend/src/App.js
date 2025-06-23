@@ -991,10 +991,32 @@ const PaintPro = () => {
             </thead>
             <tbody>
               {zakazkyData
-                .filter(zakazka => 
-                  searchClient === '' || 
-                  zakazka.klient.toLowerCase().includes(searchClient.toLowerCase())
-                )
+                .filter(zakazka => {
+                  // Filtr podle klienta
+                  const clientMatch = searchClient === '' || 
+                    zakazka.klient.toLowerCase().includes(searchClient.toLowerCase());
+                  
+                  // Filtr podle druhu práce  
+                  const druhMatch = filterDruhPrace === '' || zakazka.druh === filterDruhPrace;
+                  
+                  // Filtr podle datumu
+                  let dateMatch = true;
+                  if (filterDateFrom || filterDateTo) {
+                    const zakazkaDate = new Date(zakazka.datum.split('. ').reverse().join('-'));
+                    
+                    if (filterDateFrom) {
+                      const fromDate = new Date(filterDateFrom);
+                      dateMatch = dateMatch && zakazkaDate >= fromDate;
+                    }
+                    
+                    if (filterDateTo) {
+                      const toDate = new Date(filterDateTo);
+                      dateMatch = dateMatch && zakazkaDate <= toDate;
+                    }
+                  }
+                  
+                  return clientMatch && druhMatch && dateMatch;
+                })
                 .map((zakazka) => (
                 <tr key={zakazka.id} className="table-row">
                   <td>
