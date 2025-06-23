@@ -39,6 +39,8 @@ const PaintPro = () => {
   const [editingZakazka, setEditingZakazka] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState('all');
 
+  const [searchClient, setSearchClient] = useState('');
+
   // Kompletní data ze screenshotů
   const [zakazkyData, setZakazkyData] = useState([
     { id: 1, datum: '11. 6. 2025', druh: 'Adam', klient: 'XY', cislo: '202501', castka: 4000, fee: 1040, material: 0, pomocnik: 0, palivo: 0, zisk: 2960, soubory: [] },
