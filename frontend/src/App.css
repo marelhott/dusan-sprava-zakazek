@@ -96,27 +96,23 @@ body::after {
   z-index: 1;
 }
 
-/* Additional wave element - více viditelné */
+/* VELMI VIDITELNÁ dolní vlna */
 .app-container::before {
   content: '';
   position: fixed;
-  bottom: -15%;
-  left: -25%;
-  width: 60%;
-  height: 80%;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 60%;
   background: 
-    radial-gradient(ellipse 700px 500px at 40% 80%, 
-      rgba(233, 213, 255, 0.5) 0%, 
-      rgba(251, 207, 232, 0.4) 35%, 
-      rgba(229, 231, 235, 0.3) 65%, 
-      transparent 85%
+    linear-gradient(45deg, 
+      rgba(233, 213, 255, 0.7) 0%, 
+      rgba(251, 207, 232, 0.6) 70%, 
+      transparent 100%
     );
-  border-radius: 70% 30% 60% 40%;
-  filter: blur(20px);
-  transform: rotate(25deg);
-  animation: gentle-float 25s ease-in-out infinite reverse;
+  clip-path: ellipse(100% 80% at 0% 100%);
   pointer-events: none;
-  z-index: -1;
+  z-index: 1;
 }
 
 @keyframes gentle-float {
