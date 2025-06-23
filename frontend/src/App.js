@@ -877,7 +877,7 @@ const PaintPro = () => {
           <p>Přehled a správa všech malířských zakázek s automatickým výpočtem zisku</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-secondary" onClick={exportToCSV}>
+          <button className="btn btn-secondary" onClick={() => {}}>
             <div className="modern-icon size-small icon-export"></div>
             Export CSV
           </button>
