@@ -351,6 +351,13 @@ const PaintPro = () => {
       onMouseEnter={() => setHoveredCard(index)}
       onMouseLeave={() => setHoveredCard(null)}
     >
+      {/* Geometrické zdobení - tři průhledná kola */}
+      <div className="geometric-decoration">
+        <div className="circle circle-1"></div>
+        <div className="circle circle-2"></div>
+        <div className="circle circle-3"></div>
+      </div>
+      
       <div className="stat-header">
         <div className="stat-title">{title}</div>
       </div>
