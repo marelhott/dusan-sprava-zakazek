@@ -428,7 +428,7 @@ const PaintPro = () => {
         <StatCard
           title="CELKOVÉ TRŽBY"
           value={dashboardData.celkoveTrzby}
-          subtitle="Za posledních 30 dní"
+          subtitle=""
           iconClass="icon-money"
           color="blue"
           index={0}
