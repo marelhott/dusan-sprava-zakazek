@@ -454,13 +454,12 @@ const PaintPro = () => {
         />
         <StatCard
           title="POČET ZAKÁZEK"
-          value={`${dashboardData.pocetZakazek}`}
-          subtitle="dokončených zakázek"
+          value={`${dashboardData.pocetZakazek} dokončených zakázek`}
+          subtitle=""
           iconClass="icon-orders"
           color="purple"
           index={2}
           showCurrency={false}
-          smallSubtitle={true}
         />
         <StatCard
           title="PRŮMĚRNÝ ZISK"
