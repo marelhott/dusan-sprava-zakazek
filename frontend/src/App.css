@@ -106,7 +106,7 @@ body::after {
   height: 60%;
   background: 
     linear-gradient(45deg, 
-      rgba(163, 177, 138, 0.7) 0%, 
+      rgba(165, 180, 252, 0.7) 0%, 
       rgba(251, 207, 232, 0.6) 70%, 
       transparent 100%
     );
