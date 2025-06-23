@@ -185,7 +185,7 @@ const PaintPro = () => {
           fill: false,
           tension: 0.4,
           pointBackgroundColor: '#10B981',
-          pointBorderColor: '#ffffff',
+          pointBorderColor: 'var(--text-secondary)',
           pointBorderWidth: 2,
           pointRadius: 5,
           pointHoverRadius: 7,
