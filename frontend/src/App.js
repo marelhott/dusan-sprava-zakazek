@@ -900,7 +900,12 @@ const PaintPro = () => {
               </div>
               <div className="filter-item">
                 <label>Klient</label>
-                <input type="text" placeholder="Hledat podle jména klienta..." />
+                <input 
+                  type="text" 
+                  placeholder="Hledat podle jména klienta..." 
+                  value={searchClient}
+                  onChange={(e) => setSearchClient(e.target.value)}
+                />
               </div>
               <div className="filter-item">
                 <label>Datum od</label>
