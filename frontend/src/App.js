@@ -2169,7 +2169,21 @@ const PaintPro = () => {
             </div>
           </div>
           <div className="chart-container-large">
-            <Bar key="top-clients-chart" data={getTopClientsData()} options={lineChartOptions} />
+            {zakazkyData.length > 0 ? (
+              <Bar key="top-clients-chart" data={getTopClientsData()} options={lineChartOptions} />
+            ) : (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                color: 'var(--text-muted)',
+                fontSize: '16px',
+                fontWeight: '500'
+              }}>
+                📊 Přidejte zakázky pro zobrazení klientů
+              </div>
+            )}
           </div>
         </div>
 
