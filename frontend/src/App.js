@@ -1468,16 +1468,11 @@ const PaintPro = () => {
         return [];
       }
 
-      console.log('getMainFinancialData - zakazkyData:', zakazkyData);
-
       const monthlyData = {};
       
       zakazkyData.forEach(z => {
-        console.log('Processing zakazka:', z);
         const date = new Date(z.datum.split('. ').reverse().join('-'));
-        console.log('Parsed date:', date);
         const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-        console.log('Month key:', key);
         
         if (!monthlyData[key]) {
           monthlyData[key] = { 
@@ -1493,17 +1488,13 @@ const PaintPro = () => {
         monthlyData[key].cistyZisk += (z.castka - z.fee);
       });
 
-      console.log('Monthly data:', monthlyData);
-
       const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
       const sortedData = Object.values(monthlyData)
         .sort((a, b) => a.year - b.year || a.month - b.month);
 
-      console.log('Sorted data:', sortedData);
-
       const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
 
-      const result = [
+      return [
         {
           label: 'Celkové tržby',
           values: sortedData.map(item => item.trzby),
@@ -1523,9 +1514,6 @@ const PaintPro = () => {
           labels: labels
         }
       ];
-
-      console.log('Result from getMainFinancialData:', result);
-      return result;
     };
 
     // Data pro hlavní finanční ukazatele (poslední měsíc)
