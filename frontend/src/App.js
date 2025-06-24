@@ -2130,37 +2130,111 @@ const PaintPro = () => {
               <div className="chart-value-small blue">{zakazkyData.reduce((sum, z) => sum + z.castka, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="main-all-time-chart" data={createMultiLineChartData(getMainFinancialData())} options={lineChartOptions} />
+              <Line data={{
+                labels: zakazkyData.map((z, index) => `Zakázka ${index + 1}`),
+                datasets: [
+                  {
+                    label: 'Tržby',
+                    data: zakazkyData.map(z => z.castka),
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                  },
+                  {
+                    label: 'Zisk',
+                    data: zakazkyData.map(z => z.zisk),
+                    borderColor: 'rgba(16, 185, 129, 1)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                  }
+                ]
+              }} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>HLAVNÍ UKAZATELE - POSLEDNÍ MĚSÍC</h3>
-              <div className="chart-value-small green">{allPeriods.month.celkoveTrzby.toLocaleString()} Kč</div>
+              <h3>NÁKLADY PODLE ZAKÁZEK</h3>
+              <div className="chart-value-small green">{zakazkyData.reduce((sum, z) => sum + z.fee + z.pomocnik + z.material + z.palivo, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="main-month-chart" data={createMultiLineChartData(getMainFinancialDataLastMonth())} options={lineChartOptions} />
+              <Line data={{
+                labels: zakazkyData.map((z, index) => `Zakázka ${index + 1}`),
+                datasets: [
+                  {
+                    label: 'Fee',
+                    data: zakazkyData.map(z => z.fee),
+                    borderColor: 'rgba(239, 68, 68, 1)',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                  },
+                  {
+                    label: 'Materiál',
+                    data: zakazkyData.map(z => z.material),
+                    borderColor: 'rgba(34, 197, 94, 1)',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                  }
+                ]
+              }} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>NÁKLADY - CELÁ DOBA</h3>
-              <div className="chart-value-small orange">{zakazkyData.reduce((sum, z) => sum + z.fee + z.pomocnik + z.material + z.palivo, 0).toLocaleString()} Kč</div>
+              <h3>DRUHY PRÁCE</h3>
+              <div className="chart-value-small orange">{zakazkyData.reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Line key="costs-chart" data={createMultiLineChartData(getCostsData())} options={lineChartOptions} />
+              <Bar data={{
+                labels: ['Adam', 'MVČ', 'Korálek', 'Ostatní'],
+                datasets: [{
+                  label: 'Zisk podle druhu',
+                  data: [
+                    zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0),
+                    zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0),
+                    zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0),
+                    zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0)
+                  ],
+                  backgroundColor: [
+                    'rgba(79, 70, 229, 0.8)',
+                    'rgba(16, 185, 129, 0.8)',
+                    'rgba(245, 158, 11, 0.8)',
+                    'rgba(139, 92, 246, 0.8)'
+                  ],
+                  borderColor: [
+                    'rgba(79, 70, 229, 1)',
+                    'rgba(16, 185, 129, 1)',
+                    'rgba(245, 158, 11, 1)',
+                    'rgba(139, 92, 246, 1)'
+                  ],
+                  borderWidth: 1,
+                }]
+              }} options={lineChartOptions} />
             </div>
           </div>
 
           <div className="chart-card-small">
             <div className="chart-header-small">
-              <h3>DRUHY PRÁCE - CELÁ DOBA</h3>
-              <div className="chart-value-small purple">{zakazkyData.reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
+              <h3>MARŽE PODLE ZAKÁZEK</h3>
+              <div className="chart-value-small purple">{Math.round((zakazkyData.reduce((sum, z) => sum + z.zisk, 0) / zakazkyData.reduce((sum, z) => sum + z.castka, 0)) * 100) || 0}%</div>
             </div>
             <div className="chart-container-small">
-              <Line key="work-types-chart" data={createMultiLineChartData(getDruhyPraceData())} options={lineChartOptions} />
+              <Line data={{
+                labels: zakazkyData.map((z, index) => `Zakázka ${index + 1}`),
+                datasets: [{
+                  label: 'Marže (%)',
+                  data: zakazkyData.map(z => Math.round((z.zisk / z.castka) * 100)),
+                  borderColor: 'rgba(139, 92, 246, 1)',
+                  backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                  fill: true,
+                  tension: 0.4,
+                }]
+              }} options={lineChartOptions} />
             </div>
           </div>
         </div>
