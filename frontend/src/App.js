@@ -629,7 +629,7 @@ const PaintPro = () => {
           <div className="chart-header">
             <div>
               <h3>ROZLOŽENÍ PODLE DRUHU PŘÍJMŮ</h3>
-              <div className="chart-value">76 000 Kč</div>
+              <div className="chart-value">{dashboardData.celkovyZisk} Kč</div>
             </div>
           </div>
           <div className="chart-container-donut">
