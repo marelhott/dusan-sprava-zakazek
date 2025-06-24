@@ -495,13 +495,22 @@ const PaintPro = () => {
         display: false // Disable default legend, we'll create custom external labels
       },
       tooltip: {
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        titleColor: 'var(--text-primary)',
-        bodyColor: 'var(--text-primary)',
-        borderColor: 'rgba(139, 92, 246, 0.3)',
+        backgroundColor: 'rgba(17, 24, 39, 0.95)',
+        titleColor: '#ffffff',
+        bodyColor: '#ffffff',
+        borderColor: 'rgba(139, 92, 246, 0.5)',
         borderWidth: 1,
         cornerRadius: 12,
         displayColors: true,
+        titleFont: {
+          size: 14,
+          weight: '600'
+        },
+        bodyFont: {
+          size: 13,
+          weight: '500'
+        },
+        padding: 12,
         callbacks: {
           label: function(context) {
             const total = context.dataset.data.reduce((sum, value) => sum + value, 0);
