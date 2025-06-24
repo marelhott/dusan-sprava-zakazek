@@ -1310,6 +1310,13 @@ const PaintPro = () => {
 
     // Vytvoření multi-line chart dat
     const createMultiLineChartData = (datasets) => {
+      if (!datasets || datasets.length === 0) {
+        return {
+          labels: [],
+          datasets: []
+        };
+      }
+
       return {
         labels: datasets[0].labels, // Všechny datasety by měly mít stejné labely
         datasets: datasets.map(dataset => ({
