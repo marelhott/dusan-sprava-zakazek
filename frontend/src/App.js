@@ -654,34 +654,50 @@ const PaintPro = () => {
           </div>
           <div className="chart-container-donut">
             <div className="donut-chart-wrapper">
-              <Doughnut data={doughnutChartData} options={doughnutChartOptions} />
-              <div className="external-labels">
-                {dashboardData.rozlozeniData.labels.map((label, index) => {
-                  const total = dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0);
-                  const percentage = total > 0 ? Math.round((dashboardData.rozlozeniData.values[index] / total) * 100) : 0;
-                  
-                  // Pozice podle pořadí
-                  const positions = [
-                    'label-top-right',    // Adam
-                    'label-top-left',     // MVČ  
-                    'label-bottom-left',  // Korálek
-                    'label-bottom-right'  // Ostatní
-                  ];
-                  
-                  // Zobrazit pouze když má hodnotu větší než 0
-                  if (dashboardData.rozlozeniData.values[index] === 0) return null;
-                  
-                  return (
-                    <div key={label} className={`label-item ${positions[index] || 'label-top-left'}`}>
-                      <div className="label-line"></div>
-                      <div className="label-content">
-                        <div className="label-percentage">{percentage}%</div>
-                        <div className="label-name">{label}</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              {dashboardData.rozlozeniData.values.some(v => v > 0) ? (
+                <>
+                  <Doughnut data={doughnutChartData} options={doughnutChartOptions} />
+                  <div className="external-labels">
+                    {dashboardData.rozlozeniData.labels.map((label, index) => {
+                      const total = dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0);
+                      const percentage = total > 0 ? Math.round((dashboardData.rozlozeniData.values[index] / total) * 100) : 0;
+                      
+                      // Pozice podle pořadí
+                      const positions = [
+                        'label-top-right',    // Adam
+                        'label-top-left',     // MVČ  
+                        'label-bottom-left',  // Korálek
+                        'label-bottom-right'  // Ostatní
+                      ];
+                      
+                      // Zobrazit pouze když má hodnotu větší než 0
+                      if (dashboardData.rozlozeniData.values[index] === 0) return null;
+                      
+                      return (
+                        <div key={label} className={`label-item ${positions[index] || 'label-top-left'}`}>
+                          <div className="label-line"></div>
+                          <div className="label-content">
+                            <div className="label-percentage">{percentage}%</div>
+                            <div className="label-name">{label}</div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '200px',
+                  color: 'var(--text-muted)',
+                  fontSize: '16px',
+                  fontWeight: '500'
+                }}>
+                  📊 Přidejte zakázky pro zobrazení rozložení
+                </div>
+              )}
             </div>
           </div>
           <div className="chart-details">
