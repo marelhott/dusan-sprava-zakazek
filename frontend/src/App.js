@@ -41,7 +41,8 @@ const PaintPro = () => {
   const [searchClient, setSearchClient] = useState('');
   const [filterDateFrom, setFilterDateFrom] = useState('');
   const [filterDateTo, setFilterDateTo] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [editingZakazka, setEditingZakazka] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
 
