@@ -1577,8 +1577,6 @@ const PaintPro = () => {
         return [];
       }
 
-      console.log('getCostsData - zakazkyData:', zakazkyData);
-
       const monthlyData = {};
       
       zakazkyData.forEach(z => {
@@ -1607,7 +1605,7 @@ const PaintPro = () => {
 
       const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
 
-      const result = [
+      return [
         {
           label: 'Fee',
           values: sortedData.map(item => item.fee),
@@ -1633,9 +1631,6 @@ const PaintPro = () => {
           labels: labels
         }
       ];
-
-      console.log('getCostsData result:', result);
-      return result;
     };
 
     const lineChartOptions = {
