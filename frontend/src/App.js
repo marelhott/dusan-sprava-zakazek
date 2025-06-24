@@ -2258,81 +2258,73 @@ const PaintPro = () => {
               <div className="chart-value-small orange">{zakazkyData.reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              <Bar data={{
-                labels: zakazkyData.map((z, index) => z.datum.split('.')[1] + '/' + z.datum.split('.')[2] || `${index + 1}`),
+              <Line data={{
+                labels: zakazkyData.map((z, index) => `Zakázka ${index + 1}`),
                 datasets: [
                   {
                     label: 'Adam',
                     data: zakazkyData.map(z => z.druh === 'Adam' ? z.zisk : 0),
-                    backgroundColor: (context) => {
-                      const chart = context.chart;
-                      const {ctx, chartArea} = chart;
-                      if (!chartArea) return '#6366f1';
-                      const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                      gradient.addColorStop(0, '#4338ca');
-                      gradient.addColorStop(0.5, '#6366f1');
-                      gradient.addColorStop(1, '#8b5cf6');
-                      return gradient;
-                    },
-                    borderRadius: 8,
-                    borderSkipped: false,
+                    borderColor: '#6366f1',
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#6366f1',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
                   },
                   {
                     label: 'MVČ',
                     data: zakazkyData.map(z => z.druh === 'MVČ' ? z.zisk : 0),
-                    backgroundColor: (context) => {
-                      const chart = context.chart;
-                      const {ctx, chartArea} = chart;
-                      if (!chartArea) return '#06b6d4';
-                      const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                      gradient.addColorStop(0, '#0891b2');
-                      gradient.addColorStop(0.5, '#06b6d4');
-                      gradient.addColorStop(1, '#67e8f9');
-                      return gradient;
-                    },
-                    borderRadius: 8,
-                    borderSkipped: false,
+                    borderColor: '#06b6d4',
+                    backgroundColor: 'rgba(6, 182, 212, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#06b6d4',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
                   },
                   {
                     label: 'Korálek',
                     data: zakazkyData.map(z => z.druh === 'Korálek' ? z.zisk : 0),
-                    backgroundColor: (context) => {
-                      const chart = context.chart;
-                      const {ctx, chartArea} = chart;
-                      if (!chartArea) return '#10b981';
-                      const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                      gradient.addColorStop(0, '#059669');
-                      gradient.addColorStop(0.5, '#10b981');
-                      gradient.addColorStop(1, '#6ee7b7');
-                      return gradient;
-                    },
-                    borderRadius: 8,
-                    borderSkipped: false,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#10b981',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
                   },
                   {
                     label: 'Ostatní',
                     data: zakazkyData.map(z => z.druh === 'Ostatní' ? z.zisk : 0),
-                    backgroundColor: (context) => {
-                      const chart = context.chart;
-                      const {ctx, chartArea} = chart;
-                      if (!chartArea) return '#f59e0b';
-                      const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                      gradient.addColorStop(0, '#d97706');
-                      gradient.addColorStop(0.5, '#f59e0b');
-                      gradient.addColorStop(1, '#fbbf24');
-                      return gradient;
-                    },
-                    borderRadius: 8,
-                    borderSkipped: false,
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointBackgroundColor: '#f59e0b',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
                   }
                 ]
               }} options={{
                 ...lineChartOptions,
                 scales: {
                   x: {
-                    stacked: true,
                     grid: {
-                      display: false,
+                      color: 'rgba(107, 114, 128, 0.1)',
+                      lineWidth: 1,
                     },
                     ticks: {
                       color: '#6b7280',
@@ -2343,7 +2335,7 @@ const PaintPro = () => {
                     }
                   },
                   y: {
-                    stacked: true,
+                    beginAtZero: true,
                     grid: {
                       color: 'rgba(107, 114, 128, 0.1)',
                       lineWidth: 1,
