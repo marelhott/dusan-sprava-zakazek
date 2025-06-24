@@ -2521,10 +2521,11 @@ body::after {
 
 .form-group label {
   font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
+  font-weight: 600;
+  color: #374151;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  margin-bottom: 4px;
 }
 
 .form-group input,
