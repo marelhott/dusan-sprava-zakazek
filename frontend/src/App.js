@@ -145,10 +145,39 @@ const PaintPro = () => {
 
   // Dynamicky počítané dashboard data - POUZE z zakazkyData
   const dashboardData = React.useMemo(() => {
+    console.log('=== DASHBOARD DATA DEBUG ===');
+    console.log('zakazkyData:', zakazkyData);
+    
     const celkoveTrzby = zakazkyData.reduce((sum, z) => sum + z.castka, 0);
     const celkovyZisk = zakazkyData.reduce((sum, z) => sum + z.zisk, 0);
     const pocetZakazek = zakazkyData.length;
     const prumernyZisk = pocetZakazek > 0 ? Math.round(celkovyZisk / pocetZakazek) : 0;
+
+    console.log('Celkové tržby:', celkoveTrzby);
+    console.log('Celkový zisk:', celkovyZisk);
+    console.log('Počet zakázek:', pocetZakazek);
+
+    // Rozložení podle druhu práce
+    const adamZisk = zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0);
+    const mvcZisk = zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0);
+    const koralekZisk = zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0);
+    const ostatniZisk = zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0);
+
+    console.log('=== ROZLOŽENÍ PODLE DRUHU ===');
+    console.log('Adam zisk:', adamZisk);
+    console.log('MVČ zisk:', mvcZisk);
+    console.log('Korálek zisk:', koralekZisk);
+    console.log('Ostatní zisk:', ostatniZisk);
+    console.log('Součet:', adamZisk + mvcZisk + koralekZisk + ostatniZisk);
+    
+    // Procenta pro ověření
+    const total = adamZisk + mvcZisk + koralekZisk + ostatniZisk;
+    if (total > 0) {
+      console.log('Adam %:', Math.round((adamZisk / total) * 100));
+      console.log('MVČ %:', Math.round((mvcZisk / total) * 100));
+      console.log('Korálek %:', Math.round((koralekZisk / total) * 100));
+      console.log('Ostatní %:', Math.round((ostatniZisk / total) * 100));
+    }
 
     // Reálné měsíční data pouze z zakázek uživatele
     const monthlyDataMap = {};
@@ -198,12 +227,7 @@ const PaintPro = () => {
       },
       rozlozeniData: {
         labels: ['Adam', 'MVČ', 'Korálek', 'Ostatní'],
-        values: [
-          zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0),
-          zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0),
-          zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0),
-          zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0)
-        ],
+        values: [adamZisk, mvcZisk, koralekZisk, ostatniZisk],
         colors: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6']
       }
     };
