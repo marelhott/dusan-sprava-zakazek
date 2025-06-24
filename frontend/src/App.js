@@ -987,11 +987,11 @@ const PaintPro = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Pomůcka (Kč)</label>
+                <label>Pomocník (Kč)</label>
                 <input
                   type="number"
-                  value={formData.pomucka}
-                  onChange={e => setFormData({...formData, pomucka: e.target.value})}
+                  value={formData.pomocnik}
+                  onChange={e => setFormData({...formData, pomocnik: e.target.value})}
                 />
               </div>
             </div>
