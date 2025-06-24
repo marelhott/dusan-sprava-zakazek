@@ -1506,6 +1506,16 @@ body::after {
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
+
+.error-message {
+  color: var(--accent-red);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
 .activity-title {
   font-family: var(--font-primary);
   font-size: 14px;
