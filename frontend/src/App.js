@@ -3,6 +3,8 @@ import './App.css';
 import './ModernIcons.css';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { AuthProvider, useAuth } from './AuthContext';
+import LoginScreen from './LoginScreen';
 import {
   Chart as ChartJS,
   CategoryScale,
