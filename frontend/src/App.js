@@ -2092,21 +2092,7 @@ const PaintPro = () => {
               <div className="chart-value-small blue">{zakazkyData.reduce((sum, z) => sum + z.castka, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              {zakazkyData.length > 0 ? (
-                <Line key="main-all-time-chart" data={createMultiLineChartData(getMainFinancialData())} options={lineChartOptions} />
-              ) : (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100%',
-                  color: 'var(--text-muted)',
-                  fontSize: '14px',
-                  fontWeight: '500'
-                }}>
-                  📊 Žádná data
-                </div>
-              )}
+              <Line key="main-all-time-chart" data={createMultiLineChartData(getMainFinancialData())} options={lineChartOptions} />
             </div>
           </div>
 
@@ -2116,21 +2102,7 @@ const PaintPro = () => {
               <div className="chart-value-small green">{allPeriods.month.celkoveTrzby.toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              {getMainFinancialDataLastMonth().length > 0 ? (
-                <Line key="main-month-chart" data={createMultiLineChartData(getMainFinancialDataLastMonth())} options={lineChartOptions} />
-              ) : (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100%',
-                  color: 'var(--text-muted)',
-                  fontSize: '14px',
-                  fontWeight: '500'
-                }}>
-                  📊 Žádná data z posledního měsíce
-                </div>
-              )}
+              <Line key="main-month-chart" data={createMultiLineChartData(getMainFinancialDataLastMonth())} options={lineChartOptions} />
             </div>
           </div>
 
@@ -2140,21 +2112,7 @@ const PaintPro = () => {
               <div className="chart-value-small orange">{zakazkyData.reduce((sum, z) => sum + z.fee + z.pomocnik + z.material + z.palivo, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              {getCostsData().length > 0 ? (
-                <Line key="costs-chart" data={createMultiLineChartData(getCostsData())} options={lineChartOptions} />
-              ) : (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100%',
-                  color: 'var(--text-muted)',
-                  fontSize: '14px',
-                  fontWeight: '500'
-                }}>
-                  📊 Žádná data
-                </div>
-              )}
+              <Line key="costs-chart" data={createMultiLineChartData(getCostsData())} options={lineChartOptions} />
             </div>
           </div>
 
@@ -2164,21 +2122,7 @@ const PaintPro = () => {
               <div className="chart-value-small purple">{zakazkyData.reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              {getDruhyPraceData().length > 0 ? (
-                <Line key="work-types-chart" data={createMultiLineChartData(getDruhyPraceData())} options={lineChartOptions} />
-              ) : (
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  height: '100%',
-                  color: 'var(--text-muted)',
-                  fontSize: '14px',
-                  fontWeight: '500'
-                }}>
-                  📊 Žádná data
-                </div>
-              )}
+              <Line key="work-types-chart" data={createMultiLineChartData(getDruhyPraceData())} options={lineChartOptions} />
             </div>
           </div>
         </div>
