@@ -1152,6 +1152,10 @@ body::after {
   background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
 }
 
+.progress-fill.orders {
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-orange));
+}
+
 /* Login Screen Styles */
 .login-screen {
   min-height: 100vh;
