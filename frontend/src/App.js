@@ -230,7 +230,7 @@ const PaintPro = () => {
 
 
 
-  // Aktualizovaná data pro kombinovaný graf
+  // Aktualizovaná data pro kombinovaný graf - POUZE reálná data ze zakázek
   const getCombinedChartData = () => {
     // Pokud nejsou žádné zakázky, vrať prázdný graf
     if (zakazkyData.length === 0) {
@@ -240,17 +240,50 @@ const PaintPro = () => {
       };
     }
 
-    const months = dashboardData.mesicniData.labels;
-    const monthlyData = dashboardData.mesicniData.values;
-    const yearlyData = monthlyData.map((val, idx) => val * 1.2 + (idx * 100));
+    // Vytvoř reálné měsíční údaje ze zakázek
+    const monthlyStats = {};
+    
+    zakazkyData.forEach(zakazka => {
+      // Parse český formát datumu DD. MM. YYYY
+      const dateParts = zakazka.datum.split('. ');
+      const day = parseInt(dateParts[0]);
+      const month = parseInt(dateParts[1]) - 1; // JavaScript měsíce jsou 0-based
+      const year = parseInt(dateParts[2]);
+      
+      const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+      
+      if (!monthlyStats[monthKey]) {
+        monthlyStats[monthKey] = {
+          zisk: 0,
+          trzby: 0,
+          month: month,
+          year: year
+        };
+      }
+      
+      monthlyStats[monthKey].zisk += zakazka.zisk;
+      monthlyStats[monthKey].trzby += zakazka.castka;
+    });
+
+    // Seřaď chronologicky
+    const sortedMonths = Object.keys(monthlyStats).sort();
+    const monthNames = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+    
+    const labels = sortedMonths.map(key => {
+      const data = monthlyStats[key];
+      return `${monthNames[data.month]} ${data.year}`;
+    });
+    
+    const ziskData = sortedMonths.map(key => monthlyStats[key].zisk);
+    const trzbyData = sortedMonths.map(key => monthlyStats[key].trzby);
 
     return {
-      labels: months,
+      labels: labels,
       datasets: [
         {
           type: 'bar',
-          label: 'Měsíční zisk',
-          data: monthlyData,
+          label: 'Zisk',
+          data: ziskData,
           backgroundColor: (context) => {
             const chart = context.chart;
             const {ctx, chartArea} = chart;
@@ -270,8 +303,8 @@ const PaintPro = () => {
         },
         {
           type: 'bar',
-          label: 'Roční trend',
-          data: yearlyData,
+          label: 'Tržby',
+          data: trzbyData,
           backgroundColor: (context) => {
             const chart = context.chart;
             const {ctx, chartArea} = chart;
@@ -291,8 +324,8 @@ const PaintPro = () => {
         },
         {
           type: 'line',
-          label: 'Trend křivka',
-          data: monthlyData.map((val, idx) => val + yearlyData[idx] * 0.1),
+          label: 'Trend zisku',
+          data: ziskData,
           borderColor: '#10B981',
           backgroundColor: 'rgba(16, 185, 129, 0.1)',
           borderWidth: 3,
