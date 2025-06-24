@@ -580,7 +580,11 @@ const PaintPro = () => {
         <StatCard
           title="CELKOVÝ ZISK"
           value={`${dashboardData.celkovyZisk} Kč`}
-          subtitle={`(Marže ${Math.round((parseInt(dashboardData.celkovyZisk.replace(/,/g, '')) / parseInt(dashboardData.celkoveTrzby.replace(/,/g, ''))) * 100)}%)`}
+          subtitle={`(Marže ${(() => {
+            const trzby = parseInt(dashboardData.celkoveTrzby.replace(/,/g, ''));
+            const zisk = parseInt(dashboardData.celkovyZisk.replace(/,/g, ''));
+            return trzby > 0 ? Math.round((zisk / trzby) * 100) : 0;
+          })()}%)`}
           iconClass="icon-chart"
           color="green"
           index={1}
