@@ -2191,30 +2191,124 @@ const PaintPro = () => {
             </div>
             <div className="chart-container-small">
               <Bar data={{
-                labels: ['Adam', 'MVČ', 'Korálek', 'Ostatní'],
-                datasets: [{
-                  label: 'Zisk podle druhu',
-                  data: [
-                    zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0),
-                    zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0),
-                    zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0),
-                    zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0)
-                  ],
-                  backgroundColor: [
-                    'rgba(79, 70, 229, 0.8)',
-                    'rgba(16, 185, 129, 0.8)',
-                    'rgba(245, 158, 11, 0.8)',
-                    'rgba(139, 92, 246, 0.8)'
-                  ],
-                  borderColor: [
-                    'rgba(79, 70, 229, 1)',
-                    'rgba(16, 185, 129, 1)',
-                    'rgba(245, 158, 11, 1)',
-                    'rgba(139, 92, 246, 1)'
-                  ],
-                  borderWidth: 1,
-                }]
-              }} options={lineChartOptions} />
+                labels: zakazkyData.map((z, index) => z.datum.split('.')[1] + '/' + z.datum.split('.')[2] || `${index + 1}`),
+                datasets: [
+                  {
+                    label: 'Adam',
+                    data: zakazkyData.map(z => z.druh === 'Adam' ? z.zisk : 0),
+                    backgroundColor: (context) => {
+                      const chart = context.chart;
+                      const {ctx, chartArea} = chart;
+                      if (!chartArea) return '#6366f1';
+                      const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                      gradient.addColorStop(0, '#4338ca');
+                      gradient.addColorStop(0.5, '#6366f1');
+                      gradient.addColorStop(1, '#8b5cf6');
+                      return gradient;
+                    },
+                    borderRadius: 8,
+                    borderSkipped: false,
+                  },
+                  {
+                    label: 'MVČ',
+                    data: zakazkyData.map(z => z.druh === 'MVČ' ? z.zisk : 0),
+                    backgroundColor: (context) => {
+                      const chart = context.chart;
+                      const {ctx, chartArea} = chart;
+                      if (!chartArea) return '#06b6d4';
+                      const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                      gradient.addColorStop(0, '#0891b2');
+                      gradient.addColorStop(0.5, '#06b6d4');
+                      gradient.addColorStop(1, '#67e8f9');
+                      return gradient;
+                    },
+                    borderRadius: 8,
+                    borderSkipped: false,
+                  },
+                  {
+                    label: 'Korálek',
+                    data: zakazkyData.map(z => z.druh === 'Korálek' ? z.zisk : 0),
+                    backgroundColor: (context) => {
+                      const chart = context.chart;
+                      const {ctx, chartArea} = chart;
+                      if (!chartArea) return '#10b981';
+                      const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                      gradient.addColorStop(0, '#059669');
+                      gradient.addColorStop(0.5, '#10b981');
+                      gradient.addColorStop(1, '#6ee7b7');
+                      return gradient;
+                    },
+                    borderRadius: 8,
+                    borderSkipped: false,
+                  },
+                  {
+                    label: 'Ostatní',
+                    data: zakazkyData.map(z => z.druh === 'Ostatní' ? z.zisk : 0),
+                    backgroundColor: (context) => {
+                      const chart = context.chart;
+                      const {ctx, chartArea} = chart;
+                      if (!chartArea) return '#f59e0b';
+                      const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                      gradient.addColorStop(0, '#d97706');
+                      gradient.addColorStop(0.5, '#f59e0b');
+                      gradient.addColorStop(1, '#fbbf24');
+                      return gradient;
+                    },
+                    borderRadius: 8,
+                    borderSkipped: false,
+                  }
+                ]
+              }} options={{
+                ...lineChartOptions,
+                scales: {
+                  x: {
+                    stacked: true,
+                    grid: {
+                      display: false,
+                    },
+                    ticks: {
+                      color: '#6b7280',
+                      font: {
+                        size: 11,
+                        weight: '500'
+                      }
+                    }
+                  },
+                  y: {
+                    stacked: true,
+                    grid: {
+                      color: 'rgba(107, 114, 128, 0.1)',
+                      lineWidth: 1,
+                    },
+                    ticks: {
+                      color: '#6b7280',
+                      font: {
+                        size: 11,
+                        weight: '500'
+                      },
+                      callback: function(value) {
+                        return value.toLocaleString() + ' Kč';
+                      }
+                    }
+                  }
+                },
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                      usePointStyle: true,
+                      pointStyle: 'circle',
+                      padding: 20,
+                      font: {
+                        size: 12,
+                        weight: '600'
+                      },
+                      color: '#374151'
+                    }
+                  }
+                }
+              }} />
             </div>
           </div>
 
