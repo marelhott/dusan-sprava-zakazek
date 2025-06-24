@@ -37,7 +37,7 @@ const PaintPro = () => {
   const { currentUser, getUserData, addUserOrder, editUserOrder, deleteUserOrder } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [reportPeriod, setReportPeriod] = useState('week');
-  const [filterDruhPrace, setFilterDruhPrace] = useState('');
+
   const [searchClient, setSearchClient] = useState('');
   const [filterDateFrom, setFilterDateFrom] = useState('');
   const [filterDateTo, setFilterDateTo] = useState('');
