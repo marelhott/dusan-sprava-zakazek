@@ -1403,8 +1403,6 @@ const PaintPro = () => {
         return [];
       }
 
-      console.log('getDruhyPraceData - zakazkyData:', zakazkyData);
-
       const monthlyData = {};
       
       // Agregace dat podle měsíců
@@ -1431,7 +1429,7 @@ const PaintPro = () => {
 
       const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
 
-      const result = [
+      return [
         {
           label: 'Adam',
           values: sortedData.map(item => item.Adam),
@@ -1457,9 +1455,6 @@ const PaintPro = () => {
           labels: labels
         }
       ];
-
-      console.log('getDruhyPraceData result:', result);
-      return result;
     };
 
     // Data pro hlavní finanční ukazatele (celá doba)
