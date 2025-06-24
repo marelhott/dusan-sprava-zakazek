@@ -943,9 +943,10 @@ const PaintPro = () => {
                   value={formData.druh}
                   onChange={e => setFormData({...formData, druh: e.target.value})}
                 >
-                  <option value="XY">XY</option>
-                  <option value="Malování">Malování</option>
-                  <option value="Rekonstrukce">Rekonstrukce</option>
+                  <option value="Adam">Adam</option>
+                  <option value="MVČ">MVČ</option>
+                  <option value="Korálek">Korálek</option>
+                  <option value="Ostatní">Ostatní</option>
                 </select>
               </div>
               <div className="form-group">
