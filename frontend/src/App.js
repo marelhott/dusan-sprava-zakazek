@@ -627,7 +627,21 @@ const PaintPro = () => {
             </div>
           </div>
           <div className="chart-container-large">
-            <Chart type='bar' data={getCombinedChartData()} options={combinedChartOptions} />
+            {zakazkyData.length > 0 ? (
+              <Chart type='bar' data={getCombinedChartData()} options={combinedChartOptions} />
+            ) : (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                color: 'var(--text-muted)',
+                fontSize: '16px',
+                fontWeight: '500'
+              }}>
+                📊 Přidejte zakázky pro zobrazení grafu
+              </div>
+            )}
           </div>
         </div>
 
