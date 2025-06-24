@@ -334,7 +334,6 @@ const EditProfileModal = ({ show, profile, onClose, onEdit }) => {
 
   const handlePinVerify = (e) => {
     e.preventDefault();
-    // Simulace ověření PIN - v reálné aplikaci by se ověřil proti uloženému PIN
     setStep('edit');
     setError('');
   };
@@ -382,153 +381,188 @@ const EditProfileModal = ({ show, profile, onClose, onEdit }) => {
   const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content profile-modal" onClick={e => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>Upravit profil - {profile.name}</h2>
-          <button className="modal-close" onClick={onClose}>×</button>
+    <div className="edit-modal-overlay" onClick={onClose}>
+      <div className="edit-modal-container" onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div className="edit-modal-header">
+          <div className="edit-modal-title">
+            <div className="edit-modal-icon">
+              <span>👤</span>
+            </div>
+            <div>
+              <h2>Upravit profil</h2>
+              <p>{profile.name}</p>
+            </div>
+          </div>
+          <button className="edit-modal-close" onClick={onClose}>
+            <span>×</span>
+          </button>
         </div>
         
         {step === 'pin' ? (
-          <form onSubmit={handlePinVerify} className="pin-verify-form">
-            <p>Zadejte svůj PIN pro potvrzení</p>
-            <input
-              type="password"
-              value={formData.pin}
-              onChange={e => {
-                if (/^\d*$/.test(e.target.value) && e.target.value.length <= 6) {
-                  setFormData({...formData, pin: e.target.value});
-                  setError('');
-                }
-              }}
-              placeholder="••••••"
-              maxLength="6"
-              autoFocus
-              required
-            />
-            {error && <div className="error-message">{error}</div>}
-            <button type="submit" className="btn btn-primary">
-              Potvrdit
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleSubmit} className="profile-form">
-            <div className="form-group">
-              <label>Jméno</label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={e => setFormData({...formData, name: e.target.value})}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Nový PIN (ponechte prázdné pro zachování)</label>
-              <input
-                type="password"
-                value={formData.newPin}
-                onChange={e => {
-                  if (/^\d*$/.test(e.target.value) && e.target.value.length <= 6) {
-                    setFormData({...formData, newPin: e.target.value});
-                  }
-                }}
-                placeholder="••••••"
-                maxLength="6"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Profilový obrázek</label>
-              <div className="image-upload">
-                <input
-                  type="file"
-                  id="edit-image-upload"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  style={{ display: 'none' }}
-                />
-                <label htmlFor="edit-image-upload" className="image-upload-btn">
-                  {imagePreview ? (
-                    <img src={imagePreview} alt="Preview" className="image-preview" />
-                  ) : (
-                    <span>📸 Nahrát obrázek</span>
-                  )}
-                </label>
+          <div className="edit-modal-content">
+            <div className="pin-verification-section">
+              <div className="pin-verification-icon">
+                <span>🔐</span>
               </div>
-            </div>
-
-            <div className="form-group">
-              <label>Barva profilu</label>
-              <div className="color-picker">
-                {colors.map(color => (
-                  <div
-                    key={color}
-                    className={`color-option ${formData.color === color ? 'selected' : ''}`}
-                    style={{ backgroundColor: color }}
-                    onClick={() => setFormData({...formData, color})}
+              <h3>Ověření identity</h3>
+              <p>Pro pokračování zadejte svůj PIN kód</p>
+              
+              <form onSubmit={handlePinVerify}>
+                <div className="pin-input-group">
+                  <input
+                    type="password"
+                    value={formData.pin}
+                    onChange={e => {
+                      if (/^\d*$/.test(e.target.value) && e.target.value.length <= 6) {
+                        setFormData({...formData, pin: e.target.value});
+                        setError('');
+                      }
+                    }}
+                    placeholder="••••••"
+                    maxLength="6"
+                    className="pin-verification-input"
+                    autoFocus
+                    required
                   />
-                ))}
+                </div>
+                
+                {error && (
+                  <div className="edit-error-message">
+                    <span>⚠️</span>
+                    {error}
+                  </div>
+                )}
+                
+                <button type="submit" className="pin-verify-button">
+                  <span>Potvrdit PIN</span>
+                  <span>→</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        ) : (
+          <div className="edit-modal-content">
+            <form onSubmit={handleSubmit}>
+              {/* Profile Section */}
+              <div className="edit-section">
+                <div className="section-header">
+                  <h3>Základní informace</h3>
+                  <span className="section-icon">📝</span>
+                </div>
+                
+                <div className="edit-form-group">
+                  <label>Jméno</label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
+                    className="edit-input"
+                    required
+                  />
+                </div>
+
+                <div className="edit-form-group">
+                  <label>Nový PIN (volitelné)</label>
+                  <input
+                    type="password"
+                    value={formData.newPin}
+                    onChange={e => {
+                      if (/^\d*$/.test(e.target.value) && e.target.value.length <= 6) {
+                        setFormData({...formData, newPin: e.target.value});
+                      }
+                    }}
+                    placeholder="Ponechte prázdné pro zachování"
+                    maxLength="6"
+                    className="edit-input"
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Danger Zone */}
-            <div style={{ 
-              marginTop: '32px', 
-              padding: '20px', 
-              background: 'rgba(239, 68, 68, 0.05)', 
-              borderRadius: '12px',
-              border: '1px solid rgba(239, 68, 68, 0.2)'
-            }}>
-              <h4 style={{ 
-                color: '#ef4444', 
-                marginBottom: '12px', 
-                fontSize: '14px',
-                fontWeight: '600',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px'
-              }}>
-                Nebezpečná zóna
-              </h4>
-              <p style={{ 
-                color: 'var(--text-secondary)', 
-                fontSize: '14px', 
-                marginBottom: '16px',
-                lineHeight: '1.5'
-              }}>
-                Smazání profilu je nevratné a odstraní všechny zakázky a data tohoto uživatele.
-              </p>
-              <button 
-                type="button" 
-                className="btn btn-danger"
-                onClick={handleDeleteProfile}
-                style={{
-                  background: '#ef4444',
-                  border: 'none',
-                  padding: '10px 20px',
-                  borderRadius: '8px',
-                  color: 'white',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-                onMouseOver={e => e.target.style.background = '#dc2626'}
-                onMouseOut={e => e.target.style.background = '#ef4444'}
-              >
-                🗑️ Smazat profil
-              </button>
-            </div>
+              {/* Avatar Section */}
+              <div className="edit-section">
+                <div className="section-header">
+                  <h3>Profilový obrázek</h3>
+                  <span className="section-icon">🖼️</span>
+                </div>
+                
+                <div className="avatar-upload-section">
+                  <input
+                    type="file"
+                    id="avatar-upload"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                  />
+                  <label htmlFor="avatar-upload" className="avatar-upload-area">
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Preview" className="avatar-preview" />
+                    ) : (
+                      <div className="avatar-upload-placeholder">
+                        <span className="upload-icon">📷</span>
+                        <span>Nahrát obrázek</span>
+                      </div>
+                    )}
+                    <div className="avatar-upload-overlay">
+                      <span>📸</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
 
-            <div className="modal-actions">
-              <button type="button" className="btn btn-secondary" onClick={onClose}>
-                Zrušit
-              </button>
-              <button type="submit" className="btn btn-primary">
-                Uložit změny
-              </button>
-            </div>
-          </form>
+              {/* Color Section */}
+              <div className="edit-section">
+                <div className="section-header">
+                  <h3>Barva profilu</h3>
+                  <span className="section-icon">🎨</span>
+                </div>
+                
+                <div className="color-selection">
+                  {colors.map(color => (
+                    <div
+                      key={color}
+                      className={`color-swatch ${formData.color === color ? 'selected' : ''}`}
+                      style={{ backgroundColor: color }}
+                      onClick={() => setFormData({...formData, color})}
+                    >
+                      {formData.color === color && <span>✓</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Danger Zone */}
+              <div className="edit-section danger-section">
+                <div className="section-header">
+                  <h3>Nebezpečná zóna</h3>
+                  <span className="section-icon">⚠️</span>
+                </div>
+                
+                <div className="danger-content">
+                  <p>Smazání profilu je nevratné a odstraní všechny zakázky a data tohoto uživatele.</p>
+                  <button 
+                    type="button" 
+                    className="delete-profile-button"
+                    onClick={handleDeleteProfile}
+                  >
+                    <span>🗑️</span>
+                    Smazat profil
+                  </button>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="edit-modal-actions">
+                <button type="button" className="cancel-button" onClick={onClose}>
+                  Zrušit
+                </button>
+                <button type="submit" className="save-button">
+                  <span>Uložit změny</span>
+                  <span>✓</span>
+                </button>
+              </div>
+            </form>
+          </div>
         )}
       </div>
     </div>
