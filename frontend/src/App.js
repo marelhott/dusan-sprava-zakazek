@@ -640,14 +640,16 @@ const PaintPro = () => {
                   const total = dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0);
                   const percentage = total > 0 ? Math.round((dashboardData.rozlozeniData.values[index] / total) * 100) : 0;
                   
-                  // Správné pozice podle skutečných segmentů grafu
-                  // Pořadí: Adam (největší), MVČ, Korálek, Ostatní
+                  // Pozice podle pořadí
                   const positions = [
-                    'label-top-right',    // Adam - největší segment vpravo nahoře
-                    'label-top-left',     // MVČ - segment vlevo nahoře  
-                    'label-bottom-left',  // Korálek - segment vlevo dole
-                    'label-bottom-right'  // Ostatní - malý segment vpravo dole
+                    'label-top-right',    // Adam
+                    'label-top-left',     // MVČ  
+                    'label-bottom-left',  // Korálek
+                    'label-bottom-right'  // Ostatní
                   ];
+                  
+                  // Zobrazit pouze když má hodnotu větší než 0
+                  if (dashboardData.rozlozeniData.values[index] === 0) return null;
                   
                   return (
                     <div key={label} className={`label-item ${positions[index] || 'label-top-left'}`}>
