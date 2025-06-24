@@ -669,11 +669,16 @@ const PaintPro = () => {
             </div>
             <div className="detail-row">
               <span>Největší podíl</span>
-              <span>Adam (45%)</span>
+              <span>{(() => {
+                const maxIndex = dashboardData.rozlozeniData.values.indexOf(Math.max(...dashboardData.rozlozeniData.values));
+                const total = dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0);
+                const percentage = total > 0 ? Math.round((dashboardData.rozlozeniData.values[maxIndex] / total) * 100) : 0;
+                return `${dashboardData.rozlozeniData.labels[maxIndex]} (${percentage}%)`;
+              })()}</span>
             </div>
             <div className="detail-row">
               <span>Celková suma</span>
-              <span>76 000 Kč</span>
+              <span>{dashboardData.celkovyZisk} Kč</span>
             </div>
           </div>
         </div>
