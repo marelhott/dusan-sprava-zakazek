@@ -301,6 +301,7 @@ const AddProfileModal = ({ show, onClose, onAdd }) => {
 
 // Modal pro editaci profilu
 const EditProfileModal = ({ show, profile, onClose, onEdit }) => {
+  const { deleteProfile } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     pin: '',
@@ -311,6 +312,7 @@ const EditProfileModal = ({ show, profile, onClose, onEdit }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [step, setStep] = useState('pin'); // 'pin' nebo 'edit'
   const [error, setError] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   React.useEffect(() => {
     if (profile) {
@@ -324,6 +326,7 @@ const EditProfileModal = ({ show, profile, onClose, onEdit }) => {
       setImagePreview(profile.image);
       setStep('pin');
       setError('');
+      setShowDeleteConfirm(false);
     }
   }, [profile]);
 
@@ -362,6 +365,17 @@ const EditProfileModal = ({ show, profile, onClose, onEdit }) => {
       onClose();
     } else {
       setError('Nesprávný PIN');
+    }
+  };
+
+  const handleDeleteProfile = () => {
+    if (window.confirm('Opravdu chcete smazat tento profil? Tato akce je nevratná a smažete všechna data včetně zakázek.')) {
+      const success = deleteProfile(profile.id, formData.pin);
+      if (success) {
+        onClose();
+      } else {
+        setError('Nesprávný PIN nebo nemůžete smazat poslední profil');
+      }
     }
   };
 
@@ -456,6 +470,54 @@ const EditProfileModal = ({ show, profile, onClose, onEdit }) => {
                   />
                 ))}
               </div>
+            </div>
+
+            {/* Danger Zone */}
+            <div style={{ 
+              marginTop: '32px', 
+              padding: '20px', 
+              background: 'rgba(239, 68, 68, 0.05)', 
+              borderRadius: '12px',
+              border: '1px solid rgba(239, 68, 68, 0.2)'
+            }}>
+              <h4 style={{ 
+                color: '#ef4444', 
+                marginBottom: '12px', 
+                fontSize: '14px',
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                Nebezpečná zóna
+              </h4>
+              <p style={{ 
+                color: 'var(--text-secondary)', 
+                fontSize: '14px', 
+                marginBottom: '16px',
+                lineHeight: '1.5'
+              }}>
+                Smazání profilu je nevratné a odstraní všechny zakázky a data tohoto uživatele.
+              </p>
+              <button 
+                type="button" 
+                className="btn btn-danger"
+                onClick={handleDeleteProfile}
+                style={{
+                  background: '#ef4444',
+                  border: 'none',
+                  padding: '10px 20px',
+                  borderRadius: '8px',
+                  color: 'white',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseOver={e => e.target.style.background = '#dc2626'}
+                onMouseOut={e => e.target.style.background = '#ef4444'}
+              >
+                🗑️ Smazat profil
+              </button>
             </div>
 
             <div className="modal-actions">
