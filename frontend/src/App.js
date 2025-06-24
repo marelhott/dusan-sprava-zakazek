@@ -35,6 +35,7 @@ ChartJS.register(
 
 const PaintPro = () => {
   const { currentUser, getUserData, addUserOrder, editUserOrder, deleteUserOrder } = useAuth();
+  const { currentUser, getUserData, addUserOrder, editUserOrder, deleteUserOrder } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [reportPeriod, setReportPeriod] = useState('week');
   const [filterDruhPrace, setFilterDruhPrace] = useState('');
