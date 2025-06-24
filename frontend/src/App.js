@@ -34,13 +34,45 @@ ChartJS.register(
 );
 
 const PaintPro = () => {
+  const { currentUser, getUserData, addUserOrder, editUserOrder, deleteUserOrder } = useAuth();
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [hoveredCard, setHoveredCard] = useState(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [reportPeriod, setReportPeriod] = useState('week');
+  const [filterDruhPrace, setFilterDruhPrace] = useState('');
+  const [searchClient, setSearchClient] = useState('');
+  const [filterDateFrom, setFilterDateFrom] = useState('');
+  const [filterDateTo, setFilterDateTo] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const [editingZakazka, setEditingZakazka] = useState(null);
+  const [hoveredCard, setHoveredCard] = useState(null);
 
-  // Funkce pro měsíční výkonnost
+  // Získání dat pro aktuálního uživatele
+  const [zakazkyData, setZakazkyData] = useState([]);
+
+  useEffect(() => {
+    if (currentUser) {
+      const userData = getUserData(currentUser.id);
+      setZakazkyData(userData);
+    }
+  }, [currentUser, getUserData]);
+
+  // Funkce pro přidání zakázky
+  const handleAddZakazka = (zakazkaData) => {
+    const updatedData = addUserOrder(currentUser.id, zakazkaData);
+    setZakazkyData(updatedData);
+  };
+
+  // Funkce pro editaci zakázky
+  const handleEditZakazka = (zakazkaData) => {
+    const updatedData = editUserOrder(currentUser.id, editingZakazka.id, zakazkaData);
+    setZakazkyData(updatedData);
+    setEditingZakazka(null);
+  };
+
+  // Funkce pro smazání zakázky
+  const handleDeleteZakazka = (orderId) => {
+    const updatedData = deleteUserOrder(currentUser.id, orderId);
+    setZakazkyData(updatedData);
+  };
   const getMonthlyPerformance = () => {
     const monthNames = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
     const monthlyData = {};
