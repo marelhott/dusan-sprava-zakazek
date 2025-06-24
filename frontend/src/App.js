@@ -1338,6 +1338,10 @@ const PaintPro = () => {
 
     // Data pro graf podle druhů práce (celá doba - měsíce)
     const getDruhyPraceData = () => {
+      if (zakazkyData.length === 0) {
+        return [];
+      }
+
       const monthlyData = {};
       
       // Agregace dat podle měsíců
@@ -1361,6 +1365,10 @@ const PaintPro = () => {
       const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
       const sortedData = Object.values(monthlyData)
         .sort((a, b) => a.year - b.year || a.month - b.month);
+
+      if (sortedData.length === 0) {
+        return [];
+      }
 
       const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
 
