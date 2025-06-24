@@ -107,52 +107,100 @@ const LoginScreen = () => {
           </div>
         ) : (
           // PIN zadání
-          <div className="pin-input-section">
+          <div className="pin-screen-container">
             <button 
-              className="back-button"
+              className="back-button-enhanced"
               onClick={handleBackToProfiles}
             >
-              ← Zpět
+              <span className="back-icon">←</span>
+              <span>Zpět na profily</span>
             </button>
             
-            <div className="pin-header">
-              <div 
-                className="selected-avatar"
-                style={{ backgroundColor: selectedProfile.color }}
-              >
-                {selectedProfile.image ? (
-                  <img src={selectedProfile.image} alt={selectedProfile.name} className="profile-image" />
-                ) : (
-                  selectedProfile.avatar
-                )}
+            <div className="pin-main-card">
+              {/* Avatar Section */}
+              <div className="pin-avatar-section">
+                <div className="pin-avatar-ring">
+                  <div 
+                    className="pin-selected-avatar"
+                    style={{ backgroundColor: selectedProfile.color }}
+                  >
+                    {selectedProfile.image ? (
+                      <img src={selectedProfile.image} alt={selectedProfile.name} className="pin-avatar-image" />
+                    ) : (
+                      <span className="pin-avatar-text">{selectedProfile.avatar}</span>
+                    )}
+                  </div>
+                </div>
               </div>
-              <h2>{selectedProfile.name}</h2>
-              <p>Zadejte svůj PIN</p>
-            </div>
 
-            <form onSubmit={handlePinSubmit} className="pin-form">
-              <div className="pin-input-container">
-                <input
-                  type="password"
-                  value={pin}
-                  onChange={(e) => handlePinChange(e.target.value)}
-                  placeholder="••••••"
-                  className="pin-input"
-                  maxLength="6"
-                  autoFocus
-                />
+              {/* Welcome Section */}
+              <div className="pin-welcome-section">
+                <h1 className="pin-welcome-title">Vítejte zpět!</h1>
+                <h2 className="pin-user-name">{selectedProfile.name}</h2>
+                <p className="pin-instruction">Zadejte svůj 6-místný PIN kód pro pokračování</p>
               </div>
-              
-              {error && <div className="error-message">{error}</div>}
-              
-              <button 
-                type="submit" 
-                className="login-button"
-                disabled={pin.length !== 6}
-              >
-                Přihlásit se
-              </button>
-            </form>
+
+              {/* PIN Input Section */}
+              <form onSubmit={handlePinSubmit} className="pin-form-enhanced">
+                <div className="pin-input-row">
+                  {[...Array(6)].map((_, index) => (
+                    <div key={index} className="pin-digit-container">
+                      <input
+                        type="password"
+                        value={pin[index] || ''}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (/^\d?$/.test(value)) {
+                            const newPin = pin.split('');
+                            newPin[index] = value;
+                            handlePinChange(newPin.join(''));
+                            
+                            // Auto focus next input
+                            if (value && index < 5) {
+                              const nextInput = e.target.parentElement.parentElement.children[index + 1]?.querySelector('input');
+                              if (nextInput) nextInput.focus();
+                            }
+                          }
+                        }}
+                        onKeyDown={(e) => {
+                          // Handle backspace
+                          if (e.key === 'Backspace' && !pin[index] && index > 0) {
+                            const prevInput = e.target.parentElement.parentElement.children[index - 1]?.querySelector('input');
+                            if (prevInput) prevInput.focus();
+                          }
+                        }}
+                        className="pin-digit-input"
+                        maxLength="1"
+                        autoFocus={index === 0}
+                      />
+                      <div className="pin-digit-indicator"></div>
+                    </div>
+                  ))}
+                </div>
+                
+                {error && (
+                  <div className="pin-error-card">
+                    <span className="error-icon">⚠️</span>
+                    <span className="error-text">{error}</span>
+                  </div>
+                )}
+                
+                <button 
+                  type="submit" 
+                  className="pin-login-button"
+                  disabled={pin.length !== 6}
+                >
+                  <span className="login-text">Přihlásit se</span>
+                  <span className="login-arrow">→</span>
+                </button>
+              </form>
+
+              {/* Security Note */}
+              <div className="pin-security-note">
+                <span className="security-icon">🔒</span>
+                <span>Vaše data jsou chráněna end-to-end šifrováním</span>
+              </div>
+            </div>
           </div>
         )}
       </div>
