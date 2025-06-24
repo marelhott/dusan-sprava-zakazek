@@ -223,19 +223,17 @@ const PaintPro = () => {
 
   // Aktualizovaná data pro kombinovaný graf
   const getCombinedChartData = () => {
-    const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer'];
-    const monthlyData = [];
-    const yearlyData = [];
+    // Pokud nejsou žádné zakázky, vrať prázdný graf
+    if (zakazkyData.length === 0) {
+      return {
+        labels: [],
+        datasets: []
+      };
+    }
 
-    months.forEach((month, index) => {
-      // Měsíční data (simulovaná na základě skutečných dat)
-      const monthValue = dashboardData.mesicniData.values[index] || 0;
-      monthlyData.push(monthValue);
-      
-      // Roční data (vyšší hodnoty pro trend)
-      const yearValue = monthValue * 1.5 + (index * 2000);
-      yearlyData.push(yearValue);
-    });
+    const months = dashboardData.mesicniData.labels;
+    const monthlyData = dashboardData.mesicniData.values;
+    const yearlyData = monthlyData.map((val, idx) => val * 1.2 + (idx * 100));
 
     return {
       labels: months,
