@@ -2243,12 +2243,35 @@ const PaintPro = () => {
         <div className="chart-card-full">
           <div className="chart-header">
             <div>
-              <h3>TOP KLIENTI PODLE VÝKONNOSTI</h3>
-              <div className="chart-subtitle">Celkový zisk podle klientů</div>
+              <h3>PŘEHLED ZAKÁZEK</h3>
+              <div className="chart-subtitle">Zisk podle jednotlivých zakázek</div>
             </div>
           </div>
           <div className="chart-container-large">
-            <Bar key="top-clients-chart" data={getTopClientsData()} options={lineChartOptions} />
+            <Bar data={{
+              labels: zakazkyData.map((z, index) => `${z.nazev || `Zakázka ${index + 1}`}`),
+              datasets: [{
+                label: 'Zisk (Kč)',
+                data: zakazkyData.map(z => z.zisk),
+                backgroundColor: zakazkyData.map((z, index) => [
+                  'rgba(79, 70, 229, 0.8)',
+                  'rgba(16, 185, 129, 0.8)', 
+                  'rgba(245, 158, 11, 0.8)',
+                  'rgba(139, 92, 246, 0.8)',
+                  'rgba(239, 68, 68, 0.8)',
+                  'rgba(34, 197, 94, 0.8)'
+                ][index % 6]),
+                borderColor: zakazkyData.map((z, index) => [
+                  'rgba(79, 70, 229, 1)',
+                  'rgba(16, 185, 129, 1)',
+                  'rgba(245, 158, 11, 1)', 
+                  'rgba(139, 92, 246, 1)',
+                  'rgba(239, 68, 68, 1)',
+                  'rgba(34, 197, 94, 1)'
+                ][index % 6]),
+                borderWidth: 1,
+              }]
+            }} options={lineChartOptions} />
           </div>
         </div>
 
