@@ -174,9 +174,7 @@ const PaintPro = () => {
 
   // Funkce pro přidání zakázky
   const addZakazka = (newZakazka) => {
-    const id = Math.max(...zakazkyData.map(z => z.id)) + 1;
-    const zisk = newZakazka.castka - newZakazka.fee - newZakazka.material - newZakazka.pomocnik - newZakazka.palivo;
-    setZakazkyData([...zakazkyData, { ...newZakazka, id, zisk, soubory: [] }]);
+    handleAddZakazka(newZakazka);
     setShowAddModal(false);
   };
 
