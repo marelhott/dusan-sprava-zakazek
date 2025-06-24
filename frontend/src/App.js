@@ -2132,7 +2132,7 @@ const PaintPro = () => {
               <div className="chart-value-small green">{allPeriods.month.celkoveTrzby.toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              {allPeriods.month.pocetZakazek > 0 ? (
+              {getMainFinancialDataLastMonth().length > 0 ? (
                 <Line key="main-month-chart" data={createMultiLineChartData(getMainFinancialDataLastMonth())} options={lineChartOptions} />
               ) : (
                 <div style={{
@@ -2144,7 +2144,7 @@ const PaintPro = () => {
                   fontSize: '14px',
                   fontWeight: '500'
                 }}>
-                  📊 Žádná data
+                  📊 Žádná data z posledního měsíce
                 </div>
               )}
             </div>
@@ -2156,7 +2156,7 @@ const PaintPro = () => {
               <div className="chart-value-small orange">{zakazkyData.reduce((sum, z) => sum + z.fee + z.pomocnik + z.material + z.palivo, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              {zakazkyData.length > 0 ? (
+              {getCostsData().length > 0 ? (
                 <Line key="costs-chart" data={createMultiLineChartData(getCostsData())} options={lineChartOptions} />
               ) : (
                 <div style={{
@@ -2180,7 +2180,7 @@ const PaintPro = () => {
               <div className="chart-value-small purple">{zakazkyData.reduce((sum, z) => sum + z.zisk, 0).toLocaleString()} Kč</div>
             </div>
             <div className="chart-container-small">
-              {zakazkyData.length > 0 ? (
+              {getDruhyPraceData().length > 0 ? (
                 <Line key="work-types-chart" data={createMultiLineChartData(getDruhyPraceData())} options={lineChartOptions} />
               ) : (
                 <div style={{
