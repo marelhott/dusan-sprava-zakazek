@@ -3441,6 +3441,13 @@ body::after {
   box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
 }
 
+/* Helper Classes */
+.green { color: var(--accent-green); }
+.blue { color: var(--accent-blue); }
+.purple { color: var(--accent-purple); }
+.orange { color: var(--accent-orange); }
+.red { color: var(--accent-red); }
+
 /* Responsive */
 @media (max-width: 1024px) {
   .sidebar {
