@@ -264,84 +264,178 @@ const AddProfileModal = ({ show, onClose, onAdd }) => {
   const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content profile-modal" onClick={e => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2>Přidat nový profil</h2>
-          <button className="modal-close" onClick={onClose}>×</button>
+    <div className="add-modal-overlay" onClick={onClose}>
+      <div className="add-modal-container" onClick={e => e.stopPropagation()}>
+        {/* Header */}
+        <div className="add-modal-header">
+          <div className="add-modal-title">
+            <div className="add-modal-icon">
+              <span>👤</span>
+              <div className="icon-plus">+</div>
+            </div>
+            <div>
+              <h2>Nový profil</h2>
+              <p>Vytvořte si vlastní účet</p>
+            </div>
+          </div>
+          <button className="add-modal-close" onClick={onClose}>
+            <span>×</span>
+          </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="profile-form">
-          <div className="form-group">
-            <label>Jméno *</label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={e => setFormData({...formData, name: e.target.value})}
-              placeholder="Zadejte jméno"
-              required
-            />
-          </div>
+        <div className="add-modal-content">
+          <form onSubmit={handleSubmit}>
+            {/* Basic Info Section */}
+            <div className="add-section">
+              <div className="add-section-header">
+                <h3>📝 Základní informace</h3>
+                <div className="section-line"></div>
+              </div>
+              
+              <div className="add-form-group">
+                <label>Jméno profilu</label>
+                <div className="input-wrapper">
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={e => setFormData({...formData, name: e.target.value})}
+                    placeholder="Zadejte své jméno"
+                    className="add-input"
+                    required
+                  />
+                  <div className="input-focus-line"></div>
+                </div>
+              </div>
 
-          <div className="form-group">
-            <label>PIN (6 číslic) *</label>
-            <input
-              type="password"
-              value={formData.pin}
-              onChange={e => {
-                if (/^\d*$/.test(e.target.value) && e.target.value.length <= 6) {
-                  setFormData({...formData, pin: e.target.value});
-                }
-              }}
-              placeholder="••••••"
-              maxLength="6"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Profilový obrázek</label>
-            <div className="image-upload">
-              <input
-                type="file"
-                id="image-upload"
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: 'none' }}
-              />
-              <label htmlFor="image-upload" className="image-upload-btn">
-                {imagePreview ? (
-                  <img src={imagePreview} alt="Preview" className="image-preview" />
-                ) : (
-                  <span>📸 Nahrát obrázek</span>
-                )}
-              </label>
+              <div className="add-form-group">
+                <label>Bezpečnostní PIN (6 číslic)</label>
+                <div className="input-wrapper">
+                  <input
+                    type="password"
+                    value={formData.pin}
+                    onChange={e => {
+                      if (/^\d*$/.test(e.target.value) && e.target.value.length <= 6) {
+                        setFormData({...formData, pin: e.target.value});
+                      }
+                    }}
+                    placeholder="••••••"
+                    maxLength="6"
+                    className="add-input pin-input"
+                    required
+                  />
+                  <div className="input-focus-line"></div>
+                  <div className="pin-strength">
+                    {[...Array(6)].map((_, i) => (
+                      <div key={i} className={`pin-dot ${i < formData.pin.length ? 'filled' : ''}`}></div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="form-group">
-            <label>Barva profilu</label>
-            <div className="color-picker">
-              {colors.map(color => (
-                <div
-                  key={color}
-                  className={`color-option ${formData.color === color ? 'selected' : ''}`}
-                  style={{ backgroundColor: color }}
-                  onClick={() => setFormData({...formData, color})}
+            {/* Avatar Section */}
+            <div className="add-section">
+              <div className="add-section-header">
+                <h3>🖼️ Profilový obrázek</h3>
+                <div className="section-line"></div>
+              </div>
+              
+              <div className="add-avatar-section">
+                <input
+                  type="file"
+                  id="add-avatar-upload"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  style={{ display: 'none' }}
                 />
-              ))}
+                <label htmlFor="add-avatar-upload" className="add-avatar-upload">
+                  {imagePreview ? (
+                    <img src={imagePreview} alt="Preview" className="add-avatar-preview" />
+                  ) : (
+                    <div className="add-avatar-placeholder">
+                      <div className="upload-circle">
+                        <span className="upload-icon">📷</span>
+                      </div>
+                      <span className="upload-text">Klikněte pro nahrání</span>
+                      <span className="upload-subtitle">nebo přetáhněte obrázek</span>
+                    </div>
+                  )}
+                  <div className="add-avatar-overlay">
+                    <span>📸</span>
+                  </div>
+                </label>
+              </div>
             </div>
-          </div>
 
-          <div className="modal-actions">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>
-              Zrušit
-            </button>
-            <button type="submit" className="btn btn-primary">
-              Vytvořit profil
-            </button>
-          </div>
-        </form>
+            {/* Color Section */}
+            <div className="add-section">
+              <div className="add-section-header">
+                <h3>🎨 Barva profilu</h3>
+                <div className="section-line"></div>
+              </div>
+              
+              <div className="add-color-grid">
+                {colors.map((color, index) => (
+                  <div
+                    key={color}
+                    className={`add-color-option ${formData.color === color ? 'selected' : ''}`}
+                    style={{ backgroundColor: color }}
+                    onClick={() => setFormData({...formData, color})}
+                  >
+                    <div className="color-inner">
+                      {formData.color === color && (
+                        <span className="color-check">✓</span>
+                      )}
+                    </div>
+                    <div className="color-ripple"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Preview Section */}
+            <div className="add-section preview-section">
+              <div className="add-section-header">
+                <h3>👀 Náhled profilu</h3>
+                <div className="section-line"></div>
+              </div>
+              
+              <div className="profile-preview">
+                <div 
+                  className="preview-avatar"
+                  style={{ backgroundColor: formData.color }}
+                >
+                  {imagePreview ? (
+                    <img src={imagePreview} alt="Preview" />
+                  ) : (
+                    <span>{formData.name ? formData.name.charAt(0).toUpperCase() : '?'}</span>
+                  )}
+                </div>
+                <div className="preview-info">
+                  <div className="preview-name">{formData.name || 'Jméno profilu'}</div>
+                  <div className="preview-status">
+                    {formData.pin.length === 6 ? '🔐 PIN nastaven' : '🔓 PIN nenastaven'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="add-modal-actions">
+              <button type="button" className="add-cancel-button" onClick={onClose}>
+                <span>Zrušit</span>
+              </button>
+              <button 
+                type="submit" 
+                className="add-create-button"
+                disabled={!formData.name || formData.pin.length !== 6}
+              >
+                <span>Vytvořit profil</span>
+                <span>✨</span>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
