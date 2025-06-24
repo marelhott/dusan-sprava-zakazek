@@ -902,11 +902,10 @@ const PaintPro = () => {
         castka: Number(formData.castka),
         fee: Number(formData.fee),
         material: Number(formData.material),
-        pomucka: Number(formData.pomucka),
+        pomocnik: Number(formData.pomocnik),
         palivo: Number(formData.palivo)
       };
-      setZakazkyData(zakazkyData.map(z => z.id === processedData.id ? processedData : z));
-      setShowEditModal(false);
+      handleEditZakazka(processedData);
     };
 
     if (!showEditModal || !editingZakazka) return null;
