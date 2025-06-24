@@ -2198,4 +2198,36 @@ const PaintPro = () => {
   );
 };
 
-export default PaintPro;
+// Auth-protected app wrapper
+const AuthenticatedApp = () => {
+  const { currentUser, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="login-screen">
+        <div className="login-container">
+          <div style={{ textAlign: 'center', color: 'var(--text-primary)' }}>
+            Načítání...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return <LoginScreen />;
+  }
+
+  return <PaintPro />;
+};
+
+// Main App with Auth Provider
+const App = () => {
+  return (
+    <AuthProvider>
+      <AuthenticatedApp />
+    </AuthProvider>
+  );
+};
+
+export default App;
