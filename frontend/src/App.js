@@ -1310,8 +1310,11 @@ const PaintPro = () => {
 
     // Vytvoření multi-line chart dat
     const createMultiLineChartData = (datasets) => {
+      console.log('createMultiLineChartData input:', datasets);
+      
       // Pokud nejsou žádné datasety, vytvoř prázdný graf
       if (!datasets || datasets.length === 0) {
+        console.log('No datasets, returning empty chart');
         return {
           labels: ['Žádná data'],
           datasets: [{
@@ -1327,8 +1330,8 @@ const PaintPro = () => {
         };
       }
 
-      return {
-        labels: datasets[0].labels, // Všechny datasety by měly mít stejné labely
+      const result = {
+        labels: datasets[0].labels,
         datasets: datasets.map(dataset => ({
           label: dataset.label,
           data: dataset.values,
@@ -1351,6 +1354,9 @@ const PaintPro = () => {
           borderWidth: 2,
         }))
       };
+
+      console.log('createMultiLineChartData result:', result);
+      return result;
     };
 
     // Data pro graf podle druhů práce (celá doba - měsíce)
