@@ -457,50 +457,70 @@ const PaintPro = () => {
     </div>
   );
 
-  const Sidebar = () => (
-    <div className="sidebar">
-      <div className="sidebar-header">
-        <div className="logo">
-          <div className="modern-icon size-medium icon-dashboard"></div>
-          <div className="logo-text">
-            <div className="logo-title">PaintPro</div>
-            <div className="logo-subtitle">Project Manager</div>
+  const Sidebar = () => {
+    const { currentUser, logout } = useAuth();
+    
+    return (
+      <div className="sidebar">
+        <div className="sidebar-header">
+          <div className="logo">
+            <div className="modern-icon size-medium icon-dashboard"></div>
+            <div className="logo-text">
+              <div className="logo-title">PaintPro</div>
+              <div className="logo-subtitle">Project Manager</div>
+            </div>
           </div>
+          {currentUser && (
+            <div className="user-info">
+              <div 
+                className="user-avatar"
+                style={{ backgroundColor: currentUser.color }}
+              >
+                {currentUser.avatar}
+              </div>
+              <div className="user-details">
+                <div className="user-name">{currentUser.name}</div>
+                <button className="logout-btn" onClick={logout}>
+                  Odhlásit se
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+        
+        <nav className="sidebar-nav">
+          <div
+            className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <div className="modern-icon icon-dashboard"></div>
+            Dashboard
+          </div>
+          <div
+            className={`nav-item ${activeTab === 'zakazky' ? 'active' : ''}`}
+            onClick={() => setActiveTab('zakazky')}
+          >
+            <div className="modern-icon icon-orders"></div>
+            Zakázky
+          </div>
+          <div
+            className={`nav-item ${activeTab === 'reporty' ? 'active' : ''}`}
+            onClick={() => setActiveTab('reporty')}
+          >
+            <div className="modern-icon icon-reports"></div>
+            Reporty
+          </div>
+          <div
+            className={`nav-item ${activeTab === 'nastaveni' ? 'active' : ''}`}
+            onClick={() => setActiveTab('nastaveni')}
+          >
+            <div className="modern-icon icon-settings"></div>
+            Nastavení
+          </div>
+        </nav>
       </div>
-      
-      <nav className="sidebar-nav">
-        <div
-          className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setActiveTab('dashboard')}
-        >
-          <div className="modern-icon icon-dashboard"></div>
-          Dashboard
-        </div>
-        <div
-          className={`nav-item ${activeTab === 'zakazky' ? 'active' : ''}`}
-          onClick={() => setActiveTab('zakazky')}
-        >
-          <div className="modern-icon icon-orders"></div>
-          Zakázky
-        </div>
-        <div
-          className={`nav-item ${activeTab === 'reporty' ? 'active' : ''}`}
-          onClick={() => setActiveTab('reporty')}
-        >
-          <div className="modern-icon icon-reports"></div>
-          Reporty
-        </div>
-        <div
-          className={`nav-item ${activeTab === 'nastaveni' ? 'active' : ''}`}
-          onClick={() => setActiveTab('nastaveni')}
-        >
-          <div className="modern-icon icon-settings"></div>
-          Nastavení
-        </div>
-      </nav>
-    </div>
-  );
+    );
+  };
 
   const Dashboard = () => (
     <div className="dashboard">
