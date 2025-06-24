@@ -1460,27 +1460,35 @@ const PaintPro = () => {
 
     // Data pro hlavní finanční ukazatele (poslední měsíc)
     const getMainFinancialDataLastMonth = () => {
+      if (zakazkyData.length === 0) {
+        return [];
+      }
+
       const now = new Date();
       const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
       
       const dailyData = {};
       
-      zakazkyData
-        .filter(z => {
-          const date = new Date(z.datum.split('. ').reverse().join('-'));
-          return date >= monthAgo;
-        })
-        .forEach(z => {
-          const date = new Date(z.datum.split('. ').reverse().join('-'));
-          const key = date.toISOString().split('T')[0];
-          
-          if (!dailyData[key]) {
-            dailyData[key] = { trzby: 0, zisk: 0, cistyZisk: 0, date: date };
-          }
-          dailyData[key].trzby += z.castka;
-          dailyData[key].zisk += z.zisk;
-          dailyData[key].cistyZisk += (z.castka - z.fee);
-        });
+      const lastMonthData = zakazkyData.filter(z => {
+        const date = new Date(z.datum.split('. ').reverse().join('-'));
+        return date >= monthAgo;
+      });
+
+      if (lastMonthData.length === 0) {
+        return [];
+      }
+
+      lastMonthData.forEach(z => {
+        const date = new Date(z.datum.split('. ').reverse().join('-'));
+        const key = date.toISOString().split('T')[0];
+        
+        if (!dailyData[key]) {
+          dailyData[key] = { trzby: 0, zisk: 0, cistyZisk: 0, date: date };
+        }
+        dailyData[key].trzby += z.castka;
+        dailyData[key].zisk += z.zisk;
+        dailyData[key].cistyZisk += (z.castka - z.fee);
+      });
 
       const sortedData = Object.values(dailyData)
         .sort((a, b) => a.date - b.date);
@@ -1511,6 +1519,10 @@ const PaintPro = () => {
 
     // Data pro náklady (celá doba)
     const getCostsData = () => {
+      if (zakazkyData.length === 0) {
+        return [];
+      }
+
       const monthlyData = {};
       
       zakazkyData.forEach(z => {
@@ -1536,6 +1548,10 @@ const PaintPro = () => {
       const months = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
       const sortedData = Object.values(monthlyData)
         .sort((a, b) => a.year - b.year || a.month - b.month);
+
+      if (sortedData.length === 0) {
+        return [];
+      }
 
       const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
 
