@@ -243,6 +243,11 @@ export const AuthProvider = ({ children }) => {
     addProfile,
     editProfile,
     deleteProfile,
+    getUserData,
+    saveUserData,
+    addUserOrder,
+    editUserOrder,
+    deleteUserOrder,
     isAuthenticated: !!currentUser
   };
 
