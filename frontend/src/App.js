@@ -143,37 +143,49 @@ const PaintPro = () => {
   };
   const [selectedPeriod, setSelectedPeriod] = useState('all');
 
-  // Dynamicky počítané dashboard data
+  // Dynamicky počítané dashboard data - POUZE z zakazkyData
   const dashboardData = React.useMemo(() => {
     const celkoveTrzby = zakazkyData.reduce((sum, z) => sum + z.castka, 0);
     const celkovyZisk = zakazkyData.reduce((sum, z) => sum + z.zisk, 0);
     const pocetZakazek = zakazkyData.length;
     const prumernyZisk = pocetZakazek > 0 ? Math.round(celkovyZisk / pocetZakazek) : 0;
 
-    // Dynamické měsíční data na základě skutečných zakázek
-    const monthlyData = {};
+    // Reálné měsíční data pouze z zakázek uživatele
+    const monthlyDataMap = {};
+    
+    zakazkyData.forEach(zakazka => {
+      // Parse český formát datumu DD. MM. YYYY
+      const dateParts = zakazka.datum.split('. ');
+      const day = parseInt(dateParts[0]);
+      const month = parseInt(dateParts[1]) - 1; // JavaScript měsíce jsou 0-based
+      const year = parseInt(dateParts[2]);
+      const date = new Date(year, month, day);
+      
+      const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+      
+      if (!monthlyDataMap[monthKey]) {
+        monthlyDataMap[monthKey] = {
+          revenue: 0,
+          month: month,
+          year: year
+        };
+      }
+      monthlyDataMap[monthKey].revenue += zakazka.zisk;
+    });
+
+    // Seřaď měsíce chronologicky a vezmi posledních 6
+    const sortedMonths = Object.keys(monthlyDataMap)
+      .sort()
+      .slice(-6);
+
     const monthNames = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
     
-    // Inicializace měsíců
-    for (let i = 0; i < 12; i++) {
-      const key = `2025-${String(i + 1).padStart(2, '0')}`;
-      monthlyData[key] = { revenue: 0, month: i };
-    }
-    
-    // Agregace dat ze zakázek
-    zakazkyData.forEach(zakazka => {
-      const date = new Date(zakazka.datum.split('. ').reverse().join('-'));
-      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      if (monthlyData[key]) {
-        monthlyData[key].revenue += zakazka.zisk;
-      }
+    const mesicniLabels = sortedMonths.map(key => {
+      const data = monthlyDataMap[key];
+      return monthNames[data.month];
     });
     
-    // Posledních 6 měsíců s daty
-    const mesicniValues = Object.keys(monthlyData)
-      .sort()
-      .slice(-6)
-      .map(key => monthlyData[key].revenue);
+    const mesicniValues = sortedMonths.map(key => monthlyDataMap[key].revenue);
 
     return {
       celkoveTrzby: celkoveTrzby.toLocaleString(),
@@ -181,10 +193,7 @@ const PaintPro = () => {
       pocetZakazek: pocetZakazek.toString(),
       prumernyZisk: prumernyZisk.toLocaleString(),
       mesicniData: {
-        labels: Object.keys(monthlyData)
-          .sort()
-          .slice(-6)
-          .map(key => monthNames[monthlyData[key].month]),
+        labels: mesicniLabels,
         values: mesicniValues
       },
       rozlozeniData: {
