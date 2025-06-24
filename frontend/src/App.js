@@ -2337,35 +2337,216 @@ const PaintPro = () => {
         <div className="chart-card-full">
           <div className="chart-header">
             <div>
-              <h3>PŘEHLED ZAKÁZEK</h3>
-              <div className="chart-subtitle">Zisk podle jednotlivých zakázek</div>
+              <h3>PŘEHLED ZAKÁZEK PODLE MĚSÍCŮ</h3>
+              <div className="chart-subtitle">Stohovaný zisk podle druhů práce a měsíců</div>
             </div>
           </div>
           <div className="chart-container-large">
             <Bar data={{
-              labels: zakazkyData.map((z, index) => `${z.nazev || `Zakázka ${index + 1}`}`),
-              datasets: [{
-                label: 'Zisk (Kč)',
-                data: zakazkyData.map(z => z.zisk),
-                backgroundColor: zakazkyData.map((z, index) => [
-                  'rgba(79, 70, 229, 0.8)',
-                  'rgba(16, 185, 129, 0.8)', 
-                  'rgba(245, 158, 11, 0.8)',
-                  'rgba(139, 92, 246, 0.8)',
-                  'rgba(239, 68, 68, 0.8)',
-                  'rgba(34, 197, 94, 0.8)'
-                ][index % 6]),
-                borderColor: zakazkyData.map((z, index) => [
-                  'rgba(79, 70, 229, 1)',
-                  'rgba(16, 185, 129, 1)',
-                  'rgba(245, 158, 11, 1)', 
-                  'rgba(139, 92, 246, 1)',
-                  'rgba(239, 68, 68, 1)',
-                  'rgba(34, 197, 94, 1)'
-                ][index % 6]),
-                borderWidth: 1,
-              }]
-            }} options={lineChartOptions} />
+              labels: (() => {
+                const monthlyLabels = {};
+                zakazkyData.forEach(z => {
+                  const dateParts = z.datum.split('.');
+                  const monthKey = `${dateParts[1]}/${dateParts[2]}`;
+                  monthlyLabels[monthKey] = true;
+                });
+                return Object.keys(monthlyLabels).sort();
+              })(),
+              datasets: [
+                {
+                  label: 'Adam',
+                  data: (() => {
+                    const monthlyData = {};
+                    zakazkyData.forEach(z => {
+                      const dateParts = z.datum.split('.');
+                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
+                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
+                      if (z.druh === 'Adam') monthlyData[monthKey] += z.zisk;
+                    });
+                    const monthlyLabels = Object.keys(monthlyData).sort();
+                    return monthlyLabels.map(month => monthlyData[month] || 0);
+                  })(),
+                  backgroundColor: (context) => {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) return '#6366f1';
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    gradient.addColorStop(0, '#4338ca');
+                    gradient.addColorStop(0.3, '#6366f1');
+                    gradient.addColorStop(0.7, '#8b5cf6');
+                    gradient.addColorStop(1, '#a855f7');
+                    return gradient;
+                  },
+                  borderRadius: {
+                    topLeft: 8,
+                    topRight: 8,
+                  },
+                  borderSkipped: false,
+                  barThickness: 32,
+                },
+                {
+                  label: 'MVČ',
+                  data: (() => {
+                    const monthlyData = {};
+                    zakazkyData.forEach(z => {
+                      const dateParts = z.datum.split('.');
+                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
+                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
+                      if (z.druh === 'MVČ') monthlyData[monthKey] += z.zisk;
+                    });
+                    const monthlyLabels = Object.keys(monthlyData).sort();
+                    return monthlyLabels.map(month => monthlyData[month] || 0);
+                  })(),
+                  backgroundColor: (context) => {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) return '#06b6d4';
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    gradient.addColorStop(0, '#0891b2');
+                    gradient.addColorStop(0.3, '#06b6d4');
+                    gradient.addColorStop(0.7, '#22d3ee');
+                    gradient.addColorStop(1, '#67e8f9');
+                    return gradient;
+                  },
+                  borderRadius: {
+                    topLeft: 8,
+                    topRight: 8,
+                  },
+                  borderSkipped: false,
+                  barThickness: 32,
+                },
+                {
+                  label: 'Korálek',
+                  data: (() => {
+                    const monthlyData = {};
+                    zakazkyData.forEach(z => {
+                      const dateParts = z.datum.split('.');
+                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
+                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
+                      if (z.druh === 'Korálek') monthlyData[monthKey] += z.zisk;
+                    });
+                    const monthlyLabels = Object.keys(monthlyData).sort();
+                    return monthlyLabels.map(month => monthlyData[month] || 0);
+                  })(),
+                  backgroundColor: (context) => {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) return '#10b981';
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    gradient.addColorStop(0, '#059669');
+                    gradient.addColorStop(0.3, '#10b981');
+                    gradient.addColorStop(0.7, '#34d399');
+                    gradient.addColorStop(1, '#6ee7b7');
+                    return gradient;
+                  },
+                  borderRadius: {
+                    topLeft: 8,
+                    topRight: 8,
+                  },
+                  borderSkipped: false,
+                  barThickness: 32,
+                },
+                {
+                  label: 'Ostatní',
+                  data: (() => {
+                    const monthlyData = {};
+                    zakazkyData.forEach(z => {
+                      const dateParts = z.datum.split('.');
+                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
+                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
+                      if (z.druh === 'Ostatní') monthlyData[monthKey] += z.zisk;
+                    });
+                    const monthlyLabels = Object.keys(monthlyData).sort();
+                    return monthlyLabels.map(month => monthlyData[month] || 0);
+                  })(),
+                  backgroundColor: (context) => {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) return '#f59e0b';
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    gradient.addColorStop(0, '#d97706');
+                    gradient.addColorStop(0.3, '#f59e0b');
+                    gradient.addColorStop(0.7, '#fbbf24');
+                    gradient.addColorStop(1, '#fcd34d');
+                    return gradient;
+                  },
+                  borderRadius: {
+                    topLeft: 8,
+                    topRight: 8,
+                  },
+                  borderSkipped: false,
+                  barThickness: 32,
+                }
+              ]
+            }} options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  stacked: true,
+                  grid: {
+                    display: false,
+                  },
+                  ticks: {
+                    color: '#6b7280',
+                    font: {
+                      size: 12,
+                      weight: '600'
+                    }
+                  }
+                },
+                y: {
+                  stacked: true,
+                  grid: {
+                    color: 'rgba(107, 114, 128, 0.08)',
+                    lineWidth: 1,
+                  },
+                  ticks: {
+                    color: '#6b7280',
+                    font: {
+                      size: 12,
+                      weight: '500'
+                    },
+                    callback: function(value) {
+                      return value.toLocaleString() + ' Kč';
+                    }
+                  },
+                  border: {
+                    display: false
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  labels: {
+                    usePointStyle: true,
+                    pointStyle: 'circle',
+                    padding: 25,
+                    font: {
+                      size: 13,
+                      weight: '600'
+                    },
+                    color: '#374151'
+                  }
+                },
+                tooltip: {
+                  backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                  titleColor: '#f9fafb',
+                  bodyColor: '#f9fafb',
+                  borderColor: 'rgba(107, 114, 128, 0.2)',
+                  borderWidth: 1,
+                  cornerRadius: 12,
+                  displayColors: true,
+                  callbacks: {
+                    label: function(context) {
+                      return `${context.dataset.label}: ${context.parsed.y.toLocaleString()} Kč`;
+                    }
+                  }
+                }
+              }
+            }} />
           </div>
         </div>
 
