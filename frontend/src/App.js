@@ -187,7 +187,7 @@ const PaintPro = () => {
   // Funkce pro smazání zakázky
   const deleteZakazka = (id) => {
     if (window.confirm('Opravdu chcete smazat tuto zakázku?')) {
-      setZakazkyData(zakazkyData.filter(z => z.id !== id));
+      handleDeleteZakazka(id);
     }
   };
 
