@@ -405,7 +405,7 @@ const PaintPro = () => {
         rotation: -90,
         circumference: 360,
         spacing: 2,
-        borderRadius: 8, // Kulaté rohy sekcí
+        borderRadius: 8,
         borderSkipped: false,
       }
     ]
