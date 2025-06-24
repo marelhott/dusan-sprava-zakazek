@@ -1548,10 +1548,6 @@ const PaintPro = () => {
       const sortedData = Object.values(monthlyData)
         .sort((a, b) => a.year - b.year || a.month - b.month);
 
-      if (sortedData.length === 0) {
-        return [];
-      }
-
       const labels = sortedData.map(item => `${months[item.month]} ${item.year}`);
 
       return [
