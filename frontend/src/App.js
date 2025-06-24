@@ -148,7 +148,32 @@ const PaintPro = () => {
     const celkoveTrzby = zakazkyData.reduce((sum, z) => sum + z.castka, 0);
     const celkovyZisk = zakazkyData.reduce((sum, z) => sum + z.zisk, 0);
     const pocetZakazek = zakazkyData.length;
-    const prumernyZisk = Math.round(celkovyZisk / pocetZakazek);
+    const prumernyZisk = pocetZakazek > 0 ? Math.round(celkovyZisk / pocetZakazek) : 0;
+
+    // Dynamické měsíční data na základě skutečných zakázek
+    const monthlyData = {};
+    const monthNames = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
+    
+    // Inicializace měsíců
+    for (let i = 0; i < 12; i++) {
+      const key = `2025-${String(i + 1).padStart(2, '0')}`;
+      monthlyData[key] = { revenue: 0, month: i };
+    }
+    
+    // Agregace dat ze zakázek
+    zakazkyData.forEach(zakazka => {
+      const date = new Date(zakazka.datum.split('. ').reverse().join('-'));
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      if (monthlyData[key]) {
+        monthlyData[key].revenue += zakazka.zisk;
+      }
+    });
+    
+    // Posledních 6 měsíců s daty
+    const mesicniValues = Object.keys(monthlyData)
+      .sort()
+      .slice(-6)
+      .map(key => monthlyData[key].revenue);
 
     return {
       celkoveTrzby: celkoveTrzby.toLocaleString(),
@@ -156,8 +181,11 @@ const PaintPro = () => {
       pocetZakazek: pocetZakazek.toString(),
       prumernyZisk: prumernyZisk.toLocaleString(),
       mesicniData: {
-        labels: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer'],
-        values: [8657, 4016, 2938, 19732, 11560, 11400]
+        labels: Object.keys(monthlyData)
+          .sort()
+          .slice(-6)
+          .map(key => monthNames[monthlyData[key].month]),
+        values: mesicniValues
       },
       rozlozeniData: {
         labels: ['Adam', 'MVČ', 'Korálek', 'Ostatní'],
