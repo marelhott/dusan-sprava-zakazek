@@ -2533,9 +2533,10 @@ body::after {
   padding: 12px 16px;
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  background: var(--surface-bg);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e293b;
   font-size: 14px;
+  font-weight: 500;
   transition: all 0.2s;
 }
 
@@ -2545,6 +2546,12 @@ body::after {
   outline: none;
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  background: rgba(255, 255, 255, 1);
+}
+
+.form-group input::placeholder {
+  color: #64748b;
+  font-weight: 400;
 }
 
 .security-note {
