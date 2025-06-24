@@ -1310,10 +1310,20 @@ const PaintPro = () => {
 
     // Vytvoření multi-line chart dat
     const createMultiLineChartData = (datasets) => {
+      // Pokud nejsou žádné datasety, vytvoř prázdný graf
       if (!datasets || datasets.length === 0) {
         return {
-          labels: [],
-          datasets: []
+          labels: ['Žádná data'],
+          datasets: [{
+            label: 'Žádná data',
+            data: [0],
+            borderColor: 'rgba(156, 163, 175, 0.5)',
+            backgroundColor: 'rgba(156, 163, 175, 0.1)',
+            fill: false,
+            tension: 0,
+            pointRadius: 0,
+            borderWidth: 1,
+          }]
         };
       }
 
