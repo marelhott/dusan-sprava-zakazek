@@ -1459,10 +1459,6 @@ const PaintPro = () => {
 
     // Data pro hlavní finanční ukazatele (poslední měsíc)
     const getMainFinancialDataLastMonth = () => {
-      if (zakazkyData.length === 0) {
-        return [];
-      }
-
       const now = new Date();
       const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
       
