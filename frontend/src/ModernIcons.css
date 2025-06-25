@@ -139,8 +139,29 @@
   content: "⚙️";
 }
 
+/* Map Icon - CSS Based Design */
+.icon-map::after {
+  content: '';
+  width: 14px;
+  height: 12px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  position: relative;
+  z-index: 2;
+}
+
 .icon-map::before {
-  content: "🗺️";
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  z-index: 3;
 }
 
 /* Money/Dollar Icon */
