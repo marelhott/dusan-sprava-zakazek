@@ -135,6 +135,14 @@
   z-index: 3;
 }
 
+.icon-settings::before {
+  content: "⚙️";
+}
+
+.icon-map::before {
+  content: "🗺️";
+}
+
 /* Money/Dollar Icon */
 .icon-revenue,
 .icon-money {
