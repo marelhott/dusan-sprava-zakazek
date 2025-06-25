@@ -103,8 +103,8 @@ export const AuthProvider = ({ children }) => {
         { id: 10, datum: '16. 4. 2025', druh: 'Adam', klient: 'XY', cislo: '91417', castka: 8600, fee: 2184, material: 500, pomocnik: 1000, palivo: 1500, zisk: 3416, adresa: 'Dejvice 32, Prague 6', soubory: [] },
         { id: 11, datum: '15. 3. 2025', druh: 'Ostatní', klient: 'XY', cislo: '18001', castka: 5700, fee: 1462, material: 300, pomocnik: 1000, palivo: 0, zisk: 2938, adresa: 'Nové Město 44, Prague 1', soubory: [] },
         { id: 12, datum: '26. 2. 2025', druh: 'Adam', klient: 'XY', cislo: '14974', castka: 5600, fee: 1456, material: 300, pomocnik: 400, palivo: 0, zisk: 3444, adresa: 'Břevnov 21, Prague 6', soubory: [] },
-        { id: 13, datum: '23. 2. 2025', druh: 'Adam', klient: 'XY', cislo: '13161', castka: 8400, fee: 1684, material: 300, pomocnik: 400, palivo: 0, zisk: 4016, soubory: [] },
-        { id: 14, datum: '27. 1. 2025', druh: 'Adam', klient: 'XY', cislo: '14347', castka: 8700, fee: 1743, material: 300, pomocnik: 1000, palivo: 0, zisk: 5657, soubory: [] }
+        { id: 13, datum: '23. 2. 2025', druh: 'Adam', klient: 'XY', cislo: '13161', castka: 8400, fee: 1684, material: 300, pomocnik: 400, palivo: 0, zisk: 4016, adresa: 'Malá Strana 12, Prague 1', soubory: [] },
+        { id: 14, datum: '27. 1. 2025', druh: 'Adam', klient: 'XY', cislo: '14347', castka: 8700, fee: 1743, material: 300, pomocnik: 1000, palivo: 0, zisk: 5657, adresa: 'Hradčany 8, Prague 1', soubory: [] }
       ];
       saveUserData(userId, defaultData);
       return defaultData;
