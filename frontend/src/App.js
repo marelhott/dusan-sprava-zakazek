@@ -2713,6 +2713,50 @@ const PaintPro = () => {
       return stats;
     }, [zakazkyData]);
 
+    // Funkce pro geocoding adres na souřadnice
+    const getCoordinatesFromAddress = (adresa) => {
+      if (!adresa) return null;
+      
+      // Simulace geocoding pro ukázkové adresy
+      const addressMapping = {
+        'wenceslas square 1, prague 1': [50.0814, 14.4262],
+        'charles square 15, prague 2': [50.0748, 14.4175],
+        'old town square 10, prague 1': [50.0875, 14.4214],
+        'kampa island 5, prague 1': [50.0819, 14.4065],
+        'prague castle, prague 1': [50.0909, 14.4018],
+        'letná park 12, prague 7': [50.0994, 14.4169],
+        'vinohrady 25, prague 2': [50.0756, 14.4378],
+        'smíchov 8, prague 5': [50.0704, 14.4037],
+        'karlín 18, prague 8': [50.0922, 14.4460],
+        'dejvice 32, prague 6': [50.1036, 14.3901],
+        'nové město 44, prague 1': [50.0796, 14.4205],
+        'břevnov 21, prague 6': [50.0839, 14.3505],
+        'malá strana 12, prague 1': [50.0879, 14.4034],
+        'hradčany 8, prague 1': [50.0913, 14.3990]
+      };
+      
+      const addressLower = adresa.toLowerCase();
+      const exactMatch = addressMapping[addressLower];
+      if (exactMatch) return exactMatch;
+      
+      // Fallback: generování souřadnic podle typu oblasti
+      const isPrague = ['prague', 'praha', 'wenceslas', 'charles', 'old town', 'castle', 'kampa', 'vinohrady', 'smíchov', 'karlín', 'dejvice', 'nové město', 'břevnov', 'malá strana', 'hradčany'].some(area => addressLower.includes(area));
+      
+      if (isPrague) {
+        // Praha centrum: 50.0755, 14.4378 +/- malé odchylky
+        return [
+          50.0755 + (Math.random() - 0.5) * 0.06, // rozsah cca 3km
+          14.4378 + (Math.random() - 0.5) * 0.08
+        ];
+      } else {
+        // Okolí Prahy: větší rozptyl
+        return [
+          50.0755 + (Math.random() - 0.5) * 0.15, // rozsah cca 8km
+          14.4378 + (Math.random() - 0.5) * 0.20
+        ];
+      }
+    };
+
     // Jednoduchá mapa bez Google Maps API
     const SimpleMapComponent = () => {
       return (
