@@ -2648,146 +2648,127 @@ const PaintPro = () => {
   };
 
   const MapaZakazek = () => {
-    // Google Maps komponenta
-    const MapComponent = () => {
-      React.useEffect(() => {
-        // Inicializace Google Maps
-        const initMap = () => {
-          const mapCenter = { lat: 50.0755, lng: 14.4378 }; // Praha střed
-          
-          const map = new window.google.maps.Map(document.getElementById('zakazky-map'), {
-            zoom: 10,
-            center: mapCenter,
-            styles: [
-              {
-                "featureType": "all",
-                "elementType": "geometry.fill",
-                "stylers": [{"weight": "2.00"}]
-              },
-              {
-                "featureType": "all",
-                "elementType": "geometry.stroke",
-                "stylers": [{"color": "#9c9c9c"}]
-              },
-              {
-                "featureType": "all",
-                "elementType": "labels.text",
-                "stylers": [{"visibility": "on"}]
-              },
-              {
-                "featureType": "landscape",
-                "elementType": "all",
-                "stylers": [{"color": "#f2f2f2"}]
-              },
-              {
-                "featureType": "landscape.man_made",
-                "elementType": "geometry.fill",
-                "stylers": [{"color": "#ffffff"}]
-              },
-              {
-                "featureType": "poi",
-                "elementType": "all",
-                "stylers": [{"visibility": "off"}]
-              },
-              {
-                "featureType": "road",
-                "elementType": "all",
-                "stylers": [{"saturation": -100}, {"lightness": 45}]
-              },
-              {
-                "featureType": "road.highway",
-                "elementType": "all",
-                "stylers": [{"visibility": "simplified"}]
-              },
-              {
-                "featureType": "water",
-                "elementType": "all",
-                "stylers": [{"color": "#8B5CF6"}, {"visibility": "on"}]
-              }
-            ],
-            mapTypeControl: false,
-            streetViewControl: false,
-            fullscreenControl: false,
-          });
+    // Funkce pro klasifikaci lokace podle adresy
+    const getLocationCategory = (adresa) => {
+      if (!adresa) return 'Ostatní';
+      const addressLower = adresa.toLowerCase();
+      
+      // Praha - central areas
+      const pragueAreas = [
+        'prague', 'praha', 'wenceslas', 'charles', 'old town', 'town square', 
+        'castle', 'kampa', 'vinohrady', 'smíchov', 'karlín', 'dejvice', 
+        'nové město', 'břevnov'
+      ];
+      
+      const isPrague = pragueAreas.some(area => addressLower.includes(area));
+      return isPrague ? 'Praha' : 'Okolí Prahy';
+    };
 
-          // Přidání markerů pro zakázky
-          zakazkyData.forEach((zakazka, index) => {
-            if (zakazka.adresa) {
-              // Simulace souřadnic - v reálné aplikaci by se používala Geocoding API
-              const lat = 50.0755 + (Math.random() - 0.5) * 0.2;
-              const lng = 14.4378 + (Math.random() - 0.5) * 0.3;
-              
-              // Barva markeru podle druhu práce
-              const markerColor = {
-                'Adam': '#6366f1',
-                'MVČ': '#06b6d4', 
-                'Korálek': '#10b981',
-                'Ostatní': '#f59e0b'
-              }[zakazka.druh] || '#6366f1';
-
-              // Vytvoření custom SVG markeru
-              const svgMarker = {
-                path: "M12,2C8.13,2 5,5.13 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9C19,5.13 15.87,2 12,2M12,7A2,2 0 0,1 14,9A2,2 0 0,1 12,11A2,2 0 0,1 10,9A2,2 0 0,1 12,7Z",
-                fillColor: markerColor,
-                fillOpacity: 1,
-                strokeWeight: 2,
-                strokeColor: '#ffffff',
-                scale: 1.5,
-                anchor: new window.google.maps.Point(12, 22),
-              };
-
-              const marker = new window.google.maps.Marker({
-                position: { lat, lng },
-                map: map,
-                icon: svgMarker,
-                title: `${zakazka.nazev || `Zakázka ${index + 1}`} - ${zakazka.druh}`
-              });
-
-              // Info okno s detaily zakázky
-              const infoWindow = new window.google.maps.InfoWindow({
-                content: `
-                  <div style="padding: 16px; max-width: 300px;">
-                    <h3 style="margin: 0 0 12px 0; color: ${markerColor}; font-size: 16px; font-weight: 700;">
-                      ${zakazka.nazev || `Zakázka ${index + 1}`}
-                    </h3>
-                    <div style="margin-bottom: 8px;">
-                      <strong>Druh práce:</strong> <span style="color: ${markerColor}; font-weight: 600;">${zakazka.druh}</span>
-                    </div>
-                    <div style="margin-bottom: 8px;">
-                      <strong>Datum:</strong> ${zakazka.datum}
-                    </div>
-                    <div style="margin-bottom: 8px;">
-                      <strong>Částka:</strong> <span style="color: #10b981; font-weight: 600;">${zakazka.castka.toLocaleString()} Kč</span>
-                    </div>
-                    <div style="margin-bottom: 8px;">
-                      <strong>Zisk:</strong> <span style="color: #10b981; font-weight: 700;">${zakazka.zisk.toLocaleString()} Kč</span>
-                    </div>
-                    ${zakazka.adresa ? `<div style="margin-bottom: 8px;"><strong>Adresa:</strong> ${zakazka.adresa}</div>` : ''}
-                  </div>
-                `
-              });
-
-              marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-              });
-            }
-          });
-        };
-
-        // Načtení Google Maps API
-        if (window.google && window.google.maps) {
-          initMap();
-        } else {
-          const script = document.createElement('script');
-          script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap`;
-          script.async = true;
-          script.defer = true;
-          window.initMap = initMap;
-          document.head.appendChild(script);
+    // Výpočet statistik podle lokace
+    const locationStats = React.useMemo(() => {
+      const stats = {
+        'Praha': {
+          count: 0,
+          revenue: 0,
+          profit: 0,
+          orders: []
+        },
+        'Okolí Prahy': {
+          count: 0,
+          revenue: 0,
+          profit: 0,
+          orders: []
         }
-      }, []);
+      };
 
-      return <div id="zakazky-map" style={{ width: '100%', height: '600px', borderRadius: '16px' }}></div>;
+      zakazkyData.forEach(zakazka => {
+        const location = getLocationCategory(zakazka.adresa);
+        stats[location].count++;
+        stats[location].revenue += zakazka.castka;
+        stats[location].profit += zakazka.zisk;
+        stats[location].orders.push(zakazka);
+      });
+
+      return stats;
+    }, [zakazkyData]);
+
+    // Jednoduchá mapa bez Google Maps API
+    const SimpleMapComponent = () => {
+      return (
+        <div className="simple-map-container">
+          <div className="map-background">
+            <div className="map-title">📍 Přehled zakázek v oblasti</div>
+            
+            {/* Praha */}
+            <div className="location-section prague-section">
+              <div className="location-marker prague-marker">
+                <div className="marker-icon">🏛️</div>
+                <div className="marker-label">Praha</div>
+                <div className="marker-count">{locationStats['Praha'].count}</div>
+              </div>
+              
+              {/* Zobrazení zakázek v Praze */}
+              <div className="orders-dots">
+                {locationStats['Praha'].orders.slice(0, 8).map((order, index) => (
+                  <div 
+                    key={order.id} 
+                    className={`order-dot ${order.druh.toLowerCase()}`}
+                    title={`${order.klient} - ${order.datum} - ${order.castka.toLocaleString()} Kč`}
+                    style={{
+                      left: `${20 + (index % 4) * 25}%`,
+                      top: `${40 + Math.floor(index / 4) * 15}%`
+                    }}
+                  >
+                    <div className="dot-tooltip">
+                      <strong>{order.klient}</strong><br/>
+                      {order.datum}<br/>
+                      {order.castka.toLocaleString()} Kč
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Okolí Prahy */}
+            <div className="location-section surrounding-section">
+              <div className="location-marker surrounding-marker">
+                <div className="marker-icon">🌲</div>
+                <div className="marker-label">Okolí Prahy</div>
+                <div className="marker-count">{locationStats['Okolí Prahy'].count}</div>
+              </div>
+              
+              {/* Zobrazení zakázek v okolí */}
+              <div className="orders-dots">
+                {locationStats['Okolí Prahy'].orders.slice(0, 6).map((order, index) => (
+                  <div 
+                    key={order.id} 
+                    className={`order-dot ${order.druh.toLowerCase()}`}
+                    title={`${order.klient} - ${order.datum} - ${order.castka.toLocaleString()} Kč`}
+                    style={{
+                      left: `${15 + (index % 3) * 30}%`,
+                      top: `${30 + Math.floor(index / 3) * 20}%`
+                    }}
+                  >
+                    <div className="dot-tooltip">
+                      <strong>{order.klient}</strong><br/>
+                      {order.datum}<br/>
+                      {order.castka.toLocaleString()} Kč
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Navigační prvky */}
+            <div className="map-navigation">
+              <div className="nav-item">🧭 Severní Praha</div>
+              <div className="nav-item">🌊 Jižní Praha</div>
+              <div className="nav-item">🏔️ Západní oblast</div>
+              <div className="nav-item">🌅 Východní oblast</div>
+            </div>
+          </div>
+        </div>
+      );
     };
 
     return (
@@ -2799,36 +2780,50 @@ const PaintPro = () => {
           </div>
         </div>
 
-        {/* Statistiky */}
-        <div className="map-stats">
-          <div className="map-stat-card">
-            <div className="stat-icon adam">📍</div>
-            <div className="stat-info">
-              <div className="stat-value">{zakazkyData.filter(z => z.druh === 'Adam').length}</div>
-              <div className="stat-label">Adam</div>
-            </div>
-          </div>
-          <div className="map-stat-card">
-            <div className="stat-icon mvc">📍</div>
-            <div className="stat-info">
-              <div className="stat-value">{zakazkyData.filter(z => z.druh === 'MVČ').length}</div>
-              <div className="stat-label">MVČ</div>
-            </div>
-          </div>
-          <div className="map-stat-card">
-            <div className="stat-icon koralek">📍</div>
-            <div className="stat-info">
-              <div className="stat-value">{zakazkyData.filter(z => z.druh === 'Korálek').length}</div>
-              <div className="stat-label">Korálek</div>
-            </div>
-          </div>
-          <div className="map-stat-card">
-            <div className="stat-icon ostatni">📍</div>
-            <div className="stat-info">
-              <div className="stat-value">{zakazkyData.filter(z => z.druh === 'Ostatní').length}</div>
-              <div className="stat-label">Ostatní</div>
-            </div>
-          </div>
+        {/* Statistiky podle lokace - ve stylu dashboard buněk */}
+        <div className="location-stats-grid">
+          <StatCard
+            title="PRAHA"
+            value={`${locationStats['Praha'].count}`}
+            subtitle={`Tržby: ${locationStats['Praha'].revenue.toLocaleString()} Kč`}
+            iconClass="icon-map"
+            color="blue"
+            index={0}
+            showCurrency={false}
+            smallValueText={true}
+            blueSubtitle={true}
+          />
+          <StatCard
+            title="OKOLÍ PRAHY"
+            value={`${locationStats['Okolí Prahy'].count}`}
+            subtitle={`Tržby: ${locationStats['Okolí Prahy'].revenue.toLocaleString()} Kč`}
+            iconClass="icon-map"
+            color="green"
+            index={1}
+            showCurrency={false}
+            smallValueText={true}
+            blueSubtitle={true}
+          />
+          <StatCard
+            title="CELKOVÝ ZISK - PRAHA"
+            value={`${locationStats['Praha'].profit.toLocaleString()} Kč`}
+            subtitle={`Průměr: ${locationStats['Praha'].count > 0 ? Math.round(locationStats['Praha'].profit / locationStats['Praha'].count).toLocaleString() : 0} Kč`}
+            iconClass="icon-chart"
+            color="purple"
+            index={2}
+            showCurrency={false}
+            blueSubtitle={true}
+          />
+          <StatCard
+            title="CELKOVÝ ZISK - OKOLÍ"
+            value={`${locationStats['Okolí Prahy'].profit.toLocaleString()} Kč`}
+            subtitle={`Průměr: ${locationStats['Okolí Prahy'].count > 0 ? Math.round(locationStats['Okolí Prahy'].profit / locationStats['Okolí Prahy'].count).toLocaleString() : 0} Kč`}
+            iconClass="icon-chart"
+            color="orange"
+            index={3}
+            showCurrency={false}
+            blueSubtitle={true}
+          />
         </div>
 
         {/* Mapa */}
@@ -2839,7 +2834,7 @@ const PaintPro = () => {
           </div>
           
           {zakazkyData.length > 0 ? (
-            <MapComponent />
+            <SimpleMapComponent />
           ) : (
             <div className="map-empty">
               <div className="empty-icon">🗺️</div>
@@ -2847,29 +2842,6 @@ const PaintPro = () => {
               <p>Přidejte zakázky s adresami pro zobrazení na mapě</p>
             </div>
           )}
-        </div>
-
-        {/* Legenda */}
-        <div className="map-legend">
-          <h3>Legenda</h3>
-          <div className="legend-items">
-            <div className="legend-item">
-              <div className="legend-marker adam"></div>
-              <span>Adam - Fialová</span>
-            </div>
-            <div className="legend-item">
-              <div className="legend-marker mvc"></div>
-              <span>MVČ - Tyrkysová</span>
-            </div>
-            <div className="legend-item">
-              <div className="legend-marker koralek"></div>
-              <span>Korálek - Zelená</span>
-            </div>
-            <div className="legend-item">
-              <div className="legend-marker ostatni"></div>
-              <span>Ostatní - Oranžová</span>
-            </div>
-          </div>
         </div>
       </div>
     );
