@@ -2628,130 +2628,233 @@ const PaintPro = () => {
     );
   };
 
-  const Nastaveni = () => (
-    <div className="nastaveni">
-      <div className="page-header">
-        <div>
-          <h1>Nastavení a konfigurace</h1>
-          <p>Spravovat uživatele aplikace, účet a rozšířené exporty</p>
+  const MapaZakazek = () => {
+    // Google Maps komponenta
+    const MapComponent = () => {
+      React.useEffect(() => {
+        // Inicializace Google Maps
+        const initMap = () => {
+          const mapCenter = { lat: 50.0755, lng: 14.4378 }; // Praha střed
+          
+          const map = new window.google.maps.Map(document.getElementById('zakazky-map'), {
+            zoom: 10,
+            center: mapCenter,
+            styles: [
+              {
+                "featureType": "all",
+                "elementType": "geometry.fill",
+                "stylers": [{"weight": "2.00"}]
+              },
+              {
+                "featureType": "all",
+                "elementType": "geometry.stroke",
+                "stylers": [{"color": "#9c9c9c"}]
+              },
+              {
+                "featureType": "all",
+                "elementType": "labels.text",
+                "stylers": [{"visibility": "on"}]
+              },
+              {
+                "featureType": "landscape",
+                "elementType": "all",
+                "stylers": [{"color": "#f2f2f2"}]
+              },
+              {
+                "featureType": "landscape.man_made",
+                "elementType": "geometry.fill",
+                "stylers": [{"color": "#ffffff"}]
+              },
+              {
+                "featureType": "poi",
+                "elementType": "all",
+                "stylers": [{"visibility": "off"}]
+              },
+              {
+                "featureType": "road",
+                "elementType": "all",
+                "stylers": [{"saturation": -100}, {"lightness": 45}]
+              },
+              {
+                "featureType": "road.highway",
+                "elementType": "all",
+                "stylers": [{"visibility": "simplified"}]
+              },
+              {
+                "featureType": "water",
+                "elementType": "all",
+                "stylers": [{"color": "#8B5CF6"}, {"visibility": "on"}]
+              }
+            ],
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+          });
+
+          // Přidání markerů pro zakázky
+          zakazkyData.forEach((zakazka, index) => {
+            if (zakazka.adresa) {
+              // Simulace souřadnic - v reálné aplikaci by se používala Geocoding API
+              const lat = 50.0755 + (Math.random() - 0.5) * 0.2;
+              const lng = 14.4378 + (Math.random() - 0.5) * 0.3;
+              
+              // Barva markeru podle druhu práce
+              const markerColor = {
+                'Adam': '#6366f1',
+                'MVČ': '#06b6d4', 
+                'Korálek': '#10b981',
+                'Ostatní': '#f59e0b'
+              }[zakazka.druh] || '#6366f1';
+
+              // Vytvoření custom SVG markeru
+              const svgMarker = {
+                path: "M12,2C8.13,2 5,5.13 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9C19,5.13 15.87,2 12,2M12,7A2,2 0 0,1 14,9A2,2 0 0,1 12,11A2,2 0 0,1 10,9A2,2 0 0,1 12,7Z",
+                fillColor: markerColor,
+                fillOpacity: 1,
+                strokeWeight: 2,
+                strokeColor: '#ffffff',
+                scale: 1.5,
+                anchor: new window.google.maps.Point(12, 22),
+              };
+
+              const marker = new window.google.maps.Marker({
+                position: { lat, lng },
+                map: map,
+                icon: svgMarker,
+                title: `${zakazka.nazev || `Zakázka ${index + 1}`} - ${zakazka.druh}`
+              });
+
+              // Info okno s detaily zakázky
+              const infoWindow = new window.google.maps.InfoWindow({
+                content: `
+                  <div style="padding: 16px; max-width: 300px;">
+                    <h3 style="margin: 0 0 12px 0; color: ${markerColor}; font-size: 16px; font-weight: 700;">
+                      ${zakazka.nazev || `Zakázka ${index + 1}`}
+                    </h3>
+                    <div style="margin-bottom: 8px;">
+                      <strong>Druh práce:</strong> <span style="color: ${markerColor}; font-weight: 600;">${zakazka.druh}</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                      <strong>Datum:</strong> ${zakazka.datum}
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                      <strong>Částka:</strong> <span style="color: #10b981; font-weight: 600;">${zakazka.castka.toLocaleString()} Kč</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                      <strong>Zisk:</strong> <span style="color: #10b981; font-weight: 700;">${zakazka.zisk.toLocaleString()} Kč</span>
+                    </div>
+                    ${zakazka.adresa ? `<div style="margin-bottom: 8px;"><strong>Adresa:</strong> ${zakazka.adresa}</div>` : ''}
+                  </div>
+                `
+              });
+
+              marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+              });
+            }
+          });
+        };
+
+        // Načtení Google Maps API
+        if (window.google && window.google.maps) {
+          initMap();
+        } else {
+          const script = document.createElement('script');
+          script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap`;
+          script.async = true;
+          script.defer = true;
+          window.initMap = initMap;
+          document.head.appendChild(script);
+        }
+      }, []);
+
+      return <div id="zakazky-map" style={{ width: '100%', height: '600px', borderRadius: '16px' }}></div>;
+    };
+
+    return (
+      <div className="mapa-zakazek">
+        <div className="page-header">
+          <div>
+            <h1>Mapa zakázek</h1>
+            <p>Geografické zobrazení všech realizovaných zakázek</p>
+          </div>
+        </div>
+
+        {/* Statistiky */}
+        <div className="map-stats">
+          <div className="map-stat-card">
+            <div className="stat-icon adam">📍</div>
+            <div className="stat-info">
+              <div className="stat-value">{zakazkyData.filter(z => z.druh === 'Adam').length}</div>
+              <div className="stat-label">Adam</div>
+            </div>
+          </div>
+          <div className="map-stat-card">
+            <div className="stat-icon mvc">📍</div>
+            <div className="stat-info">
+              <div className="stat-value">{zakazkyData.filter(z => z.druh === 'MVČ').length}</div>
+              <div className="stat-label">MVČ</div>
+            </div>
+          </div>
+          <div className="map-stat-card">
+            <div className="stat-icon koralek">📍</div>
+            <div className="stat-info">
+              <div className="stat-value">{zakazkyData.filter(z => z.druh === 'Korálek').length}</div>
+              <div className="stat-label">Korálek</div>
+            </div>
+          </div>
+          <div className="map-stat-card">
+            <div className="stat-icon ostatni">📍</div>
+            <div className="stat-info">
+              <div className="stat-value">{zakazkyData.filter(z => z.druh === 'Ostatní').length}</div>
+              <div className="stat-label">Ostatní</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mapa */}
+        <div className="map-container">
+          <div className="map-header">
+            <h2>🗺️ Interaktivní mapa zakázek</h2>
+            <p>Klikněte na značky pro zobrazení detailů zakázky</p>
+          </div>
+          
+          {zakazkyData.length > 0 ? (
+            <MapComponent />
+          ) : (
+            <div className="map-empty">
+              <div className="empty-icon">🗺️</div>
+              <h3>Žádné zakázky k zobrazení</h3>
+              <p>Přidejte zakázky s adresami pro zobrazení na mapě</p>
+            </div>
+          )}
+        </div>
+
+        {/* Legenda */}
+        <div className="map-legend">
+          <h3>Legenda</h3>
+          <div className="legend-items">
+            <div className="legend-item">
+              <div className="legend-marker adam"></div>
+              <span>Adam - Fialová</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-marker mvc"></div>
+              <span>MVČ - Tyrkysová</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-marker koralek"></div>
+              <span>Korálek - Zelená</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-marker ostatni"></div>
+              <span>Ostatní - Oranžová</span>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="settings-header">
-        <div className="settings-tabs">
-          <button className="settings-tab active">Účet</button>
-          <button className="settings-tab">Aplikace</button>
-          <button className="settings-tab">Export</button>
-        </div>
-      </div>
-
-      <div className="settings-content">
-        <div className="settings-card">
-          <div className="settings-card-header">
-            <div className="settings-icon">👤</div>
-            <div>
-              <h3>Profil uživatele</h3>
-              <div className="settings-actions">
-                <button className="btn-settings">EDIT</button>
-                <button className="btn-settings">VIEW</button>
-              </div>
-            </div>
-          </div>
-          <div className="settings-form">
-            <div className="form-row">
-              <div className="form-group">
-                <label>Jméno *</label>
-                <input type="text" value="Jan" />
-              </div>
-              <div className="form-group">
-                <label>Příjmení *</label>
-                <input type="text" value="Novák" />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>E-mail *</label>
-                <input type="email" value="jan.novak@paintpro.cz" />
-              </div>
-              <div className="form-group">
-                <label>Telefon *</label>
-                <input type="tel" value="+420 123 456 789" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="settings-card">
-          <div className="settings-card-header">
-            <div className="settings-icon">🏢</div>
-            <div>
-              <h3>Firemní informace</h3>
-              <div className="settings-actions">
-                <button className="btn-settings">EDIT</button>
-                <button className="btn-settings">VIEW</button>
-              </div>
-            </div>
-          </div>
-          <div className="settings-form">
-            <div className="form-group">
-              <label>Název společnosti *</label>
-              <input type="text" value="Malířské práce Novák s.r.o." />
-            </div>
-            <div className="form-group">
-              <label>Adresa společnosti</label>
-              <input type="text" value="Hlavní 123, 110 00 Praha 1" />
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>IČO</label>
-                <input type="text" value="12345678" />
-              </div>
-              <div className="form-group">
-                <label>DIČ</label>
-                <input type="text" value="CZ12345678" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="settings-card">
-          <div className="settings-card-header">
-            <div className="settings-icon">🔒</div>
-            <div>
-              <h3>Bezpečnost</h3>
-              <div className="settings-badge">SECURE</div>
-            </div>
-          </div>
-          <div className="settings-form">
-            <div className="form-group">
-              <label>Současné heslo</label>
-              <input type="password" placeholder="Zadejte současné heslo" />
-            </div>
-            <div className="form-row">
-              <div className="form-group">
-                <label>Nové heslo</label>
-                <input type="password" placeholder="Zadejte nové heslo" />
-              </div>
-              <div className="form-group">
-                <label>Potvrzení nového hesla</label>
-                <input type="password" placeholder="Potvrzete nové heslo" />
-              </div>
-            </div>
-            <div className="security-note">
-              <strong>Bezpečnostní upozornění</strong><br/>
-              Změna hesla vyžaduje opětovné přihlášení do aplikace.
-            </div>
-          </div>
-        </div>
-
-        <div className="settings-actions-footer">
-          <button className="btn btn-danger">Exportovat vlastní data</button>
-          <button className="btn btn-danger">Smazat účet</button>
-          <button className="btn btn-primary">Uložit změny</button>
-        </div>
-      </div>
-    </div>
-  );
+    );
+  };
 
   const renderContent = () => {
     switch (activeTab) {
