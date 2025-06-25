@@ -2757,81 +2757,134 @@ const PaintPro = () => {
       }
     };
 
-    // Jednoduchá mapa bez Google Maps API
-    const SimpleMapComponent = () => {
+    // OpenStreetMap komponenta s Leaflet
+    const OpenStreetMapComponent = () => {
+      const mapRef = React.useRef(null);
+      
+      React.useEffect(() => {
+        // Dynamicky načteme Leaflet po mount
+        import('leaflet').then((L) => {
+          // Cleanup existing map
+          if (mapRef.current) {
+            mapRef.current.remove();
+          }
+          
+          // Praha centrum
+          const pragueCenter = [50.0755, 14.4378];
+          
+          // Vytvoření mapy
+          const map = L.map('leaflet-map', {
+            center: pragueCenter,
+            zoom: 11,
+            zoomControl: true,
+            scrollWheelZoom: true
+          });
+          
+          mapRef.current = map;
+          
+          // Přidání OpenStreetMap tiles
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18,
+          }).addTo(map);
+          
+          // Přidání markerů pro zakázky
+          zakazkyData.forEach((zakazka) => {
+            const coords = getCoordinatesFromAddress(zakazka.adresa);
+            if (coords) {
+              // Barva markeru podle druhu práce
+              const markerColors = {
+                'Adam': '#6366f1',
+                'MVČ': '#06b6d4', 
+                'Korálek': '#10b981',
+                'Ostatní': '#f59e0b'
+              };
+              
+              const color = markerColors[zakazka.druh] || '#6366f1';
+              
+              // Vytvoření custom markeru
+              const marker = L.marker(coords, {
+                icon: L.divIcon({
+                  className: 'custom-div-icon',
+                  html: `<div style="
+                    background-color: ${color};
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    border: 3px solid white;
+                    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+                  "></div>`,
+                  iconSize: [26, 26],
+                  iconAnchor: [13, 13]
+                })
+              }).addTo(map);
+              
+              // Popup s informacemi o zakázce
+              marker.bindPopup(`
+                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; min-width: 200px;">
+                  <h3 style="margin: 0 0 8px 0; color: ${color}; font-size: 14px; font-weight: 700;">
+                    ${zakazka.klient}
+                  </h3>
+                  <div style="font-size: 12px; line-height: 1.4;">
+                    <div style="margin-bottom: 4px;">
+                      <strong>Druh:</strong> <span style="color: ${color}; font-weight: 600;">${zakazka.druh}</span>
+                    </div>
+                    <div style="margin-bottom: 4px;">
+                      <strong>Datum:</strong> ${zakazka.datum}
+                    </div>
+                    <div style="margin-bottom: 4px;">
+                      <strong>Částka:</strong> <span style="color: #10b981; font-weight: 600;">${zakazka.castka.toLocaleString()} Kč</span>
+                    </div>
+                    <div style="margin-bottom: 4px;">
+                      <strong>Zisk:</strong> <span style="color: #10b981; font-weight: 700;">${zakazka.zisk.toLocaleString()} Kč</span>
+                    </div>
+                    <div style="margin-bottom: 4px;">
+                      <strong>Adresa:</strong> ${zakazka.adresa}
+                    </div>
+                    <div style="font-size: 10px; color: #6b7280; margin-top: 8px;">
+                      Zakázka #${zakazka.cislo}
+                    </div>
+                  </div>
+                </div>
+              `);
+            }
+          });
+          
+          // Přidání legend control
+          const legend = L.control({position: 'bottomright'});
+          legend.onAdd = function(map) {
+            const div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML = `
+              <div style="background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                <h4 style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: #374151;">Druhy prací</h4>
+                <div style="font-size: 11px; line-height: 1.4;">
+                  <div style="margin-bottom: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background: #6366f1; border-radius: 50%; margin-right: 6px;"></span>Adam</div>
+                  <div style="margin-bottom: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background: #06b6d4; border-radius: 50%; margin-right: 6px;"></span>MVČ</div>
+                  <div style="margin-bottom: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background: #10b981; border-radius: 50%; margin-right: 6px;"></span>Korálek</div>
+                  <div><span style="display: inline-block; width: 12px; height: 12px; background: #f59e0b; border-radius: 50%; margin-right: 6px;"></span>Ostatní</div>
+                </div>
+              </div>
+            `;
+            return div;
+          };
+          legend.addTo(map);
+          
+        }).catch((error) => {
+          console.error('Error loading Leaflet:', error);
+        });
+        
+        // Cleanup při unmount
+        return () => {
+          if (mapRef.current) {
+            mapRef.current.remove();
+            mapRef.current = null;
+          }
+        };
+      }, [zakazkyData]);
+      
       return (
-        <div className="simple-map-container">
-          <div className="map-background">
-            <div className="map-title">📍 Přehled zakázek v oblasti</div>
-            
-            {/* Praha */}
-            <div className="location-section prague-section">
-              <div className="location-marker prague-marker">
-                <div className="marker-icon">🏛️</div>
-                <div className="marker-label">Praha</div>
-                <div className="marker-count">{locationStats['Praha'].count}</div>
-              </div>
-              
-              {/* Zobrazení zakázek v Praze */}
-              <div className="orders-dots">
-                {locationStats['Praha'].orders.slice(0, 8).map((order, index) => (
-                  <div 
-                    key={order.id} 
-                    className={`order-dot ${order.druh.toLowerCase()}`}
-                    title={`${order.klient} - ${order.datum} - ${order.castka.toLocaleString()} Kč`}
-                    style={{
-                      left: `${20 + (index % 4) * 25}%`,
-                      top: `${40 + Math.floor(index / 4) * 15}%`
-                    }}
-                  >
-                    <div className="dot-tooltip">
-                      <strong>{order.klient}</strong><br/>
-                      {order.datum}<br/>
-                      {order.castka.toLocaleString()} Kč
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Okolí Prahy */}
-            <div className="location-section surrounding-section">
-              <div className="location-marker surrounding-marker">
-                <div className="marker-icon">🌲</div>
-                <div className="marker-label">Okolí Prahy</div>
-                <div className="marker-count">{locationStats['Okolí Prahy'].count}</div>
-              </div>
-              
-              {/* Zobrazení zakázek v okolí */}
-              <div className="orders-dots">
-                {locationStats['Okolí Prahy'].orders.slice(0, 6).map((order, index) => (
-                  <div 
-                    key={order.id} 
-                    className={`order-dot ${order.druh.toLowerCase()}`}
-                    title={`${order.klient} - ${order.datum} - ${order.castka.toLocaleString()} Kč`}
-                    style={{
-                      left: `${15 + (index % 3) * 30}%`,
-                      top: `${30 + Math.floor(index / 3) * 20}%`
-                    }}
-                  >
-                    <div className="dot-tooltip">
-                      <strong>{order.klient}</strong><br/>
-                      {order.datum}<br/>
-                      {order.castka.toLocaleString()} Kč
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Navigační prvky */}
-            <div className="map-navigation">
-              <div className="nav-item">🧭 Severní Praha</div>
-              <div className="nav-item">🌊 Jižní Praha</div>
-              <div className="nav-item">🏔️ Západní oblast</div>
-              <div className="nav-item">🌅 Východní oblast</div>
-            </div>
-          </div>
+        <div style={{ width: '100%', height: '600px', borderRadius: '16px', overflow: 'hidden' }}>
+          <div id="leaflet-map" style={{ width: '100%', height: '100%' }}></div>
         </div>
       );
     };
