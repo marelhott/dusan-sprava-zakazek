@@ -971,6 +971,15 @@ const PaintPro = () => {
                 />
               </div>
             </div>
+            <div className="form-group">
+              <label>Adresa realizace</label>
+              <input
+                type="text"
+                value={formData.adresa}
+                onChange={e => setFormData({...formData, adresa: e.target.value})}
+                placeholder="Zadejte adresu kde se práce realizovala"
+              />
+            </div>
             <div className="form-row">
               <div className="form-group">
                 <label>Částka (Kč) *</label>
