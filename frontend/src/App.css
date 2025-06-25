@@ -3048,6 +3048,28 @@ body::after {
   color: #F59E0B !important;
 }
 
+/* Address Cell Styling */
+.address-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px !important;
+  color: var(--text-secondary) !important;
+  position: relative;
+}
+
+.address-cell:hover {
+  overflow: visible;
+  white-space: normal;
+  background: var(--surface-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 8px !important;
+  z-index: 10;
+  position: relative;
+}
+
 /* Filter Actions */
 .filter-actions {
   padding-top: 16px;
