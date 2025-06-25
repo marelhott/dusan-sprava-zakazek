@@ -2864,8 +2864,8 @@ const PaintPro = () => {
         return <Zakazky />;
       case 'reporty':
         return <Reporty />;
-      case 'nastaveni':
-        return <Nastaveni />;
+      case 'mapa':
+        return <MapaZakazek />;
       default:
         return <Dashboard />;
     }
