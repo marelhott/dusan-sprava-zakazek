@@ -91,18 +91,18 @@ export const AuthProvider = ({ children }) => {
     // Pro výchozího uživatele (id: 1) použij existující data
     if (userId === 1) {
       const defaultData = [
-        { id: 1, datum: '11. 6. 2025', druh: 'Adam', klient: 'XY', cislo: '202501', castka: 4000, fee: 1040, material: 0, pomocnik: 0, palivo: 0, zisk: 2960, soubory: [] },
-        { id: 2, datum: '9. 6. 2025', druh: 'MVČ', klient: 'XY', cislo: '104470', castka: 7200, fee: 1872, material: 700, pomocnik: 2000, palivo: 0, zisk: 2628, soubory: [] },
-        { id: 3, datum: '5. 6. 2025', druh: 'Adam', klient: 'XY', cislo: '95105', castka: 11800, fee: 2964, material: 700, pomocnik: 2000, palivo: 300, zisk: 5436, soubory: [] },
-        { id: 4, datum: '14. 5. 2025', druh: 'Adam', klient: 'XY', cislo: '80067', castka: 7600, fee: 1976, material: 700, pomocnik: 2000, palivo: 300, zisk: 2924, soubory: [] },
-        { id: 5, datum: '13. 5. 2025', druh: 'Adam', klient: 'XY', cislo: '87470', castka: 6400, fee: 1664, material: 700, pomocnik: 2000, palivo: 300, zisk: 1736, soubory: [] },
-        { id: 6, datum: '10. 5. 2025', druh: 'Adam', klient: 'XY', cislo: '91353', castka: 24000, fee: 6240, material: 0, pomocnik: 15780, palivo: 0, zisk: 2000, soubory: [] },
-        { id: 7, datum: '24. 4. 2025', druh: 'Korálek', klient: 'XY', cislo: '90660', castka: 13200, fee: 3432, material: 0, pomocnik: 0, palivo: 0, zisk: 9768, soubory: [] },
-        { id: 8, datum: '22. 4. 2025', druh: 'Adam', klient: 'XY', cislo: '95247', castka: 17800, fee: 4628, material: 300, pomocnik: 700, palivo: 0, zisk: 12172, soubory: [] },
-        { id: 9, datum: '19. 4. 2025', druh: 'Adam', klient: 'XY', cislo: '91510', castka: 10600, fee: 2756, material: 200, pomocnik: 1000, palivo: 2500, zisk: 4144, soubory: [] },
-        { id: 10, datum: '16. 4. 2025', druh: 'Adam', klient: 'XY', cislo: '91417', castka: 8600, fee: 2184, material: 500, pomocnik: 1000, palivo: 1500, zisk: 3416, soubory: [] },
-        { id: 11, datum: '15. 3. 2025', druh: 'Ostatní', klient: 'XY', cislo: '18001', castka: 5700, fee: 1462, material: 300, pomocnik: 1000, palivo: 0, zisk: 2938, soubory: [] },
-        { id: 12, datum: '26. 2. 2025', druh: 'Adam', klient: 'XY', cislo: '14974', castka: 5600, fee: 1456, material: 300, pomocnik: 400, palivo: 0, zisk: 3444, soubory: [] },
+        { id: 1, datum: '10. 6. 2025', druh: 'Adam', klient: 'XY', cislo: '95101', castka: 18200, fee: 4732, material: 700, pomocnik: 4000, palivo: 0, zisk: 8768, adresa: 'Wenceslas Square 1, Prague 1', soubory: [] },
+        { id: 2, datum: '9. 6. 2025', druh: 'MVČ', klient: 'XY', cislo: '104470', castka: 7200, fee: 1872, material: 700, pomocnik: 2000, palivo: 0, zisk: 2628, adresa: 'Charles Square 15, Prague 2', soubory: [] },
+        { id: 3, datum: '5. 6. 2025', druh: 'Adam', klient: 'XY', cislo: '95105', castka: 11800, fee: 2964, material: 700, pomocnik: 2000, palivo: 300, zisk: 5436, adresa: 'Old Town Square 10, Prague 1', soubory: [] },
+        { id: 4, datum: '14. 5. 2025', druh: 'Adam', klient: 'XY', cislo: '80067', castka: 7600, fee: 1976, material: 700, pomocnik: 2000, palivo: 300, zisk: 2924, adresa: 'Kampa Island 5, Prague 1', soubory: [] },
+        { id: 5, datum: '13. 5. 2025', druh: 'Adam', klient: 'XY', cislo: '87470', castka: 6400, fee: 1664, material: 700, pomocnik: 2000, palivo: 300, zisk: 1736, adresa: 'Prague Castle, Prague 1', soubory: [] },
+        { id: 6, datum: '10. 5. 2025', druh: 'Adam', klient: 'XY', cislo: '91353', castka: 24000, fee: 6240, material: 0, pomocnik: 15780, palivo: 0, zisk: 2000, adresa: 'Letná Park 12, Prague 7', soubory: [] },
+        { id: 7, datum: '24. 4. 2025', druh: 'Korálek', klient: 'XY', cislo: '90660', castka: 13200, fee: 3432, material: 0, pomocnik: 0, palivo: 0, zisk: 9768, adresa: 'Vinohrady 25, Prague 2', soubory: [] },
+        { id: 8, datum: '22. 4. 2025', druh: 'Adam', klient: 'XY', cislo: '95247', castka: 17800, fee: 4628, material: 300, pomocnik: 700, palivo: 0, zisk: 12172, adresa: 'Smíchov 8, Prague 5', soubory: [] },
+        { id: 9, datum: '19. 4. 2025', druh: 'Adam', klient: 'XY', cislo: '91510', castka: 10600, fee: 2756, material: 200, pomocnik: 1000, palivo: 2500, zisk: 4144, adresa: 'Karlín 18, Prague 8', soubory: [] },
+        { id: 10, datum: '16. 4. 2025', druh: 'Adam', klient: 'XY', cislo: '91417', castka: 8600, fee: 2184, material: 500, pomocnik: 1000, palivo: 1500, zisk: 3416, adresa: 'Dejvice 32, Prague 6', soubory: [] },
+        { id: 11, datum: '15. 3. 2025', druh: 'Ostatní', klient: 'XY', cislo: '18001', castka: 5700, fee: 1462, material: 300, pomocnik: 1000, palivo: 0, zisk: 2938, adresa: 'Nové Město 44, Prague 1', soubory: [] },
+        { id: 12, datum: '26. 2. 2025', druh: 'Adam', klient: 'XY', cislo: '14974', castka: 5600, fee: 1456, material: 300, pomocnik: 400, palivo: 0, zisk: 3444, adresa: 'Břevnov 21, Prague 6', soubory: [] },
         { id: 13, datum: '23. 2. 2025', druh: 'Adam', klient: 'XY', cislo: '13161', castka: 8400, fee: 1684, material: 300, pomocnik: 400, palivo: 0, zisk: 4016, soubory: [] },
         { id: 14, datum: '27. 1. 2025', druh: 'Adam', klient: 'XY', cislo: '14347', castka: 8700, fee: 1743, material: 300, pomocnik: 1000, palivo: 0, zisk: 5657, soubory: [] }
       ];
