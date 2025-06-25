@@ -1297,6 +1297,7 @@ const PaintPro = () => {
                 <th>MATERIÁL</th>
                 <th>POMOCNÍK</th>
                 <th>ČISTÝ ZISK</th>
+                <th>ADRESA</th>
                 <th>SOUBORY</th>
                 <th>AKCE</th>
               </tr>
@@ -1345,6 +1346,7 @@ const PaintPro = () => {
                   <td>{zakazka.material.toLocaleString()} Kč</td>
                   <td>{zakazka.pomocnik.toLocaleString()} Kč</td>
                   <td className="profit-bold-orange">{zakazka.zisk.toLocaleString()} Kč</td>
+                  <td className="address-cell">{zakazka.adresa || '-'}</td>
                   <td>
                     <span className="file-placeholder">-</span>
                   </td>
