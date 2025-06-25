@@ -2650,7 +2650,7 @@ const PaintPro = () => {
   const MapaZakazek = () => {
     // Funkce pro klasifikaci lokace podle adresy
     const getLocationCategory = (adresa) => {
-      if (!adresa) return 'Ostatní';
+      if (!adresa) return 'Okolí Prahy';
       const addressLower = adresa.toLowerCase();
       
       // Praha - central areas
@@ -2666,6 +2666,23 @@ const PaintPro = () => {
 
     // Výpočet statistik podle lokace
     const locationStats = React.useMemo(() => {
+      if (!zakazkyData || zakazkyData.length === 0) {
+        return {
+          'Praha': {
+            count: 0,
+            revenue: 0,
+            profit: 0,
+            orders: []
+          },
+          'Okolí Prahy': {
+            count: 0,
+            revenue: 0,
+            profit: 0,
+            orders: []
+          }
+        };
+      }
+
       const stats = {
         'Praha': {
           count: 0,
@@ -2683,10 +2700,12 @@ const PaintPro = () => {
 
       zakazkyData.forEach(zakazka => {
         const location = getLocationCategory(zakazka.adresa);
-        stats[location].count++;
-        stats[location].revenue += zakazka.castka;
-        stats[location].profit += zakazka.zisk;
-        stats[location].orders.push(zakazka);
+        if (stats[location]) {
+          stats[location].count++;
+          stats[location].revenue += zakazka.castka || 0;
+          stats[location].profit += zakazka.zisk || 0;
+          stats[location].orders.push(zakazka);
+        }
       });
 
       return stats;
