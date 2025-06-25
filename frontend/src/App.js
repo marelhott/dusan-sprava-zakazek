@@ -2952,7 +2952,7 @@ const PaintPro = () => {
           </div>
           
           {zakazkyData.length > 0 ? (
-            <SimpleMapComponent />
+            <OpenStreetMapComponent />
           ) : (
             <div className="map-empty">
               <div className="empty-icon">🗺️</div>
