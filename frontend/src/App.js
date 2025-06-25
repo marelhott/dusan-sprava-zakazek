@@ -893,6 +893,7 @@ const PaintPro = () => {
       druh: 'Adam',
       klient: '',
       cislo: '',
+      adresa: '',
       castka: 0,
       fee: 0,
       material: 0,
