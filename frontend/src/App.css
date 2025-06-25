@@ -1866,6 +1866,7 @@ body::after {
 .orders-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 1400px; /* Increased to accommodate address column */
 }
 
 .orders-table th {
@@ -1885,6 +1886,17 @@ body::after {
   border-bottom: 1px solid rgba(64, 64, 102, 0.3);
   font-size: 14px;
   color: var(--text-secondary);
+}
+
+/* Address column specific styling */
+.orders-table th:nth-child(13) { /* ADRESA column */
+  min-width: 180px;
+  max-width: 200px;
+}
+
+.orders-table td:nth-child(13) { /* Address data column */
+  min-width: 180px;
+  max-width: 200px;
 }
 
 .table-row {
