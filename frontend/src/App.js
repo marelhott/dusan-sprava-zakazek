@@ -629,11 +629,11 @@ const PaintPro = () => {
             Reporty
           </div>
           <div
-            className={`nav-item ${activeTab === 'nastaveni' ? 'active' : ''}`}
-            onClick={() => setActiveTab('nastaveni')}
+            className={`nav-item ${activeTab === 'mapa' ? 'active' : ''}`}
+            onClick={() => setActiveTab('mapa')}
           >
-            <div className="modern-icon icon-settings"></div>
-            Nastavení
+            <div className="modern-icon icon-map"></div>
+            Mapa zakázek
           </div>
         </nav>
       </div>
