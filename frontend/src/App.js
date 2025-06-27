@@ -1253,8 +1253,8 @@ const PaintPro = () => {
                   list="work-categories-list-edit"
                 />
                 <datalist id="work-categories-list-edit">
-                  {workCategoryManager.getCategoryNames().map(category => (
-                    <option key={category} value={category} />
+                  {workCategories.map(category => (
+                    <option key={category.name} value={category.name} />
                   ))}
                 </datalist>
               </div>
