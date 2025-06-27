@@ -862,6 +862,37 @@ body::after {
   pointer-events: none;
 }
 
+/* Dynamické pozicionování pro kruhový layout */
+.label-dynamic {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 13px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.label-line-dynamic {
+  width: 25px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%);
+  margin-right: 8px;
+  position: relative;
+}
+
+.label-line-dynamic::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: -1.5px;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+}
+
 .label-top-left {
   top: 8%;
   left: 8%;
