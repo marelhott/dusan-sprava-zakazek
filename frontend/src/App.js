@@ -141,6 +141,10 @@ const PaintPro = () => {
   const [editingZakazka, setEditingZakazka] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
 
+  // Stav pro dynamické kategorie práce
+  const [workCategories, setWorkCategories] = useState(workCategoryManager.getAllCategories());
+  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
+
   // Získání dat pro aktuálního uživatele
   const [zakazkyData, setZakazkyData] = useState([]);
 
