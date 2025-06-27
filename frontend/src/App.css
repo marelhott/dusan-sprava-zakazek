@@ -829,16 +829,16 @@ body::after {
 
 /* 3D Donut Chart with External Labels */
 .chart-container-donut {
-  height: 450px;
+  height: 500px;
   position: relative;
-  padding: 40px;
+  padding: 50px;
   /* Standardní card styling jako u ostatních */
 }
 
 .donut-chart-wrapper {
   position: relative;
-  height: 350px;
-  width: 350px;
+  height: 400px;
+  width: 400px;
   margin: 0 auto;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
 }
