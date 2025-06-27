@@ -133,23 +133,8 @@ const PaintPro = () => {
   const [editingZakazka, setEditingZakazka] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  // Stav pro dynamické kategorie práce
+  // Jednoduchý stav pro kategorie - bez složitých listenerů
   const [workCategories, setWorkCategories] = useState(workCategoryManager.getAllCategories());
-  const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
-
-  // Nastavení change listeneru pro automatické aktualizace kategorií
-  useEffect(() => {
-    const handleCategoryChange = (newCategories) => {
-      setWorkCategories([...newCategories]);
-    };
-    
-    workCategoryManager.addChangeListener(handleCategoryChange);
-    
-    // Cleanup
-    return () => {
-      workCategoryManager.removeChangeListener(handleCategoryChange);
-    };
-  }, []);
 
   // Získání dat pro aktuálního uživatele
   const [zakazkyData, setZakazkyData] = useState([]);
