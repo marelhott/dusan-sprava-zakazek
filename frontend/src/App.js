@@ -901,7 +901,7 @@ const PaintPro = () => {
                         const angle = (visibleIndex * angleStep) - (Math.PI / 2); // Začít nahoře (-90°)
                         
                         // Poloměr pro umístění labelů (vzdálenost od středu)
-                        const radius = 140; // px od středu - zvětšeno pro lepší viditelnost kruhu
+                        const radius = 180; // px od středu - ještě více vzdálené pro lepší čitelnost
                         const centerX = 175; // střed kontejneru (350px / 2)
                         const centerY = 175; // střed kontejneru (350px / 2)
                         
