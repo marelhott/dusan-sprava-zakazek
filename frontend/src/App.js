@@ -1477,8 +1477,14 @@ const PaintPro = () => {
             onClick={() => {
               // Debug test - přidat test kategorii
               const testCategory = 'Test-' + Date.now();
+              console.log('Testing category addition:', testCategory);
+              console.log('Current categories before:', workCategoryManager.getCategoryNames());
+              
               if (workCategoryManager.addCategory(testCategory)) {
-                alert(`Kategorie "${testCategory}" byla úspěšně přidána!`);
+                const updatedCategories = workCategoryManager.getCategoryNames();
+                console.log('Current categories after:', updatedCategories);
+                console.log('localStorage content:', localStorage.getItem('workCategories'));
+                alert(`Kategorie "${testCategory}" byla úspěšně přidána!\nCelkem kategorií: ${updatedCategories.length}`);
               } else {
                 alert('Chyba při přidávání kategorie');
               }
