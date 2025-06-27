@@ -1120,18 +1120,34 @@ const PaintPro = () => {
                       const value = e.target.value;
                       setFormData({...formData, druh: value});
                       
-                      // Automaticky přidat novou kategorii při zadání
-                      if (value && !workCategoryManager.getCategoryNames().includes(value)) {
+                      // Kontrola, zda je to nová kategorie
+                      const existingCategories = workCategoryManager.getCategoryNames();
+                      if (value && value.trim() && !existingCategories.includes(value.trim())) {
                         setIsAddingNewCategory(true);
                       } else {
                         setIsAddingNewCategory(false);
                       }
                     }}
+                    onKeyDown={(e) => {
+                      // Při stisknutí Enter nebo Tab přidat kategorii okamžitě
+                      if ((e.key === 'Enter' || e.key === 'Tab') && formData.druh && formData.druh.trim()) {
+                        const trimmedValue = formData.druh.trim();
+                        if (!workCategoryManager.getCategoryNames().includes(trimmedValue)) {
+                          if (workCategoryManager.addCategory(trimmedValue)) {
+                            setIsAddingNewCategory(false);
+                            console.log('Category added via Enter/Tab:', trimmedValue);
+                          }
+                        }
+                      }
+                    }}
                     onBlur={() => {
                       // Při opuštění pole přidat kategorii, pokud neexistuje
-                      if (formData.druh && !workCategoryManager.getCategoryNames().includes(formData.druh)) {
-                        if (workCategoryManager.addCategory(formData.druh)) {
-                          setWorkCategories(workCategoryManager.getAllCategories());
+                      if (formData.druh && formData.druh.trim()) {
+                        const trimmedValue = formData.druh.trim();
+                        if (!workCategoryManager.getCategoryNames().includes(trimmedValue)) {
+                          if (workCategoryManager.addCategory(trimmedValue)) {
+                            console.log('Category added via blur:', trimmedValue);
+                          }
                         }
                       }
                       setIsAddingNewCategory(false);
@@ -1145,9 +1161,9 @@ const PaintPro = () => {
                       <option key={category} value={category} />
                     ))}
                   </datalist>
-                  {isAddingNewCategory && formData.druh && (
+                  {isAddingNewCategory && formData.druh && formData.druh.trim() && (
                     <div className="new-category-hint">
-                      📝 Nová kategorie "{formData.druh}" bude přidána
+                      📝 Nová kategorie "{formData.druh.trim()}" bude přidána
                     </div>
                   )}
                 </div>
