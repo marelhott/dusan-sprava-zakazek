@@ -2918,7 +2918,7 @@ const PaintPro = () => {
             mapRef.current = null;
           }
         };
-      }, [zakazkyData]);
+      }, [zakazkyData, workCategories]);
       
       return (
         <div style={{ width: '100%', height: '600px', borderRadius: '16px', overflow: 'hidden' }}>
