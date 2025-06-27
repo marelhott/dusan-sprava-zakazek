@@ -2424,7 +2424,7 @@ const PaintPro = () => {
             <div className="chart-container-small">
               <Line data={{
                 labels: zakazkyData.map((z, index) => `Zakázka ${index + 1}`),
-                datasets: workCategoryManager.getAllCategories().map(category => ({
+                datasets: workCategories.map(category => ({
                   label: category.name,
                   data: zakazkyData.map(z => z.druh === category.name ? z.zisk : 0),
                   borderColor: category.color,
