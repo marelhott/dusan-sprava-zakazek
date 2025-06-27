@@ -2833,7 +2833,7 @@ const PaintPro = () => {
         {/* Akční tlačítka */}
         <div className="action-buttons-row">
           <div className="action-button-card" onClick={() => {
-            exportCompletePDF(currentTab, setCurrentTab, zakazkyData);
+            exportCompletePDF(activeTab, setActiveTab, zakazkyData);
           }}>
             <div className="modern-icon size-large icon-export"></div>
             <div className="action-button-content">
