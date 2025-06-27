@@ -2572,7 +2572,7 @@ body::after {
   top: 100%;
   left: 0;
   right: 0;
-  background: var(--accent-blue);
+  background: var(--accent-green);
   color: white;
   padding: 8px 12px;
   border-radius: 0 0 8px 8px;
@@ -2580,6 +2580,19 @@ body::after {
   font-weight: 500;
   z-index: 10;
   animation: slideDown 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.new-category-hint::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 12px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid var(--accent-green);
 }
 
 @keyframes slideDown {
