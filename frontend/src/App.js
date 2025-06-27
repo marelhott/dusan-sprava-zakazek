@@ -896,33 +896,33 @@ const PaintPro = () => {
                       const visibleCount = visibleCategories.length;
                       
                       return visibleCategories.map((category, visibleIndex) => {
-                        let positionClass;
+                        // Dynamické pozicionování kolem kruhu
+                        const angleStep = (2 * Math.PI) / visibleCount;
+                        const angle = (visibleIndex * angleStep) - (Math.PI / 2); // Začít nahoře (-90°)
                         
-                        if (visibleCount === 1) {
-                          positionClass = 'label-top-right';
-                        } else if (visibleCount === 2) {
-                          positionClass = visibleIndex === 0 ? 'label-top-right' : 'label-bottom-left';
-                        } else if (visibleCount === 3) {
-                          const positions = ['label-top-right', 'label-bottom-left', 'label-bottom-right'];
-                          positionClass = positions[visibleIndex];
-                        } else if (visibleCount === 4) {
-                          const positions = ['label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'];
-                          positionClass = positions[visibleIndex];
-                        } else {
-                          // Pro více než 4 kategorie - použijeme stále jen 4 pozice, ale rotujeme je
-                          const positionCycle = ['label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'];
-                          positionClass = positionCycle[visibleIndex % 4];
-                          
-                          // Pro 5+ kategorií přidáme offset k pozici
-                          if (visibleCount > 4) {
-                            const offset = Math.floor(visibleIndex / 4) * 10; // Každé 4 kategorie posuň o 10%
-                            positionClass += ` label-offset-${offset}`;
-                          }
-                        }
+                        // Poloměr pro umístění labelů (vzdálenost od středu)
+                        const radius = 120; // px od středu
+                        const centerX = 150; // střed kontejneru
+                        const centerY = 150; // střed kontejneru
+                        
+                        // Vypočítat x,y pozici
+                        const x = centerX + radius * Math.cos(angle);
+                        const y = centerY + radius * Math.sin(angle);
                         
                         return (
-                          <div key={category.label} className={`label-item ${positionClass}`}>
-                            <div className="label-line"></div>
+                          <div 
+                            key={category.label} 
+                            className="label-item label-dynamic"
+                            style={{
+                              left: `${x}px`,
+                              top: `${y}px`,
+                              transform: 'translate(-50%, -50%)'
+                            }}
+                          >
+                            <div className="label-line-dynamic" style={{
+                              transform: `rotate(${angle + Math.PI}rad)`,
+                              transformOrigin: '0 50%'
+                            }}></div>
                             <div className="label-content">
                               <div className="label-percentage">{category.percentage}%</div>
                               <div className="label-name">{category.label}</div>
