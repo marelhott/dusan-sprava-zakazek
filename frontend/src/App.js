@@ -118,7 +118,7 @@ class SimpleWorkCategoryManager {
 }
 
 // Globální instance manageru
-const workCategoryManager = new WorkCategoryManager();
+const workCategoryManager = new SimpleWorkCategoryManager();
 
 const PaintPro = () => {
   const { currentUser, getUserData, addUserOrder, editUserOrder, deleteUserOrder } = useAuth();
