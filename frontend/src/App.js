@@ -353,7 +353,7 @@ const PaintPro = () => {
       rozlozeniData: {
         labels: Object.keys(categoryStats),
         values: Object.values(categoryStats),
-        colors: workCategoryManager.getAllCategories().map(cat => cat.color)
+        colors: workCategories.map(cat => cat.color)
       }
     };
   }, [zakazkyData]);
