@@ -2721,11 +2721,14 @@ const PaintPro = () => {
 
         {/* Akční tlačítka */}
         <div className="action-buttons-row">
-          <div className="action-button-card" onClick={exportToPDF}>
+          <div className="action-button-card" onClick={() => {
+            // Screenshot-based PDF export
+            window.print();
+          }}>
             <div className="modern-icon size-large icon-export"></div>
             <div className="action-button-content">
               <div className="action-button-title">Export do PDF</div>
-              <div className="action-button-subtitle">Kompletní report s daty</div>
+              <div className="action-button-subtitle">Screenshot stránky</div>
             </div>
           </div>
           
