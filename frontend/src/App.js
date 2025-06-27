@@ -936,7 +936,7 @@ const PaintPro = () => {
           <div className="chart-details">
             <div className="detail-row">
               <span>KATEGORIÍ</span>
-              <span>4</span>
+              <span>{dashboardData.rozlozeniData.labels.length}</span>
             </div>
             <div className="detail-row">
               <span>Největší podíl</span>
