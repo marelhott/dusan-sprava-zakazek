@@ -2963,15 +2963,8 @@ const PaintPro = () => {
           zakazkyData.forEach((zakazka) => {
             const coords = getCoordinatesFromAddress(zakazka.adresa);
             if (coords) {
-              // Barva markeru podle druhu práce
-              const markerColors = {
-                'Adam': '#6366f1',
-                'MVČ': '#06b6d4', 
-                'Korálek': '#10b981',
-                'Ostatní': '#f59e0b'
-              };
-              
-              const color = markerColors[zakazka.druh] || '#6366f1';
+              // Barva markeru podle druhu práce - dynamicky ze správce kategorií
+              const color = workCategoryManager.getCategoryColor(zakazka.druh);
               
               // Vytvoření custom markeru
               const marker = L.marker(coords, {
