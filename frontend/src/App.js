@@ -902,8 +902,8 @@ const PaintPro = () => {
                         
                         // Poloměr pro umístění labelů (vzdálenost od středu)
                         const radius = 180; // px od středu - ještě více vzdálené pro lepší čitelnost
-                        const centerX = 175; // střed kontejneru (350px / 2)
-                        const centerY = 175; // střed kontejneru (350px / 2)
+                        const centerX = 200; // střed kontejneru (400px / 2)
+                        const centerY = 200; // střed kontejneru (400px / 2)
                         
                         // Vypočítat x,y pozici
                         const x = centerX + radius * Math.cos(angle);
