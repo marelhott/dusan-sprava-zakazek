@@ -974,12 +974,13 @@ body::after {
 .label-content {
   text-align: center;
   background: rgba(255, 255, 255, 0.15);
-  padding: 8px 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 10px;
   min-width: 60px;
+  white-space: nowrap;
 }
 
 .label-percentage {
