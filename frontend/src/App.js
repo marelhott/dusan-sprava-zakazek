@@ -1540,7 +1540,7 @@ const PaintPro = () => {
                   <td>{zakazka.druh}</td>
                   <td>{zakazka.klient}</td>
                   <td>{zakazka.cislo}</td>
-                  <td className="amount-bold-blue">{zakazka.castka.toLocaleString()} Kč</td>
+                  <td className="amount-bold-black">{zakazka.castka.toLocaleString()} Kč</td>
                   <td>{zakazka.fee.toLocaleString()} Kč</td>
                   <td>{(zakazka.castka - zakazka.fee).toLocaleString()} Kč</td>
                   <td>{zakazka.palivo.toLocaleString()} Kč</td>
