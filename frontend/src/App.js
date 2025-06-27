@@ -1232,15 +1232,44 @@ const PaintPro = () => {
             <div className="form-row">
               <div className="form-group">
                 <label>Druh práce</label>
-                <select
-                  value={formData.druh}
-                  onChange={e => setFormData({...formData, druh: e.target.value})}
-                >
-                  <option value="Adam">Adam</option>
-                  <option value="MVČ">MVČ</option>
-                  <option value="Korálek">Korálek</option>
-                  <option value="Ostatní">Ostatní</option>
-                </select>
+                <div className="combo-box-container">
+                  <input
+                    type="text"
+                    value={formData.druh || ''}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setFormData({...formData, druh: value});
+                      
+                      // Automaticky přidat novou kategorii při zadání
+                      if (value && !workCategoryManager.getCategoryNames().includes(value)) {
+                        setIsAddingNewCategory(true);
+                      } else {
+                        setIsAddingNewCategory(false);
+                      }
+                    }}
+                    onBlur={() => {
+                      // Při opuštění pole přidat kategorii, pokud neexistuje
+                      if (formData.druh && !workCategoryManager.getCategoryNames().includes(formData.druh)) {
+                        if (workCategoryManager.addCategory(formData.druh)) {
+                          setWorkCategories(workCategoryManager.getAllCategories());
+                        }
+                      }
+                      setIsAddingNewCategory(false);
+                    }}
+                    placeholder="Vyberte nebo napište nový druh práce"
+                    list="work-categories-list-edit"
+                  />
+                  <datalist id="work-categories-list-edit">
+                    {workCategoryManager.getCategoryNames().map(category => (
+                      <option key={category} value={category} />
+                    ))}
+                  </datalist>
+                  {isAddingNewCategory && formData.druh && (
+                    <div className="new-category-hint">
+                      📝 Nová kategorie "{formData.druh}" bude přidána
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="form-group">
                 <label>Číslo zakázky *</label>
