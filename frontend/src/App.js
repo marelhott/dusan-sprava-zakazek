@@ -261,11 +261,8 @@ const PaintPro = () => {
       if (categoryStats.hasOwnProperty(zakazka.druh)) {
         categoryStats[zakazka.druh] += zakazka.zisk;
       } else {
-        // Pokud kategorie neexistuje, přidej ji automaticky
-        if (workCategoryManager.addCategory(zakazka.druh)) {
-          categoryStats[zakazka.druh] = zakazka.zisk;
-          console.log('Auto-added category from existing data:', zakazka.druh);
-        }
+        // Pokud kategorie neexistuje, vytvoř ji v stats jako 0 a přidej zisk
+        categoryStats[zakazka.druh] = zakazka.zisk;
       }
     });
 
