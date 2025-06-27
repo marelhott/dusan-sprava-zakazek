@@ -1375,8 +1375,8 @@ const PaintPro = () => {
                   onChange={(e) => setFilterDruhPrace(e.target.value)}
                 >
                   <option value="">Všechny druhy</option>
-                  {workCategoryManager.getCategoryNames().map(category => (
-                    <option key={category} value={category}>{category}</option>
+                  {workCategories.map(category => (
+                    <option key={category.name} value={category.name}>{category.name}</option>
                   ))}
                 </select>
               </div>
