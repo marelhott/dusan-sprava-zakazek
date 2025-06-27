@@ -3014,18 +3014,21 @@ const PaintPro = () => {
             }
           });
           
-          // Přidání legend control
+          // Přidání dynamické legendy
           const legend = L.control({position: 'bottomright'});
           legend.onAdd = function(map) {
             const div = L.DomUtil.create('div', 'info legend');
+            const categories = workCategoryManager.getAllCategories();
+            
+            const legendItems = categories.map(category => 
+              `<div style="margin-bottom: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background: ${category.color}; border-radius: 50%; margin-right: 6px;"></span>${category.name}</div>`
+            ).join('');
+            
             div.innerHTML = `
               <div style="background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
                 <h4 style="margin: 0 0 8px 0; font-size: 12px; font-weight: 600; color: #374151;">Druhy prací</h4>
                 <div style="font-size: 11px; line-height: 1.4;">
-                  <div style="margin-bottom: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background: #6366f1; border-radius: 50%; margin-right: 6px;"></span>Adam</div>
-                  <div style="margin-bottom: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background: #06b6d4; border-radius: 50%; margin-right: 6px;"></span>MVČ</div>
-                  <div style="margin-bottom: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background: #10b981; border-radius: 50%; margin-right: 6px;"></span>Korálek</div>
-                  <div><span style="display: inline-block; width: 12px; height: 12px; background: #f59e0b; border-radius: 50%; margin-right: 6px;"></span>Ostatní</div>
+                  ${legendItems}
                 </div>
               </div>
             `;
