@@ -2529,7 +2529,7 @@ const PaintPro = () => {
                 });
                 return Object.keys(monthlyLabels).sort();
               })(),
-              datasets: workCategoryManager.getAllCategories().map((category, index) => {
+              datasets: workCategories.map((category, index) => {
                 // Generování gradient barev pro každou kategorii
                 const baseColor = category.color;
                 const rgbaMatch = baseColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
