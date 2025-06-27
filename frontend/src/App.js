@@ -4,7 +4,7 @@ import './ModernIcons.css';
 import html2pdf from 'html2pdf.js';
 
 // Funkce pro kompletní PDF export všech stránek
-const exportCompletePDF = async (currentTab, setCurrentTab, userData) => {
+const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
   try {
     // Zobrazit loading indikátor
     const loadingDiv = document.createElement('div');
@@ -15,7 +15,7 @@ const exportCompletePDF = async (currentTab, setCurrentTab, userData) => {
     `;
     document.body.appendChild(loadingDiv);
 
-    const originalTab = currentTab;
+    const originalTab = activeTab;
     const tabs = ['dashboard', 'zakazky', 'reporty', 'mapa'];
     const tabNames = {
       'dashboard': 'Dashboard',
@@ -30,7 +30,7 @@ const exportCompletePDF = async (currentTab, setCurrentTab, userData) => {
     for (const tab of tabs) {
       try {
         // Přepni na tab
-        setCurrentTab(tab);
+        setActiveTab(tab);
         
         // Počkej na render
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -90,7 +90,7 @@ const exportCompletePDF = async (currentTab, setCurrentTab, userData) => {
     }
     
     // Vrať původní tab
-    setCurrentTab(originalTab);
+    setActiveTab(originalTab);
     
     // Stáhni PDF
     const fileName = `PaintPro_Kompletni_Report_${new Date().toLocaleDateString('cs-CZ').replace(/\./g, '_')}.pdf`;
