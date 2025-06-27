@@ -1472,6 +1472,21 @@ const PaintPro = () => {
             <div className="modern-icon size-small icon-export"></div>
             Export CSV
           </button>
+          <button 
+            className="btn btn-secondary btn-small" 
+            onClick={() => {
+              // Debug test - přidat test kategorii
+              const testCategory = 'Test-' + Date.now();
+              if (workCategoryManager.addCategory(testCategory)) {
+                alert(`Kategorie "${testCategory}" byla úspěšně přidána!`);
+              } else {
+                alert('Chyba při přidávání kategorie');
+              }
+            }}
+            style={{ marginRight: '8px' }}
+          >
+            🧪 Test kategorie
+          </button>
           <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
             <div className="modern-icon size-small icon-add"></div>
             Přidat zakázku
