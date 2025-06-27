@@ -331,10 +331,10 @@ const PaintPro = () => {
       if (categoryStats.hasOwnProperty(zakazka.druh)) {
         categoryStats[zakazka.druh] += zakazka.zisk;
       } else {
-        // Pokud kategorie neexistuje, přidej ji
+        // Pokud kategorie neexistuje, přidej ji automaticky
         if (workCategoryManager.addCategory(zakazka.druh)) {
-          setWorkCategories(workCategoryManager.getAllCategories());
           categoryStats[zakazka.druh] = zakazka.zisk;
+          console.log('Auto-added category from existing data:', zakazka.druh);
         }
       }
     });
