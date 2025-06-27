@@ -3014,6 +3014,9 @@ body::after {
     0 20px 60px rgba(0, 0, 0, 0.15),
     0 8px 25px rgba(139, 92, 246, 0.1);
   animation: slideIn 0.3s ease-out;
+  /* Zajistit správné chování myši */
+  pointer-events: all;
+  user-select: text;
 }
 
 @keyframes slideIn {
