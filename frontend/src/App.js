@@ -919,10 +919,6 @@ const PaintPro = () => {
                               transform: 'translate(-50%, -50%)'
                             }}
                           >
-                            <div className="label-line-dynamic" style={{
-                              transform: `rotate(${angle + Math.PI}rad)`,
-                              transformOrigin: '100% 50%'
-                            }}></div>
                             <div className="label-content">
                               <div className="label-percentage">{category.percentage}%</div>
                               <div className="label-name">{category.label}</div>
