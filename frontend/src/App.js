@@ -1042,61 +1042,19 @@ const PaintPro = () => {
               </div>
               <div className="form-group">
                 <label>Druh práce *</label>
-                <div className="combo-box-container">
-                  <input
-                    type="text"
-                    value={formData.druh}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      setFormData({...formData, druh: value});
-                      
-                      // Kontrola, zda je to nová kategorie
-                      const existingCategories = workCategoryManager.getCategoryNames();
-                      if (value && value.trim() && !existingCategories.includes(value.trim())) {
-                        setIsAddingNewCategory(true);
-                      } else {
-                        setIsAddingNewCategory(false);
-                      }
-                    }}
-                    onKeyDown={(e) => {
-                      // Při stisknutí Enter nebo Tab přidat kategorii okamžitě
-                      if ((e.key === 'Enter' || e.key === 'Tab') && formData.druh && formData.druh.trim()) {
-                        const trimmedValue = formData.druh.trim();
-                        if (!workCategoryManager.getCategoryNames().includes(trimmedValue)) {
-                          if (workCategoryManager.addCategory(trimmedValue)) {
-                            setIsAddingNewCategory(false);
-                            console.log('Category added via Enter/Tab:', trimmedValue);
-                          }
-                        }
-                      }
-                    }}
-                    onBlur={() => {
-                      // Při opuštění pole přidat kategorii, pokud neexistuje
-                      if (formData.druh && formData.druh.trim()) {
-                        const trimmedValue = formData.druh.trim();
-                        if (!workCategoryManager.getCategoryNames().includes(trimmedValue)) {
-                          if (workCategoryManager.addCategory(trimmedValue)) {
-                            console.log('Category added via blur:', trimmedValue);
-                          }
-                        }
-                      }
-                      setIsAddingNewCategory(false);
-                    }}
-                    placeholder="Vyberte nebo napište nový druh práce"
-                    list="work-categories-list"
-                    required
-                  />
-                  <datalist id="work-categories-list">
-                    {workCategoryManager.getCategoryNames().map(category => (
-                      <option key={category} value={category} />
-                    ))}
-                  </datalist>
-                  {isAddingNewCategory && formData.druh && formData.druh.trim() && (
-                    <div className="new-category-hint">
-                      📝 Nová kategorie "{formData.druh.trim()}" bude přidána
-                    </div>
-                  )}
-                </div>
+                <input
+                  type="text"
+                  value={formData.druh}
+                  onChange={e => setFormData({...formData, druh: e.target.value})}
+                  placeholder="Vyberte nebo napište nový druh práce"
+                  list="work-categories-list"
+                  required
+                />
+                <datalist id="work-categories-list">
+                  {workCategoryManager.getCategoryNames().map(category => (
+                    <option key={category} value={category} />
+                  ))}
+                </datalist>
               </div>
             </div>
             <div className="form-row">
