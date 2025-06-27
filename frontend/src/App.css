@@ -861,26 +861,26 @@ body::after {
 }
 
 .label-top-left {
-  top: 15%;
-  left: 15%;
+  top: 8%;
+  left: 8%;
   transform: translate(-50%, -50%);
 }
 
 .label-top-right {
-  top: 15%;
-  right: 15%;
+  top: 8%;
+  right: 8%;
   transform: translate(50%, -50%);
 }
 
 .label-bottom-left {
-  bottom: 15%;
-  left: 15%;
+  bottom: 8%;
+  left: 8%;
   transform: translate(-50%, 50%);
 }
 
 .label-bottom-right {
-  bottom: 15%;
-  right: 15%;
+  bottom: 8%;
+  right: 8%;
   transform: translate(50%, 50%);
 }
 
