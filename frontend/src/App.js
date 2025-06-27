@@ -256,26 +256,41 @@ const PaintPro = () => {
     console.log('Celkový zisk:', celkovyZisk);
     console.log('Počet zakázek:', pocetZakazek);
 
-    // Rozložení podle druhu práce
-    const adamZisk = zakazkyData.filter(z => z.druh === 'Adam').reduce((sum, z) => sum + z.zisk, 0);
-    const mvcZisk = zakazkyData.filter(z => z.druh === 'MVČ').reduce((sum, z) => sum + z.zisk, 0);
-    const koralekZisk = zakazkyData.filter(z => z.druh === 'Korálek').reduce((sum, z) => sum + z.zisk, 0);
-    const ostatniZisk = zakazkyData.filter(z => z.druh === 'Ostatní').reduce((sum, z) => sum + z.zisk, 0);
+    // Dynamické rozložení podle druhu práce
+    const categoryStats = {};
+    const availableCategories = workCategoryManager.getCategoryNames();
+    
+    // Inicializace všech kategorií na 0
+    availableCategories.forEach(category => {
+      categoryStats[category] = 0;
+    });
+    
+    // Výpočet zisků podle kategorií
+    zakazkyData.forEach(zakazka => {
+      if (categoryStats.hasOwnProperty(zakazka.druh)) {
+        categoryStats[zakazka.druh] += zakazka.zisk;
+      } else {
+        // Pokud kategorie neexistuje, přidej ji
+        if (workCategoryManager.addCategory(zakazka.druh)) {
+          setWorkCategories(workCategoryManager.getAllCategories());
+          categoryStats[zakazka.druh] = zakazka.zisk;
+        }
+      }
+    });
 
-    console.log('=== ROZLOŽENÍ PODLE DRUHU ===');
-    console.log('Adam zisk:', adamZisk);
-    console.log('MVČ zisk:', mvcZisk);
-    console.log('Korálek zisk:', koralekZisk);
-    console.log('Ostatní zisk:', ostatniZisk);
-    console.log('Součet:', adamZisk + mvcZisk + koralekZisk + ostatniZisk);
+    console.log('=== DYNAMICKÉ ROZLOŽENÍ PODLE DRUHU ===');
+    Object.entries(categoryStats).forEach(([category, zisk]) => {
+      console.log(`${category} zisk:`, zisk);
+    });
+    
+    const totalZisk = Object.values(categoryStats).reduce((sum, zisk) => sum + zisk, 0);
+    console.log('Součet:', totalZisk);
     
     // Procenta pro ověření
-    const total = adamZisk + mvcZisk + koralekZisk + ostatniZisk;
-    if (total > 0) {
-      console.log('Adam %:', Math.round((adamZisk / total) * 100));
-      console.log('MVČ %:', Math.round((mvcZisk / total) * 100));
-      console.log('Korálek %:', Math.round((koralekZisk / total) * 100));
-      console.log('Ostatní %:', Math.round((ostatniZisk / total) * 100));
+    if (totalZisk > 0) {
+      Object.entries(categoryStats).forEach(([category, zisk]) => {
+        console.log(`${category} %:`, Math.round((zisk / totalZisk) * 100));
+      });
     }
 
     // Reálné měsíční data pouze z zakázek uživatele
