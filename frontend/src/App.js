@@ -136,6 +136,29 @@ const PaintPro = () => {
   // Jednoduchý stav pro kategorie - bez složitých listenerů
   const [workCategories, setWorkCategories] = useState(workCategoryManager.getAllCategories());
 
+  // Vyčištění test kategorií při načtení
+  useEffect(() => {
+    // Odstranit test kategorie z localStorage
+    const categories = workCategoryManager.getAllCategories();
+    let categoriesChanged = false;
+    
+    const cleanedCategories = categories.filter(cat => {
+      const isTestCategory = cat.name.toLowerCase().includes('test') && cat.name.includes('17');
+      if (isTestCategory) {
+        categoriesChanged = true;
+        console.log('Removing test category:', cat.name);
+      }
+      return !isTestCategory;
+    });
+    
+    if (categoriesChanged) {
+      // Přímo upravit categories a uložit
+      workCategoryManager.categories = cleanedCategories;
+      workCategoryManager.saveCategories();
+      setWorkCategories(workCategoryManager.getAllCategories());
+    }
+  }, []);
+
   // Získání dat pro aktuálního uživatele
   const [zakazkyData, setZakazkyData] = useState([]);
 
