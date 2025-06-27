@@ -885,19 +885,29 @@ const PaintPro = () => {
                       const total = dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0);
                       const percentage = total > 0 ? Math.round((dashboardData.rozlozeniData.values[index] / total) * 100) : 0;
                       
-                      // Pozice podle pořadí
-                      const positions = [
-                        'label-top-right',    // Adam
-                        'label-top-left',     // MVČ  
-                        'label-bottom-left',  // Korálek
-                        'label-bottom-right'  // Ostatní
-                      ];
+                      // Dynamické pozice podle počtu kategorií
+                      const totalCategories = dashboardData.rozlozeniData.labels.length;
+                      let positionClass;
+                      
+                      if (totalCategories <= 2) {
+                        positionClass = index === 0 ? 'label-top-right' : 'label-bottom-left';
+                      } else if (totalCategories <= 4) {
+                        const positions = ['label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'];
+                        positionClass = positions[index] || 'label-top-left';
+                      } else {
+                        // Pro více než 4 kategorie rozložíme rovnoměrně
+                        const angle = (index / totalCategories) * 2 * Math.PI - Math.PI / 2; // Začínáme nahoře
+                        if (angle >= -Math.PI/4 && angle < Math.PI/4) positionClass = 'label-top-right';
+                        else if (angle >= Math.PI/4 && angle < 3*Math.PI/4) positionClass = 'label-bottom-right';
+                        else if (angle >= 3*Math.PI/4 || angle < -3*Math.PI/4) positionClass = 'label-bottom-left';
+                        else positionClass = 'label-top-left';
+                      }
                       
                       // Zobrazit pouze když má hodnotu větší než 0
                       if (dashboardData.rozlozeniData.values[index] === 0) return null;
                       
                       return (
-                        <div key={label} className={`label-item ${positions[index] || 'label-top-left'}`}>
+                        <div key={label} className={`label-item ${positionClass}`}>
                           <div className="label-line"></div>
                           <div className="label-content">
                             <div className="label-percentage">{percentage}%</div>
