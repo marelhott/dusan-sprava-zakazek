@@ -1207,7 +1207,15 @@ const PaintPro = () => {
     if (!showEditModal || !editingZakazka) return null;
 
     return (
-      <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
+      <div 
+        className="modal-overlay" 
+        onMouseDown={(e) => {
+          // Zavřít pouze při kliknutí přímo na overlay, ne na vnitřní obsah
+          if (e.target === e.currentTarget) {
+            setShowEditModal(false);
+          }
+        }}
+      >
         <div className="modal-content" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Upravit zakázku</h2>
