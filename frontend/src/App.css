@@ -3115,9 +3115,19 @@ body::after {
   color: #3B82F6 !important;
 }
 
+.amount-bold-black {
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
 .profit-bold-orange {
   font-weight: 700 !important;
   color: #F59E0B !important;
+}
+
+.profit-bold-green {
+  font-weight: 700 !important;
+  color: #10b981 !important;
 }
 
 /* Address Cell Styling */
