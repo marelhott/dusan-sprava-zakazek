@@ -992,7 +992,7 @@ const PaintPro = () => {
   const AddZakazkaModal = () => {
     const [formData, setFormData] = useState({
       datum: new Date().toISOString().split('T')[0],
-      druh: 'Adam',
+      druh: '',
       klient: '',
       cislo: '',
       adresa: '',
