@@ -909,12 +909,15 @@ const PaintPro = () => {
                           const positions = ['label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'];
                           positionClass = positions[visibleIndex];
                         } else {
-                          // Pro více než 4 kategorie - rozložíme rovnoměrně po obvodu
-                          const positions = [
-                            'label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right',
-                            'label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'
-                          ];
-                          positionClass = positions[visibleIndex % 4];
+                          // Pro více než 4 kategorie - použijeme stále jen 4 pozice, ale rotujeme je
+                          const positionCycle = ['label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'];
+                          positionClass = positionCycle[visibleIndex % 4];
+                          
+                          // Pro 5+ kategorií přidáme offset k pozici
+                          if (visibleCount > 4) {
+                            const offset = Math.floor(visibleIndex / 4) * 10; // Každé 4 kategorie posuň o 10%
+                            positionClass += ` label-offset-${offset}`;
+                          }
                         }
                         
                         return (
