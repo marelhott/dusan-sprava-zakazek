@@ -1514,9 +1514,11 @@ const PaintPro = () => {
           <p>Přehled a správa všech malířských zakázek s automatickým výpočtem zisku</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-secondary" onClick={() => window.print()}>
+          <button className="btn btn-secondary" onClick={() => {
+            exportCompletePDF(currentTab, setCurrentTab, zakazkyData);
+          }}>
             <div className="modern-icon size-small icon-export"></div>
-            Export PDF
+            Export kompletní PDF
           </button>
           <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
             <div className="modern-icon size-small icon-add"></div>
