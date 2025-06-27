@@ -55,32 +55,11 @@ const generateColorForCategory = (index) => {
   return colors[index % colors.length];
 };
 
-// Třída pro správu kategorií
-class WorkCategoryManager {
+// Jednoduchá třída pro správu kategorií - bez složitých listenerů
+class SimpleWorkCategoryManager {
   constructor() {
     this.storageKey = 'workCategories';
-    this.listeners = new Set(); // Pro notifikace o změnách
     this.loadCategories();
-  }
-
-  // Přidat listener pro změny
-  addChangeListener(listener) {
-    this.listeners.add(listener);
-  }
-
-  removeChangeListener(listener) {
-    this.listeners.delete(listener);
-  }
-
-  // Notifikovat všechny listenery o změně
-  notifyChange() {
-    this.listeners.forEach(listener => {
-      try {
-        listener(this.categories);
-      } catch (error) {
-        console.error('Error in category change listener:', error);
-      }
-    });
   }
 
   loadCategories() {
@@ -88,30 +67,21 @@ class WorkCategoryManager {
       const stored = localStorage.getItem(this.storageKey);
       if (stored) {
         this.categories = JSON.parse(stored);
-        // Ověření integrity dat
-        if (!Array.isArray(this.categories) || this.categories.length === 0) {
-          this.resetToDefault();
-        }
       } else {
-        this.resetToDefault();
+        this.categories = [...DEFAULT_WORK_CATEGORIES];
+        this.saveCategories();
       }
     } catch (error) {
-      console.error('Error loading work categories:', error);
-      this.resetToDefault();
+      console.error('Error loading categories:', error);
+      this.categories = [...DEFAULT_WORK_CATEGORIES];
     }
-  }
-
-  resetToDefault() {
-    this.categories = [...DEFAULT_WORK_CATEGORIES];
-    this.saveCategories();
   }
 
   saveCategories() {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.categories));
-      console.log('Categories saved:', this.categories);
     } catch (error) {
-      console.error('Error saving work categories:', error);
+      console.error('Error saving categories:', error);
     }
   }
 
@@ -125,19 +95,15 @@ class WorkCategoryManager {
 
   getCategoryColor(categoryName) {
     const category = this.categories.find(cat => cat.name === categoryName);
-    return category ? category.color : '#6b7280'; // fallback gray
+    return category ? category.color : '#6b7280';
   }
 
   addCategory(categoryName) {
-    if (!categoryName || categoryName.trim() === '') {
-      return false; // prázdná kategorie
-    }
+    if (!categoryName || categoryName.trim() === '') return false;
     
     const trimmedName = categoryName.trim();
-    
-    // Kontrola existence (case-insensitive)
     if (this.categories.some(cat => cat.name.toLowerCase() === trimmedName.toLowerCase())) {
-      return false; // kategorie už existuje
+      return false; // už existuje
     }
     
     const newCategory = {
@@ -147,28 +113,7 @@ class WorkCategoryManager {
     
     this.categories.push(newCategory);
     this.saveCategories();
-    this.notifyChange(); // Notifikovat o změně
-    
-    console.log('New category added:', newCategory);
     return true;
-  }
-
-  // Pro budoucí rozšíření - mazání kategorií
-  removeCategory(categoryName) {
-    const index = this.categories.findIndex(cat => cat.name === categoryName);
-    if (index > -1 && this.categories.length > 1) { // nechám alespoň jednu kategorii
-      this.categories.splice(index, 1);
-      this.saveCategories();
-      this.notifyChange();
-      return true;
-    }
-    return false;
-  }
-
-  // Vynucená synchronizace (pro debug)
-  forceSync() {
-    this.loadCategories();
-    this.notifyChange();
   }
 }
 
