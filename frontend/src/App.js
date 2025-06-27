@@ -2889,7 +2889,7 @@ const PaintPro = () => {
           const legend = L.control({position: 'bottomright'});
           legend.onAdd = function(map) {
             const div = L.DomUtil.create('div', 'info legend');
-            const categories = workCategoryManager.getAllCategories();
+            const categories = workCategories;
             
             const legendItems = categories.map(category => 
               `<div style="margin-bottom: 4px;"><span style="display: inline-block; width: 12px; height: 12px; background: ${category.color}; border-radius: 50%; margin-right: 6px;"></span>${category.name}</div>`
