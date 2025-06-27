@@ -2989,6 +2989,9 @@ body::after {
   justify-content: center;
   z-index: 1000;
   animation: fadeIn 0.3s ease-out;
+  /* Zabránit nechtěnému zavírání modalu */
+  pointer-events: all;
+  user-select: none;
 }
 
 @keyframes fadeIn {
