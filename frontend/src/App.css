@@ -420,7 +420,7 @@ body::after {
 
 .btn-primary {
   background: var(--accent-blue);
-  color: var(--text-primary);
+  color: white;
   box-shadow: var(--shadow-sm);
 }
 
