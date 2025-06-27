@@ -2529,132 +2529,66 @@ const PaintPro = () => {
                 });
                 return Object.keys(monthlyLabels).sort();
               })(),
-              datasets: [
-                {
-                  label: 'Adam',
-                  data: (() => {
-                    const monthlyData = {};
-                    zakazkyData.forEach(z => {
-                      const dateParts = z.datum.split('.');
-                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
-                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
-                      if (z.druh === 'Adam') monthlyData[monthKey] += z.zisk;
-                    });
-                    const monthlyLabels = Object.keys(monthlyData).sort();
-                    return monthlyLabels.map(month => monthlyData[month] || 0);
-                  })(),
-                  backgroundColor: (context) => {
-                    const chart = context.chart;
-                    const {ctx, chartArea} = chart;
-                    if (!chartArea) return '#6366f1';
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0, '#4338ca');
-                    gradient.addColorStop(0.3, '#6366f1');
-                    gradient.addColorStop(0.7, '#8b5cf6');
-                    gradient.addColorStop(1, '#a855f7');
-                    return gradient;
-                  },
-                  borderRadius: {
-                    topLeft: 8,
-                    topRight: 8,
-                  },
-                  borderSkipped: false,
-                  barThickness: 32,
-                },
-                {
-                  label: 'MVČ',
-                  data: (() => {
-                    const monthlyData = {};
-                    zakazkyData.forEach(z => {
-                      const dateParts = z.datum.split('.');
-                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
-                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
-                      if (z.druh === 'MVČ') monthlyData[monthKey] += z.zisk;
-                    });
-                    const monthlyLabels = Object.keys(monthlyData).sort();
-                    return monthlyLabels.map(month => monthlyData[month] || 0);
-                  })(),
-                  backgroundColor: (context) => {
-                    const chart = context.chart;
-                    const {ctx, chartArea} = chart;
-                    if (!chartArea) return '#06b6d4';
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0, '#0891b2');
-                    gradient.addColorStop(0.3, '#06b6d4');
-                    gradient.addColorStop(0.7, '#22d3ee');
-                    gradient.addColorStop(1, '#67e8f9');
-                    return gradient;
-                  },
-                  borderRadius: {
-                    topLeft: 8,
-                    topRight: 8,
-                  },
-                  borderSkipped: false,
-                  barThickness: 32,
-                },
-                {
-                  label: 'Korálek',
-                  data: (() => {
-                    const monthlyData = {};
-                    zakazkyData.forEach(z => {
-                      const dateParts = z.datum.split('.');
-                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
-                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
-                      if (z.druh === 'Korálek') monthlyData[monthKey] += z.zisk;
-                    });
-                    const monthlyLabels = Object.keys(monthlyData).sort();
-                    return monthlyLabels.map(month => monthlyData[month] || 0);
-                  })(),
-                  backgroundColor: (context) => {
-                    const chart = context.chart;
-                    const {ctx, chartArea} = chart;
-                    if (!chartArea) return '#10b981';
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0, '#059669');
-                    gradient.addColorStop(0.3, '#10b981');
-                    gradient.addColorStop(0.7, '#34d399');
-                    gradient.addColorStop(1, '#6ee7b7');
-                    return gradient;
-                  },
-                  borderRadius: {
-                    topLeft: 8,
-                    topRight: 8,
-                  },
-                  borderSkipped: false,
-                  barThickness: 32,
-                },
-                {
-                  label: 'Ostatní',
-                  data: (() => {
-                    const monthlyData = {};
-                    zakazkyData.forEach(z => {
-                      const dateParts = z.datum.split('.');
-                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
-                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
-                      if (z.druh === 'Ostatní') monthlyData[monthKey] += z.zisk;
-                    });
-                    const monthlyLabels = Object.keys(monthlyData).sort();
-                    return monthlyLabels.map(month => monthlyData[month] || 0);
-                  })(),
-                  backgroundColor: (context) => {
-                    const chart = context.chart;
-                    const {ctx, chartArea} = chart;
-                    if (!chartArea) return '#f59e0b';
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                    gradient.addColorStop(0, '#d97706');
-                    gradient.addColorStop(0.3, '#f59e0b');
-                    gradient.addColorStop(0.7, '#fbbf24');
-                    gradient.addColorStop(1, '#fcd34d');
-                    return gradient;
-                  },
-                  borderRadius: {
-                    topLeft: 8,
-                    topRight: 8,
-                  },
-                  borderSkipped: false,
-                  barThickness: 32,
+              datasets: workCategoryManager.getAllCategories().map((category, index) => {
+                // Generování gradient barev pro každou kategorii
+                const baseColor = category.color;
+                const rgbaMatch = baseColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+                const hexMatch = baseColor.match(/#([0-9a-fA-F]{6})/);
+                
+                let r, g, b;
+                if (rgbaMatch) {
+                  [, r, g, b] = rgbaMatch.map(Number);
+                } else if (hexMatch) {
+                  const hex = hexMatch[1];
+                  r = parseInt(hex.substr(0, 2), 16);
+                  g = parseInt(hex.substr(2, 2), 16);
+                  b = parseInt(hex.substr(4, 2), 16);
+                } else {
+                  // Fallback barvy
+                  r = 107; g = 114; b = 128;
                 }
-              ]
+                
+                return {
+                  label: category.name,
+                  data: (() => {
+                    const monthlyData = {};
+                    zakazkyData.forEach(z => {
+                      const dateParts = z.datum.split('.');
+                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
+                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
+                      if (z.druh === category.name) monthlyData[monthKey] += z.zisk;
+                    });
+                    const monthlyLabels = Object.keys(monthlyData).sort();
+                    return monthlyLabels.map(month => monthlyData[month] || 0);
+                  })(),
+                  backgroundColor: (context) => {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) return baseColor;
+                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+                    
+                    // Vytvoření gradient efektu s dynamickými barvami
+                    const darkerR = Math.max(0, r - 30);
+                    const darkerG = Math.max(0, g - 30);
+                    const darkerB = Math.max(0, b - 30);
+                    const lighterR = Math.min(255, r + 30);
+                    const lighterG = Math.min(255, g + 30);
+                    const lighterB = Math.min(255, b + 30);
+                    
+                    gradient.addColorStop(0, `rgb(${darkerR}, ${darkerG}, ${darkerB})`);
+                    gradient.addColorStop(0.3, baseColor);
+                    gradient.addColorStop(0.7, `rgb(${lighterR}, ${lighterG}, ${lighterB})`);
+                    gradient.addColorStop(1, `rgb(${Math.min(255, lighterR + 20)}, ${Math.min(255, lighterG + 20)}, ${Math.min(255, lighterB + 20)})`);
+                    return gradient;
+                  },
+                  borderRadius: {
+                    topLeft: 8,
+                    topRight: 8,
+                  },
+                  borderSkipped: false,
+                  barThickness: 32,
+                };
+              })
             }} options={{
               responsive: true,
               maintainAspectRatio: false,
