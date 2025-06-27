@@ -584,18 +584,32 @@ const PaintPro = () => {
     datasets: [
       {
         data: dashboardData.rozlozeniData.values,
-        backgroundColor: [
-          'rgba(59, 130, 246, 0.9)',   // Modrá - Adam
-          'rgba(34, 197, 194, 0.9)',   // Tyrkysová - MVČ  
-          'rgba(16, 185, 129, 0.9)',   // Zelená - Korálek
-          'rgba(236, 72, 153, 0.9)'    // Růžová - Ostatní
-        ],
-        borderColor: [
-          'rgba(59, 130, 246, 1)',
-          'rgba(34, 197, 194, 1)', 
-          'rgba(16, 185, 129, 1)',
-          'rgba(236, 72, 153, 1)'
-        ],
+        backgroundColor: dashboardData.rozlozeniData.colors.map(color => {
+          // Převedení barvy na rgba s transparentností 0.9
+          if (color.startsWith('#')) {
+            const hex = color.slice(1);
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            return `rgba(${r}, ${g}, ${b}, 0.9)`;
+          } else if (color.startsWith('rgb')) {
+            return color.replace('rgb', 'rgba').replace(')', ', 0.9)');
+          }
+          return color;
+        }),
+        borderColor: dashboardData.rozlozeniData.colors.map(color => {
+          // Převedení barvy na rgba s transparentností 1.0
+          if (color.startsWith('#')) {
+            const hex = color.slice(1);
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+            return `rgba(${r}, ${g}, ${b}, 1)`;
+          } else if (color.startsWith('rgb')) {
+            return color.replace('rgb', 'rgba').replace(')', ', 1)');
+          }
+          return color;
+        }),
         borderWidth: 0,
         hoverBorderWidth: 0,
         cutout: '65%',
