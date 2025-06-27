@@ -1405,9 +1405,9 @@ const PaintPro = () => {
           <p>Přehled a správa všech malířských zakázek s automatickým výpočtem zisku</p>
         </div>
         <div className="page-actions">
-          <button className="btn btn-secondary" onClick={() => {}}>
+          <button className="btn btn-secondary" onClick={() => window.print()}>
             <div className="modern-icon size-small icon-export"></div>
-            Export CSV
+            Export PDF
           </button>
           <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
             <div className="modern-icon size-small icon-add"></div>
