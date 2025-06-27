@@ -1553,11 +1553,11 @@ const PaintPro = () => {
                   </td>
                   <td>
                     <div className="action-buttons">
-                      <button className="btn-icon" onClick={() => editZakazka(zakazka)} title="Upravit">
-                        <div className="modern-icon size-small icon-edit"></div>
+                      <button className="btn-icon btn-edit" onClick={() => editZakazka(zakazka)} title="Upravit zakázku">
+                        ✏️
                       </button>
-                      <button className="btn-icon" onClick={() => deleteZakazka(zakazka.id)} title="Smazat">
-                        <div className="modern-icon size-small icon-delete"></div>
+                      <button className="btn-icon btn-delete" onClick={() => deleteZakazka(zakazka.id)} title="Smazat zakázku">
+                        🗑️
                       </button>
                     </div>
                   </td>
