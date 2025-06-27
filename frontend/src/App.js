@@ -2424,52 +2424,17 @@ const PaintPro = () => {
             <div className="chart-container-small">
               <Line data={{
                 labels: zakazkyData.map((z, index) => `Zakázka ${index + 1}`),
-                datasets: [
-                  {
-                    label: 'Adam',
-                    data: zakazkyData.map(z => z.druh === 'Adam' ? z.zisk : 0),
-                    borderColor: '#6366f1',
-                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.4,
-                    pointRadius: 0,
-                    pointHoverRadius: 0,
-                  },
-                  {
-                    label: 'MVČ',
-                    data: zakazkyData.map(z => z.druh === 'MVČ' ? z.zisk : 0),
-                    borderColor: '#06b6d4',
-                    backgroundColor: 'rgba(6, 182, 212, 0.1)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.4,
-                    pointRadius: 0,
-                    pointHoverRadius: 0,
-                  },
-                  {
-                    label: 'Korálek',
-                    data: zakazkyData.map(z => z.druh === 'Korálek' ? z.zisk : 0),
-                    borderColor: '#10b981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.4,
-                    pointRadius: 0,
-                    pointHoverRadius: 0,
-                  },
-                  {
-                    label: 'Ostatní',
-                    data: zakazkyData.map(z => z.druh === 'Ostatní' ? z.zisk : 0),
-                    borderColor: '#f59e0b',
-                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                    borderWidth: 3,
-                    fill: false,
-                    tension: 0.4,
-                    pointRadius: 0,
-                    pointHoverRadius: 0,
-                  }
-                ]
+                datasets: workCategoryManager.getAllCategories().map(category => ({
+                  label: category.name,
+                  data: zakazkyData.map(z => z.druh === category.name ? z.zisk : 0),
+                  borderColor: category.color,
+                  backgroundColor: category.color.replace('1)', '0.1)').replace('rgb', 'rgba'),
+                  borderWidth: 3,
+                  fill: false,
+                  tension: 0.4,
+                  pointRadius: 0,
+                  pointHoverRadius: 0,
+                }))
               }} options={{
                 ...lineChartOptions,
                 scales: {
