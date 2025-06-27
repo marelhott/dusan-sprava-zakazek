@@ -1472,39 +1472,6 @@ const PaintPro = () => {
             <div className="modern-icon size-small icon-export"></div>
             Export CSV
           </button>
-          <button 
-            className="btn btn-secondary btn-small" 
-            onClick={() => {
-              const categories = workCategoryManager.getAllCategories();
-              const categoryList = categories.map(cat => `${cat.name} (${cat.color})`).join('\n');
-              const localStorageData = localStorage.getItem('workCategories');
-              alert(`Aktuální kategorie (${categories.length}):\n${categoryList}\n\nLocalStorage:\n${localStorageData}`);
-            }}
-            style={{ marginRight: '8px' }}
-          >
-            📋 Zobrazit kategorie
-          </button>
-          <button 
-            className="btn btn-secondary btn-small" 
-            onClick={() => {
-              // Debug test - přidat test kategorii
-              const testCategory = 'Test-' + Date.now();
-              console.log('Testing category addition:', testCategory);
-              console.log('Current categories before:', workCategoryManager.getCategoryNames());
-              
-              if (workCategoryManager.addCategory(testCategory)) {
-                const updatedCategories = workCategoryManager.getCategoryNames();
-                console.log('Current categories after:', updatedCategories);
-                console.log('localStorage content:', localStorage.getItem('workCategories'));
-                alert(`Kategorie "${testCategory}" byla úspěšně přidána!\nCelkem kategorií: ${updatedCategories.length}`);
-              } else {
-                alert('Chyba při přidávání kategorie');
-              }
-            }}
-            style={{ marginRight: '8px' }}
-          >
-            🧪 Test kategorie
-          </button>
           <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>
             <div className="modern-icon size-small icon-add"></div>
             Přidat zakázku
