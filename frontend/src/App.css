@@ -912,30 +912,6 @@ body::after {
   letter-spacing: 0.5px;
 }
 
-.label-top-left {
-  top: 15%;
-  left: 15%;
-  transform: translate(-50%, -50%);
-}
-
-.label-top-right {
-  top: 15%;
-  right: 15%;
-  transform: translate(50%, -50%);
-}
-
-.label-bottom-left {
-  bottom: 15%;
-  left: 15%;
-  transform: translate(-50%, 50%);
-}
-
-.label-bottom-right {
-  bottom: 15%;
-  right: 15%;
-  transform: translate(50%, 50%);
-}
-
 .label-line {
   width: 30px;
   height: 1px;
