@@ -356,7 +356,7 @@ const PaintPro = () => {
         colors: workCategories.map(cat => cat.color)
       }
     };
-  }, [zakazkyData]);
+  }, [zakazkyData, workCategories]);
 
   // Funkce pro přidání zakázky
   const addZakazka = (newZakazka) => {
