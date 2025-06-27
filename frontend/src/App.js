@@ -340,9 +340,9 @@ const PaintPro = () => {
         values: mesicniValues
       },
       rozlozeniData: {
-        labels: ['Adam', 'MVČ', 'Korálek', 'Ostatní'],
-        values: [adamZisk, mvcZisk, koralekZisk, ostatniZisk],
-        colors: ['#4F46E5', '#10B981', '#F59E0B', '#8B5CF6']
+        labels: Object.keys(categoryStats),
+        values: Object.values(categoryStats),
+        colors: workCategoryManager.getAllCategories().map(cat => cat.color)
       }
     };
   }, [zakazkyData]);
