@@ -1491,7 +1491,7 @@ const PaintPro = () => {
                 <th>DRUH PRÁCE</th>
                 <th>KLIENT</th>
                 <th>ID ZAKÁZKY</th>
-                <th>ČÁSTKA</th>
+                <th>TRŽBA</th>
                 <th>FEE</th>
                 <th>FEE OFF</th>
                 <th>PALIVO</th>
