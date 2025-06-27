@@ -18,41 +18,55 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
     const originalTab = activeTab;
     const tabs = ['dashboard', 'zakazky', 'reporty', 'mapa'];
     const tabNames = {
-      'dashboard': 'Dashboard',
-      'zakazky': 'Zakázky', 
-      'reporty': 'Reporty',
+      'dashboard': 'Dashboard - Přehled',
+      'zakazky': 'Zakázky - Správa',
+      'reporty': 'Reporty - Analýzy',
       'mapa': 'Mapa zakázek'
     };
     
-    const pdf = new (await import('jspdf')).jsPDF('p', 'mm', 'a4');
+    // Horizontální PDF (landscape)
+    const pdf = new (await import('jspdf')).jsPDF('l', 'mm', 'a4');
     let isFirstPage = true;
     
     for (const tab of tabs) {
       try {
+        console.log(`🔄 Zpracovávám sekci: ${tabNames[tab]}`);
+        
         // Přepni na tab
         setActiveTab(tab);
         
-        // Počkej na render
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        // Počkej na render - delší doba pro složitější stránky
+        await new Promise(resolve => setTimeout(resolve, 3000));
         
-        // Najdi main content
-        const element = document.querySelector('.main-content') || document.querySelector('.app') || document.body;
+        // Najdi hlavní obsah - použij více selektorů
+        let element = document.querySelector('.main-content');
+        if (!element) {
+          element = document.querySelector('[class*="container"]');
+        }
+        if (!element) {
+          element = document.querySelector('.app > div:last-child');
+        }
+        if (!element) {
+          element = document.body;
+        }
         
         if (element) {
-          // Vytvoř canvas
+          // Vyšší kvalita screenshotu
           const canvas = await (await import('html2canvas')).default(element, {
-            scale: 1.5,
+            scale: 2,
             useCORS: true,
             allowTaint: true,
             backgroundColor: '#ffffff',
             width: element.scrollWidth,
             height: element.scrollHeight,
             scrollX: 0,
-            scrollY: 0
+            scrollY: 0,
+            logging: false,
+            removeContainer: true
           });
           
           // Převeď na image
-          const imgData = canvas.toDataURL('image/jpeg', 0.8);
+          const imgData = canvas.toDataURL('image/jpeg', 0.9);
           
           if (!isFirstPage) {
             pdf.addPage();
@@ -60,29 +74,33 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
           isFirstPage = false;
           
           // Přidej nadpis stránky
-          pdf.setFontSize(16);
+          pdf.setFontSize(18);
           pdf.setTextColor(60, 60, 60);
           pdf.text(tabNames[tab], 20, 20);
           
-          // Vypočítej rozměry pro A4
-          const pageWidth = pdf.internal.pageSize.getWidth();
-          const pageHeight = pdf.internal.pageSize.getHeight();
+          // Vypočítej rozměry pro horizontální A4
+          const pageWidth = pdf.internal.pageSize.getWidth(); // ~297mm
+          const pageHeight = pdf.internal.pageSize.getHeight(); // ~210mm
           const imgAspectRatio = canvas.width / canvas.height;
           
           let imgWidth = pageWidth - 40; // margin 20mm z každé strany
           let imgHeight = imgWidth / imgAspectRatio;
           
           // Pokud je obrázek příliš vysoký, přizpůsob
-          const maxHeight = pageHeight - 60; // margin + nadpis
+          const maxHeight = pageHeight - 50; // margin + nadpis
           if (imgHeight > maxHeight) {
             imgHeight = maxHeight;
             imgWidth = imgHeight * imgAspectRatio;
           }
           
-          // Přidej obrázek
-          pdf.addImage(imgData, 'JPEG', 20, 30, imgWidth, imgHeight);
+          // Vycentruj obrázek
+          const x = (pageWidth - imgWidth) / 2;
+          const y = 30;
           
-          console.log(`✅ PDF stránka ${tab} přidána`);
+          // Přidej obrázek
+          pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
+          
+          console.log(`✅ PDF stránka ${tab} přidána (${Math.round(imgWidth)}x${Math.round(imgHeight)}mm)`);
         }
       } catch (error) {
         console.error(`❌ Chyba při zpracování ${tab}:`, error);
@@ -99,7 +117,7 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
     // Odstraň loading
     document.body.removeChild(loadingDiv);
     
-    console.log('✅ PDF export dokončen');
+    console.log('✅ PDF export dokončen (horizontální formát)');
     
   } catch (error) {
     console.error('❌ Chyba při PDF exportu:', error);
