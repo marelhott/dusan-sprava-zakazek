@@ -1177,6 +1177,16 @@ const PaintPro = () => {
 
     const handleSubmit = (e) => {
       e.preventDefault();
+      
+      // Přidat kategorii, pokud neexistuje (jednoduše při submitu)
+      if (formData.druh && formData.druh.trim()) {
+        const trimmedCategory = formData.druh.trim();
+        if (!workCategoryManager.getCategoryNames().includes(trimmedCategory)) {
+          workCategoryManager.addCategory(trimmedCategory);
+          setWorkCategories(workCategoryManager.getAllCategories()); // Refresh kategorií
+        }
+      }
+      
       const processedData = {
         ...formData,
         datum: new Date(formData.datum).toLocaleDateString('cs-CZ'),
