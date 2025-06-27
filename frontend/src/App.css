@@ -858,6 +858,8 @@ body::after {
   color: var(--text-secondary);
   font-weight: 600;
   font-size: 13px;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .label-top-left {
