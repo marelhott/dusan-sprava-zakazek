@@ -1475,6 +1475,18 @@ const PaintPro = () => {
           <button 
             className="btn btn-secondary btn-small" 
             onClick={() => {
+              const categories = workCategoryManager.getAllCategories();
+              const categoryList = categories.map(cat => `${cat.name} (${cat.color})`).join('\n');
+              const localStorageData = localStorage.getItem('workCategories');
+              alert(`Aktuální kategorie (${categories.length}):\n${categoryList}\n\nLocalStorage:\n${localStorageData}`);
+            }}
+            style={{ marginRight: '8px' }}
+          >
+            📋 Zobrazit kategorie
+          </button>
+          <button 
+            className="btn btn-secondary btn-small" 
+            onClick={() => {
               // Debug test - přidat test kategorii
               const testCategory = 'Test-' + Date.now();
               console.log('Testing category addition:', testCategory);
