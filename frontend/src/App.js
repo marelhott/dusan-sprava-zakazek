@@ -1515,7 +1515,7 @@ const PaintPro = () => {
         </div>
         <div className="page-actions">
           <button className="btn btn-secondary" onClick={() => {
-            exportCompletePDF(currentTab, setCurrentTab, zakazkyData);
+            exportCompletePDF(activeTab, setActiveTab, zakazkyData);
           }}>
             <div className="modern-icon size-small icon-export"></div>
             Export kompletní PDF
