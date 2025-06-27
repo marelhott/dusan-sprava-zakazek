@@ -881,41 +881,53 @@ const PaintPro = () => {
                 <>
                   <Doughnut data={doughnutChartData} options={doughnutChartOptions} />
                   <div className="external-labels">
-                    {dashboardData.rozlozeniData.labels.map((label, index) => {
+                    {(() => {
+                      // Nejdřív filtruj kategorie s hodnotou > 0
                       const total = dashboardData.rozlozeniData.values.reduce((a, b) => a + b, 0);
-                      const percentage = total > 0 ? Math.round((dashboardData.rozlozeniData.values[index] / total) * 100) : 0;
+                      const visibleCategories = dashboardData.rozlozeniData.labels
+                        .map((label, index) => ({
+                          label,
+                          index,
+                          value: dashboardData.rozlozeniData.values[index],
+                          percentage: total > 0 ? Math.round((dashboardData.rozlozeniData.values[index] / total) * 100) : 0
+                        }))
+                        .filter(cat => cat.value > 0);
                       
-                      // Dynamické pozice podle počtu kategorií
-                      const totalCategories = dashboardData.rozlozeniData.labels.length;
-                      let positionClass;
+                      const visibleCount = visibleCategories.length;
                       
-                      if (totalCategories <= 2) {
-                        positionClass = index === 0 ? 'label-top-right' : 'label-bottom-left';
-                      } else if (totalCategories <= 4) {
-                        const positions = ['label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'];
-                        positionClass = positions[index] || 'label-top-left';
-                      } else {
-                        // Pro více než 4 kategorie rozložíme rovnoměrně
-                        const angle = (index / totalCategories) * 2 * Math.PI - Math.PI / 2; // Začínáme nahoře
-                        if (angle >= -Math.PI/4 && angle < Math.PI/4) positionClass = 'label-top-right';
-                        else if (angle >= Math.PI/4 && angle < 3*Math.PI/4) positionClass = 'label-bottom-right';
-                        else if (angle >= 3*Math.PI/4 || angle < -3*Math.PI/4) positionClass = 'label-bottom-left';
-                        else positionClass = 'label-top-left';
-                      }
-                      
-                      // Zobrazit pouze když má hodnotu větší než 0
-                      if (dashboardData.rozlozeniData.values[index] === 0) return null;
-                      
-                      return (
-                        <div key={label} className={`label-item ${positionClass}`}>
-                          <div className="label-line"></div>
-                          <div className="label-content">
-                            <div className="label-percentage">{percentage}%</div>
-                            <div className="label-name">{label}</div>
+                      return visibleCategories.map((category, visibleIndex) => {
+                        let positionClass;
+                        
+                        if (visibleCount === 1) {
+                          positionClass = 'label-top-right';
+                        } else if (visibleCount === 2) {
+                          positionClass = visibleIndex === 0 ? 'label-top-right' : 'label-bottom-left';
+                        } else if (visibleCount === 3) {
+                          const positions = ['label-top-right', 'label-bottom-left', 'label-bottom-right'];
+                          positionClass = positions[visibleIndex];
+                        } else if (visibleCount === 4) {
+                          const positions = ['label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'];
+                          positionClass = positions[visibleIndex];
+                        } else {
+                          // Pro více než 4 kategorie - rozložíme rovnoměrně po obvodu
+                          const positions = [
+                            'label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right',
+                            'label-top-right', 'label-top-left', 'label-bottom-left', 'label-bottom-right'
+                          ];
+                          positionClass = positions[visibleIndex % 4];
+                        }
+                        
+                        return (
+                          <div key={category.label} className={`label-item ${positionClass}`}>
+                            <div className="label-line"></div>
+                            <div className="label-content">
+                              <div className="label-percentage">{category.percentage}%</div>
+                              <div className="label-name">{category.label}</div>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      });
+                    })()}
                   </div>
                 </>
               ) : (
