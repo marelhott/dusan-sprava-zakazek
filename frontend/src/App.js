@@ -1546,7 +1546,7 @@ const PaintPro = () => {
                   <td>{zakazka.palivo.toLocaleString()} Kč</td>
                   <td>{zakazka.material.toLocaleString()} Kč</td>
                   <td>{zakazka.pomocnik.toLocaleString()} Kč</td>
-                  <td className="profit-bold-orange">{zakazka.zisk.toLocaleString()} Kč</td>
+                  <td className="profit-bold-green">{zakazka.zisk.toLocaleString()} Kč</td>
                   <td className="address-cell">{zakazka.adresa || '-'}</td>
                   <td>
                     <span className="file-placeholder">-</span>
