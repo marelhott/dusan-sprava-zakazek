@@ -1233,7 +1233,7 @@ const PaintPro = () => {
                   type="text"
                   value={formData.druh || ''}
                   onChange={e => setFormData({...formData, druh: e.target.value})}
-                  placeholder="Vyberte nebo napište nový druh práce"
+                  placeholder="Vložit druh práce"
                   list="work-categories-list-edit"
                 />
                 <datalist id="work-categories-list-edit">
