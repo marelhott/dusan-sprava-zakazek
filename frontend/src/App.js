@@ -1030,7 +1030,15 @@ const PaintPro = () => {
     if (!showAddModal) return null;
 
     return (
-      <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
+      <div 
+        className="modal-overlay" 
+        onMouseDown={(e) => {
+          // Zavřít pouze při kliknutí přímo na overlay, ne na vnitřní obsah
+          if (e.target === e.currentTarget) {
+            setShowAddModal(false);
+          }
+        }}
+      >
         <div className="modal-content" onClick={e => e.stopPropagation()}>
           <div className="modal-header">
             <h2>Přidat novou zakázku</h2>
