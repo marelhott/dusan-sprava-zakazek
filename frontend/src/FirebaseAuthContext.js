@@ -84,11 +84,12 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [zakazkyData, setZakazkyData] = useState([]);
-  const [profiles, setProfiles] = useState([DEFAULT_PROFILE]);
+  const [profiles, setProfiles] = useState([]);
 
   // Inicializace při načtení komponenty
   useEffect(() => {
-    loadProfiles();
+    const loadedProfiles = loadProfiles();
+    setProfiles(loadedProfiles);
     initializeApp();
   }, []);
 
@@ -96,14 +97,16 @@ export const AuthProvider = ({ children }) => {
     try {
       const savedProfiles = localStorage.getItem('paintpro_profiles');
       if (savedProfiles) {
-        setProfiles(JSON.parse(savedProfiles));
+        const parsed = JSON.parse(savedProfiles);
+        return parsed;
       } else {
         // Pokud neexistují profily, vytvoříme výchozí
         localStorage.setItem('paintpro_profiles', JSON.stringify([DEFAULT_PROFILE]));
+        return [DEFAULT_PROFILE];
       }
     } catch (error) {
       console.error('❌ Chyba při načítání profilů:', error);
-      setProfiles([DEFAULT_PROFILE]);
+      return [DEFAULT_PROFILE];
     }
   };
 
