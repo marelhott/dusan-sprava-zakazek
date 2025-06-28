@@ -117,6 +117,18 @@ frontend:
         -agent: "testing"
         -comment: "Funkcionalita dynamických kategorií práce byla úspěšně otestována. Aplikace správně zobrazuje výchozí kategorie (Adam, MVČ, Korálek, Ostatní) a umožňuje přidávání nových kategorií. Kategorie jsou správně ukládány do localStorage a zobrazují se ve filtrech."
 
+  - task: "Vycentrování čísel v dashboard kartách"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "main"
+        -comment: "Upravil jsem CSS styling pro stat-value-row na align-items: center místo flex-start, odstranil margin-top z .stat-icon a přidal justify-content: center do .stat-value-with-subtitle pro správné vycentrování čísel vůči kruhové ikoně v dashboard kartách."
+
   - task: "Kompletní PDF export všech stránek"
     implemented: true
     working: false
