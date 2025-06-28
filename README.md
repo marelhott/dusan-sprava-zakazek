@@ -27,10 +27,14 @@ VITE_FIREBASE_APP_ID=your_app_id
 
 #### Railway Deployment:
 1. Connect GitHub repository
-2. Set environment variables 
-3. Deploy both frontend and backend
-4. Frontend: `yarn build && yarn start`
-5. Backend: `pip install -r requirements.txt && uvicorn server:app --host 0.0.0.0 --port $PORT`
+2. Set environment variables (see .env.production)
+3. Railway will auto-detect and deploy using nixpacks.toml
+4. Frontend will run on main service
+5. Create separate service for backend if needed
+
+**Build configuration:**
+- Frontend: `cd frontend && yarn install && yarn build && yarn start`
+- Backend: `cd backend && pip install -r requirements.txt && uvicorn server:app --host 0.0.0.0 --port $PORT`
 
 ### 👤 Přihlášení
 - **PIN**: 1234
