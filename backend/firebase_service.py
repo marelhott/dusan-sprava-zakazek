@@ -4,21 +4,6 @@ import json
 import os
 from typing import Dict, Any, List, Optional
 
-# Firebase Service Account JSON - REPLACE WITH YOUR CREDENTIALS
-SERVICE_ACCOUNT_JSON = {
-  "type": "service_account",
-  "project_id": "dusan-sprava-zakazek",
-  "private_key_id": "your_private_key_id",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nyour_private_key\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-fbsvc@dusan-sprava-zakazek.iam.gserviceaccount.com",
-  "client_id": "your_client_id",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40dusan-sprava-zakazek.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
-}
-
 class FirebaseService:
     _instance = None
     _app = None
@@ -39,8 +24,23 @@ class FirebaseService:
         try:
             # Kontrola, zda již není Firebase inicializován
             if not firebase_admin._apps:
-                # Inicializace pomocí Service Account
-                cred = credentials.Certificate(SERVICE_ACCOUNT_JSON)
+                # Použijeme environment variables místo hardcoded credentials
+                firebase_credentials = {
+                    "type": "service_account",
+                    "project_id": os.environ.get('FIREBASE_PROJECT_ID', 'dusan-sprava-zakazek'),
+                    "private_key_id": os.environ.get('FIREBASE_PRIVATE_KEY_ID'),
+                    "private_key": os.environ.get('FIREBASE_PRIVATE_KEY', '').replace('\\n', '\n'),
+                    "client_email": os.environ.get('FIREBASE_CLIENT_EMAIL'),
+                    "client_id": os.environ.get('FIREBASE_CLIENT_ID'),
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                    "client_x509_cert_url": os.environ.get('FIREBASE_CLIENT_X509_CERT_URL'),
+                    "universe_domain": "googleapis.com"
+                }
+                
+                # Inicializace pomocí environment variables
+                cred = credentials.Certificate(firebase_credentials)
                 self._app = firebase_admin.initialize_app(cred)
                 print("✅ Firebase Admin SDK úspěšně inicializován")
             else:
@@ -53,6 +53,7 @@ class FirebaseService:
             
         except Exception as e:
             print(f"❌ Chyba při inicializaci Firebase: {e}")
+            print("💡 Zkontrolujte environment variables pro Firebase")
             raise
     
     @property
