@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 import uuid
 from datetime import datetime
-from firebase_service import get_firebase_service
+from .firebase_service import get_firebase_service
 
 
 ROOT_DIR = Path(__file__).parent
