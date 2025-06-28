@@ -195,6 +195,6 @@ test_plan:
 
 agent_communication:
     -agent: "main"
-    -message: "Upravil jsem vycentrování čísel v dashboard kartách pomocí změn v CSS. Nastavil jsem stat-value-row na align-items: center, odstranil margin-top z ikon a upravil justify-content pro lepší vertikální zarovnání čísel vůči kruhové ikoně. Také jsem dokončil vylepšení PDF export funkcionality pro zachytávání všech 4 stránek."
+    -message: "Dokončil jsem tři úpravy: 1) Změnil název aplikace na 'Dušan/Správa zakázek', 2) Přesunul uživatelské informace do spodního levého rohu sidebaru pomocí flexbox layoutu, 3) Vycentroval čísla v dashboard kartách, 4) Vylepšil PDF export pro všechny 4 stránky v horizontálním formátu. Všechny změny jsou připravené k testování."
     -agent: "testing"
     -message: "Provedl jsem kompletní test backend API. Všechny testy prošly úspěšně. Backend server běží správně, API endpointy fungují a MongoDB připojení je funkční. Vytvořil jsem backend_test.py skript, který testuje všechny dostupné API endpointy (/api/, /api/status POST, /api/status GET). Všechny testy prošly bez problémů."
