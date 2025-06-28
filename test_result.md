@@ -129,6 +129,31 @@ frontend:
         -agent: "main"
         -comment: "Původní PDF export funkcionalita pouze zachytávala Dashboard a Mapu, chyběly Zakázky a Reporty. Implementoval jsem vylepšenou verzi s: 1) Specifickými selektory pro každou stránku (.dashboard, .zakazky, .reporty, .mapa-zakazek), 2) Delší čekací doby pro renderování (5s + 2s extra pro reporty/mapu), 3) Lepší screenshot nastavení, 4) Zachování horizontálního formátu. Funkce byla upravena pro spolehlivější zachytávání všech stránek."
 
+backend:
+  - task: "Backend API Endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "Všechny backend API endpointy byly úspěšně otestovány. Root endpoint (/api/) vrací očekávanou odpověď. POST /api/status úspěšně vytváří nové záznamy v MongoDB. GET /api/status úspěšně načítá záznamy z MongoDB. Vytvořil jsem backend_test.py skript pro automatické testování API."
+  
+  - task: "MongoDB Connectivity"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "MongoDB připojení funguje správně. Backend úspěšně zapisuje a čte data z MongoDB databáze. Testy potvrdily, že data jsou správně ukládána a načítána."
+
 metadata:
   created_by: "main_agent"
   version: "1.1"
