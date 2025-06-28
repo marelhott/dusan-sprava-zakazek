@@ -105,18 +105,6 @@
 user_problem_statement: "Implementace Firebase integrace pro cloud sync a přípravu na deployment - export odkaz pro veřejný přístup"
 
 frontend:
-  - task: "Dynamické kategorie práce"
-    implemented: true
-    working: true
-    file: "/app/frontend/src/App.js"
-    stuck_count: 0
-    priority: "high"
-    needs_retesting: false
-    status_history:
-        -working: true
-        -agent: "testing"
-        -comment: "Funkcionalita dynamických kategorií práce byla úspěšně otestována. Aplikace správně zobrazuje výchozí kategorie (Adam, MVČ, Korálek, Ostatní) a umožňuje přidávání nových kategorií. Kategorie jsou správně ukládány do localStorage a zobrazují se ve filtrech."
-
   - task: "Změna názvu aplikace a přesun uživatele"
     implemented: true
     working: false
@@ -128,6 +116,18 @@ frontend:
         -working: false
         -agent: "main"
         -comment: "Změnil jsem název aplikace z 'PaintPro/Project Manager' na 'Dušan/Správa zakázek' v logo-title a logo-subtitle. Přesunul jsem uživatelské informace z pozice pod názvem aplikace do spodního levého rohu sidebaru pomocí nové třídy user-info-bottom a flexbox layoutu. Sidebar nyní používá display: flex s flex-direction: column a uživatelské info má margin-top: auto."
+
+  - task: "Firebase frontend integrace"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/lib/firebase.js, /app/frontend/src/FirebaseAuthContext.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "main"
+        -comment: "Vytvořil jsem Firebase frontend konfiguraci a nový FirebaseAuthContext.js, který nahrazuje localStorage s Firebase Firestore. Zachoval jsem PIN autentizaci systém, ale data se nyní ukládají do Firebase s real-time synchronizací. App.js byl upraven pro použití nového Firebase AuthContext."
 
   - task: "Vycentrování čísel v dashboard kartách"
     implemented: true
