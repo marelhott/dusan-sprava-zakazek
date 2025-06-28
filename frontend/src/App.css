@@ -286,7 +286,8 @@ body::after {
 
 .sidebar-nav {
   flex: 1;
-  padding: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .nav-item {
