@@ -171,6 +171,8 @@ body::after {
   height: 100vh;
   z-index: 200;
   box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-header {
