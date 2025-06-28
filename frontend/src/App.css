@@ -607,7 +607,6 @@ body::after {
   font-size: 10px;
   flex-shrink: 0;
   position: relative;
-  margin-top: 2px;
 }
 
 .stat-icon.icon-money {
