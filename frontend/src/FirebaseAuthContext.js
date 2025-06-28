@@ -22,10 +22,10 @@ export const useAuth = () => {
 // Výchozí profil (zachováno z původního kódu)
 const DEFAULT_PROFILE = {
   id: 'user_1',
-  name: 'Dušan',
+  name: 'Hlavní uživatel',
   avatar: '👨‍🎨',
   color: '#8b5cf6',
-  pin: '1234'
+  pin: '123456'
 };
 
 // Výchozí data zakázek (zachováno z původního kódu)
