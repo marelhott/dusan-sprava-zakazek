@@ -1,5 +1,6 @@
-[phases.setup]
-nixPkgs = ["nodejs", "yarn", "python310", "pip"]
+[providers]
+node = "18"
+python = "3.11"
 
 [phases.install]
 cmds = [
