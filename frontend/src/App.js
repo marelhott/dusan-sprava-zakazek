@@ -19,7 +19,7 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
     const tabs = ['dashboard', 'zakazky', 'reporty', 'mapa'];
     const tabNames = {
       'dashboard': 'Dashboard - Přehled',
-      'zakazky': 'Zakázky - Správa',
+      'zakazky': 'Zakázky - Správa', 
       'reporty': 'Reporty - Analýzy',
       'mapa': 'Mapa zakázek'
     };
@@ -35,11 +35,27 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
         // Přepni na tab
         setActiveTab(tab);
         
-        // Počkej na render - delší doba pro složitější stránky
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        // Počkej na render - delší doba pro grafy a mapy
+        await new Promise(resolve => setTimeout(resolve, 5000));
         
-        // Najdi hlavní obsah - použij více selektorů
-        let element = document.querySelector('.main-content');
+        // Najdi specifický obsah podle tabu
+        let element;
+        if (tab === 'dashboard') {
+          element = document.querySelector('.dashboard');
+        } else if (tab === 'zakazky') {
+          element = document.querySelector('.zakazky');
+        } else if (tab === 'reporty') {
+          element = document.querySelector('.reporty');
+        } else if (tab === 'mapa') {
+          element = document.querySelector('.mapa-zakazek');
+        }
+        
+        // Fallback na main-content pokud specifický element neexistuje
+        if (!element) {
+          element = document.querySelector('.main-content');
+        }
+        
+        // Další fallbacky
         if (!element) {
           element = document.querySelector('[class*="container"]');
         }
@@ -51,9 +67,21 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
         }
         
         if (element) {
-          // Vyšší kvalita screenshotu
+          console.log(`📸 Zachytávám screenshot pro ${tab} z elementu:`, element.className);
+          
+          // Počkej na dokončení všech animací a renderování
+          await new Promise(resolve => requestAnimationFrame(() => {
+            requestAnimationFrame(resolve);
+          }));
+          
+          // Pro reporty a mapu počkej ještě déle na grafy/mapu
+          if (tab === 'reporty' || tab === 'mapa') {
+            await new Promise(resolve => setTimeout(resolve, 2000));
+          }
+          
+          // Vyšší kvalita screenshotu s lepším nastavením
           const canvas = await (await import('html2canvas')).default(element, {
-            scale: 2,
+            scale: 1.5,
             useCORS: true,
             allowTaint: true,
             backgroundColor: '#ffffff',
@@ -61,12 +89,14 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
             height: element.scrollHeight,
             scrollX: 0,
             scrollY: 0,
-            logging: false,
-            removeContainer: true
+            logging: true,
+            removeContainer: false,
+            foreignObjectRendering: true,
+            timeout: 10000
           });
           
           // Převeď na image
-          const imgData = canvas.toDataURL('image/jpeg', 0.9);
+          const imgData = canvas.toDataURL('image/jpeg', 0.85);
           
           if (!isFirstPage) {
             pdf.addPage();
@@ -101,6 +131,8 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
           pdf.addImage(imgData, 'JPEG', x, y, imgWidth, imgHeight);
           
           console.log(`✅ PDF stránka ${tab} přidána (${Math.round(imgWidth)}x${Math.round(imgHeight)}mm)`);
+        } else {
+          console.error(`❌ Nenalezen element pro tab ${tab}`);
         }
       } catch (error) {
         console.error(`❌ Chyba při zpracování ${tab}:`, error);
