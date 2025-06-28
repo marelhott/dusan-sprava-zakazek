@@ -247,6 +247,46 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getProfiles = () => {
+    return profiles;
+  };
+
+  const addProfile = async (profileData) => {
+    try {
+      const newProfile = {
+        ...profileData,
+        id: `user_${Date.now()}`,
+      };
+      const updatedProfiles = [...profiles, newProfile];
+      setProfiles(updatedProfiles);
+      
+      // Uložíme do localStorage pro zachování
+      localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
+      
+      return newProfile;
+    } catch (error) {
+      console.error('❌ Chyba při přidávání profilu:', error);
+      throw error;
+    }
+  };
+
+  const editProfile = async (profileId, profileData) => {
+    try {
+      const updatedProfiles = profiles.map(p => 
+        p.id === profileId ? { ...p, ...profileData } : p
+      );
+      setProfiles(updatedProfiles);
+      
+      // Uložíme do localStorage pro zachování
+      localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
+      
+      return true;
+    } catch (error) {
+      console.error('❌ Chyba při úpravě profilu:', error);
+      throw error;
+    }
+  };
+
   const value = {
     currentUser,
     zakazkyData,
@@ -258,6 +298,9 @@ export const AuthProvider = ({ children }) => {
     updateZakazka,
     deleteZakazka,
     saveUserData,
+    getProfiles,
+    addProfile,
+    editProfile,
     isAuthenticated: !!currentUser
   };
 
