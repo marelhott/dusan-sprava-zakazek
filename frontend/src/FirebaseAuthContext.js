@@ -182,9 +182,15 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (pin) => {
     try {
+      console.log('🔐 Pokus o přihlášení s PIN:', pin);
+      console.log('📋 Dostupné profily:', profiles);
+      
       // Najdeme profil podle PIN (zachováváme původní logiku)
       const profile = profiles.find(p => p.pin === pin);
+      console.log('👤 Nalezený profil:', profile);
+      
       if (!profile) {
+        console.error('❌ Profil s PIN', pin, 'nebyl nalezen');
         throw new Error('Neplatný PIN');
       }
 
@@ -193,6 +199,7 @@ export const AuthProvider = ({ children }) => {
       // Uložíme do localStorage pro zachování přihlášení
       localStorage.setItem('paintpro_user', JSON.stringify(profile));
       
+      console.log('✅ Přihlášení úspěšné');
       return true;
     } catch (error) {
       console.error('❌ Chyba při přihlášení:', error);
