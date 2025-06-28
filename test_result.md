@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Otestuj funkcionalitu dynamických kategorií práce v PaintPro aplikaci"
+user_problem_statement: "Oprav PDF export tak, aby obsahoval všechny stránky (Dashboard, Zakázky, Reporty, Mapa) a generoval PDF v horizontálním formátu"
 
 frontend:
   - task: "Dynamické kategorie práce"
@@ -117,19 +117,31 @@ frontend:
         -agent: "testing"
         -comment: "Funkcionalita dynamických kategorií práce byla úspěšně otestována. Aplikace správně zobrazuje výchozí kategorie (Adam, MVČ, Korálek, Ostatní) a umožňuje přidávání nových kategorií. Kategorie jsou správně ukládány do localStorage a zobrazují se ve filtrech."
 
+  - task: "Kompletní PDF export všech stránek"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/App.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "main"
+        -comment: "Původní PDF export funkcionalita pouze zachytávala Dashboard a Mapu, chyběly Zakázky a Reporty. Implementoval jsem vylepšenou verzi s: 1) Specifickými selektory pro každou stránku (.dashboard, .zakazky, .reporty, .mapa-zakazek), 2) Delší čekací doby pro renderování (5s + 2s extra pro reporty/mapu), 3) Lepší screenshot nastavení, 4) Zachování horizontálního formátu. Funkce byla upravena pro spolehlivější zachytávání všech stránek."
+
 metadata:
-  created_by: "testing_agent"
-  version: "1.0"
-  test_sequence: 1
-  run_ui: true
+  created_by: "main_agent"
+  version: "1.1"
+  test_sequence: 2
+  run_ui: false
 
 test_plan:
   current_focus:
-    - "Dynamické kategorie práce"
+    - "Kompletní PDF export všech stránek"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
 agent_communication:
-    -agent: "testing"
-    -message: "Provedl jsem manuální testování dynamických kategorií práce v PaintPro aplikaci. Funkcionalita funguje správně - aplikace zobrazuje výchozí kategorie, umožňuje přidávání nových kategorií pomocí debug tlačítek i přes formulář, a nové kategorie se správně zobrazují ve filtrech a jsou persistentně uloženy v localStorage."
+    -agent: "main"
+    -message: "Vylepšil jsem exportCompletePDF funkci v App.js pro spolehlivější zachytávání všech 4 stránek (Dashboard, Zakázky, Reporty, Mapa) v horizontálním PDF formátu. Klíčové změny: specifické DOM selektory pro každou stránku, delší čekací doby pro renderování grafů a map, a lepší nastavení html2canvas. Funkce nyní čeká 5 sekund na základní render + další 2 sekundy pro složité stránky jako reporty a mapu."
