@@ -186,6 +186,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Změna názvu aplikace a přesun uživatele"
     - "Vycentrování čísel v dashboard kartách"
     - "Kompletní PDF export všech stránek"
   stuck_tasks: []
