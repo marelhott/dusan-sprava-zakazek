@@ -117,6 +117,18 @@ frontend:
         -agent: "testing"
         -comment: "Funkcionalita dynamických kategorií práce byla úspěšně otestována. Aplikace správně zobrazuje výchozí kategorie (Adam, MVČ, Korálek, Ostatní) a umožňuje přidávání nových kategorií. Kategorie jsou správně ukládány do localStorage a zobrazují se ve filtrech."
 
+  - task: "Změna názvu aplikace a přesun uživatele"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/App.js, /app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "main"
+        -comment: "Změnil jsem název aplikace z 'PaintPro/Project Manager' na 'Dušan/Správa zakázek' v logo-title a logo-subtitle. Přesunul jsem uživatelské informace z pozice pod názvem aplikace do spodního levého rohu sidebaru pomocí nové třídy user-info-bottom a flexbox layoutu. Sidebar nyní používá display: flex s flex-direction: column a uživatelské info má margin-top: auto."
+
   - task: "Vycentrování čísel v dashboard kartách"
     implemented: true
     working: false
