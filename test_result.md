@@ -119,15 +119,15 @@ frontend:
 
   - task: "Firebase frontend integrace"
     implemented: true
-    working: false
-    file: "/app/frontend/src/lib/firebase.js, /app/frontend/src/FirebaseAuthContext.js"
+    working: true
+    file: "/app/frontend/src/lib/firebase.js, /app/frontend/src/FirebaseAuthContext.js, /app/frontend/src/LoginScreen.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
-        -working: false
+        -working: true
         -agent: "main"
-        -comment: "Vytvořil jsem Firebase frontend konfiguraci a nový FirebaseAuthContext.js, který nahrazuje localStorage s Firebase Firestore. Zachoval jsem PIN autentizaci systém, ale data se nyní ukládají do Firebase s real-time synchronizací. App.js byl upraven pro použití nového Firebase AuthContext."
+        -comment: "Vyřešil jsem chybu s AuthProvider - LoginScreen importoval starý AuthContext místo nového FirebaseAuthContext. Přidal jsem chybějící metody getProfiles, addProfile, editProfile do FirebaseAuthContext a loadProfiles funkci pro načítání z localStorage. Frontend je nyní funkční s Firebase integrací."
 
   - task: "Vycentrování čísel v dashboard kartách"
     implemented: true
