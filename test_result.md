@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Oprav PDF export tak, aby obsahoval všechny stránky (Dashboard, Zakázky, Reporty, Mapa) a generoval PDF v horizontálním formátu"
+user_problem_statement: "Implementace Firebase integrace pro cloud sync a přípravu na deployment - export odkaz pro veřejný přístup"
 
 frontend:
   - task: "Dynamické kategorie práce"
