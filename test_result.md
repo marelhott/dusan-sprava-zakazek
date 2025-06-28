@@ -174,6 +174,7 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Vycentrování čísel v dashboard kartách"
     - "Kompletní PDF export všech stránek"
   stuck_tasks: []
   test_all: false
