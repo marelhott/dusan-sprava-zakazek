@@ -182,6 +182,6 @@ test_plan:
 
 agent_communication:
     -agent: "main"
-    -message: "Vylepšil jsem exportCompletePDF funkci v App.js pro spolehlivější zachytávání všech 4 stránek (Dashboard, Zakázky, Reporty, Mapa) v horizontálním PDF formátu. Klíčové změny: specifické DOM selektory pro každou stránku, delší čekací doby pro renderování grafů a map, a lepší nastavení html2canvas. Funkce nyní čeká 5 sekund na základní render + další 2 sekundy pro složité stránky jako reporty a mapu."
+    -message: "Upravil jsem vycentrování čísel v dashboard kartách pomocí změn v CSS. Nastavil jsem stat-value-row na align-items: center, odstranil margin-top z ikon a upravil justify-content pro lepší vertikální zarovnání čísel vůči kruhové ikoně. Také jsem dokončil vylepšení PDF export funkcionality pro zachytávání všech 4 stránek."
     -agent: "testing"
     -message: "Provedl jsem kompletní test backend API. Všechny testy prošly úspěšně. Backend server běží správně, API endpointy fungují a MongoDB připojení je funkční. Vytvořil jsem backend_test.py skript, který testuje všechny dostupné API endpointy (/api/, /api/status POST, /api/status GET). Všechny testy prošly bez problémů."
