@@ -178,16 +178,30 @@ backend:
         -agent: "testing"
         -comment: "MongoDB připojení funguje správně. Backend úspěšně zapisuje a čte data z MongoDB databáze. Testy potvrdily, že data jsou správně ukládána a načítána."
 
+backend:
+  - task: "Firebase Admin SDK integrace"
+    implemented: true
+    working: false
+    file: "/app/backend/firebase_service.py, /app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "main"
+        -comment: "Implementoval jsem Firebase Admin SDK službu s kompletní CRUD funkcionalitou pro uživatele a zakázky. Přepsal jsem server.py z MongoDB na Firebase, přidal nové API endpointy pro správu zakázek a uživatelských dat. Firebase service je úspěšně inicializován a server běží."
+
 metadata:
   created_by: "main_agent"
-  version: "1.1"
-  test_sequence: 2
+  version: "1.2"
+  test_sequence: 3
   run_ui: false
 
 test_plan:
   current_focus:
+    - "Firebase Admin SDK integrace"
+    - "Firebase frontend integrace"
     - "Změna názvu aplikace a přesun uživatele"
-    - "Vycentrování čísel v dashboard kartách"
     - "Kompletní PDF export všech stránek"
   stuck_tasks: []
   test_all: false
@@ -195,6 +209,6 @@ test_plan:
 
 agent_communication:
     -agent: "main"
-    -message: "Dokončil jsem tři úpravy: 1) Změnil název aplikace na 'Dušan/Správa zakázek', 2) Přesunul uživatelské informace do spodního levého rohu sidebaru pomocí flexbox layoutu, 3) Vycentroval čísla v dashboard kartách, 4) Vylepšil PDF export pro všechny 4 stránky v horizontálním formátu. Všechny změny jsou připravené k testování."
+    -message: "Dokončil jsem kompletní Firebase integraci: 1) Backend - vytvořil FirebaseService s CRUD operacemi, přepsal server.py na Firebase API, 2) Frontend - implementoval Firebase config, nový FirebaseAuthContext s real-time sync, zachoval PIN systém, 3) Provedl předchozí úpravy (název aplikace na 'Dušan/Správa zakázek', vycentrování dashboard čísel, vylepšený PDF export). Firebase backend je spuštěn a připraven k testování."
     -agent: "testing"
     -message: "Provedl jsem kompletní test backend API. Všechny testy prošly úspěšně. Backend server běží správně, API endpointy fungují a MongoDB připojení je funkční. Vytvořil jsem backend_test.py skript, který testuje všechny dostupné API endpointy (/api/, /api/status POST, /api/status GET). Všechny testy prošly bez problémů."
