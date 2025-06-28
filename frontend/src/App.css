@@ -586,7 +586,7 @@ body::after {
 
 .stat-value-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   margin-bottom: 0;
 }
