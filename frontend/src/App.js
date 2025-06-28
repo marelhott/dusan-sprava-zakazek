@@ -886,22 +886,6 @@ const PaintPro = () => {
               <div className="logo-subtitle">Správa zakázek</div>
             </div>
           </div>
-          {currentUser && (
-            <div className="user-info">
-              <div 
-                className="user-avatar"
-                style={{ backgroundColor: currentUser.color }}
-              >
-                {currentUser.avatar}
-              </div>
-              <div className="user-details">
-                <div className="user-name">{currentUser.name}</div>
-                <button className="logout-btn" onClick={logout}>
-                  Odhlásit se
-                </button>
-              </div>
-            </div>
-          )}
         </div>
         
         <nav className="sidebar-nav">
@@ -934,6 +918,23 @@ const PaintPro = () => {
             Mapa zakázek
           </div>
         </nav>
+
+        {currentUser && (
+          <div className="user-info-bottom">
+            <div 
+              className="user-avatar"
+              style={{ backgroundColor: currentUser.color }}
+            >
+              {currentUser.avatar}
+            </div>
+            <div className="user-details">
+              <div className="user-name">{currentUser.name}</div>
+              <button className="logout-btn" onClick={logout}>
+                Odhlásit se
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
