@@ -33,7 +33,7 @@ SERVICE_ACCOUNT_JSON = {
 3. Railway automaticky detekuje React + FastAPI
 
 ### 3. Environment Variables
-V Railway dashboard nastavte:
+V Railway dashboard nastavte tyto proměnné:
 
 **Frontend Environment:**
 ```
@@ -43,6 +43,16 @@ VITE_FIREBASE_PROJECT_ID=dusan-sprava-zakazek
 VITE_FIREBASE_STORAGE_BUCKET=dusan-sprava-zakazek.firebasestorage.app
 VITE_FIREBASE_MESSAGING_SENDER_ID=998111768008
 VITE_FIREBASE_APP_ID=1:998111768008:web:e27331bd924dafa341e4fd
+```
+
+**Backend Environment (Z NOVÉHO Firebase JSON souboru):**
+```
+FIREBASE_PROJECT_ID=dusan-sprava-zakazek
+FIREBASE_PRIVATE_KEY_ID=your_new_private_key_id
+FIREBASE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----\nyour_new_private_key\n-----END PRIVATE KEY-----
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xyz@dusan-sprava-zakazek.iam.gserviceaccount.com
+FIREBASE_CLIENT_ID=your_new_client_id
+FIREBASE_CLIENT_X509_CERT_URL=your_cert_url
 ```
 
 ### 4. Build Commands
