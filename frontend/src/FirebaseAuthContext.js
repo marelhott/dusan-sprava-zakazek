@@ -88,8 +88,24 @@ export const AuthProvider = ({ children }) => {
 
   // Inicializace při načtení komponenty
   useEffect(() => {
+    loadProfiles();
     initializeApp();
   }, []);
+
+  const loadProfiles = () => {
+    try {
+      const savedProfiles = localStorage.getItem('paintpro_profiles');
+      if (savedProfiles) {
+        setProfiles(JSON.parse(savedProfiles));
+      } else {
+        // Pokud neexistují profily, vytvoříme výchozí
+        localStorage.setItem('paintpro_profiles', JSON.stringify([DEFAULT_PROFILE]));
+      }
+    } catch (error) {
+      console.error('❌ Chyba při načítání profilů:', error);
+      setProfiles([DEFAULT_PROFILE]);
+    }
+  };
 
   // Real-time listener pro data uživatele
   useEffect(() => {
