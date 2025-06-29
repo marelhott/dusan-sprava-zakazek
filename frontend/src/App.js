@@ -1764,7 +1764,7 @@ const PaintPro = () => {
                   <td className="profit-bold-green">{zakazka.zisk.toLocaleString()} Kč</td>
                   <td className="address-cell">{zakazka.adresa || '-'}</td>
                   <td>
-                    <span className="file-placeholder">-</span>
+                    <FileUploadCell zakazka={zakazka} onFilesUpdate={(files) => handleFilesUpdate(zakazka.id, files)} />
                   </td>
                   <td>
                     <div className="action-buttons">
