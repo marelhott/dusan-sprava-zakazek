@@ -162,7 +162,7 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
 };
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { AuthProvider, useAuth } from './FirebaseAuthContext';
+import { AuthProvider, useAuth } from './AuthContext';
 import LoginScreen from './LoginScreen';
 import {
   Chart as ChartJS,
