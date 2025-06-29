@@ -1939,13 +1939,14 @@ const PaintPro = () => {
 
     // Data pro hlavní finanční ukazatele (celá doba)
     const getMainFinancialData = () => {
-      if (zakazkyData.length === 0) {
+      const safeDataForFinancial = Array.isArray(zakazkyData) ? zakazkyData : [];
+      if (safeDataForFinancial.length === 0) {
         return [];
       }
 
       const monthlyData = {};
       
-      zakazkyData.forEach(z => {
+      safeDataForFinancial.forEach(z => {
         const date = new Date(z.datum.split('. ').reverse().join('-'));
         const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
         
