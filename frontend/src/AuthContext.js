@@ -105,6 +105,73 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // TEST FUNKCE pro ověření Supabase připojení
+  const testSupabaseConnection = async () => {
+    try {
+      console.log('🧪 TESTOVÁNÍ SUPABASE PŘIPOJENÍ...');
+      
+      // Test 1: Základní připojení
+      const { data: testData, error: testError } = await supabase
+        .from('profiles')
+        .select('count', { count: 'exact' });
+      
+      if (testError) {
+        console.log('❌ Supabase test selhał:', testError.message);
+        return false;
+      }
+      
+      console.log('✅ Supabase připojení OK - počet profilů:', testData);
+      
+      // Test 2: Zkus načíst všechny profily
+      const { data: allProfiles, error: profilesError } = await supabase
+        .from('profiles')
+        .select('*');
+      
+      if (profilesError) {
+        console.log('❌ Chyba při načítání profilů:', profilesError.message);
+        return false;
+      }
+      
+      console.log('✅ Všechny profily z Supabase:', allProfiles);
+      
+      // Test 3: Zkus základní zápis (test profil)
+      const testProfile = {
+        pin: `test_${Date.now()}`,
+        name: 'Test profil',
+        avatar: 'T',
+        color: '#FF0000'
+      };
+      
+      const { data: insertedProfile, error: insertError } = await supabase
+        .from('profiles')
+        .insert([testProfile])
+        .select()
+        .single();
+      
+      if (insertError) {
+        console.log('❌ Chyba při zápisu test profilu:', insertError.message);
+        return false;
+      }
+      
+      console.log('✅ Test profil vytvořen:', insertedProfile);
+      
+      // Vymaž test profil
+      await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', insertedProfile.id);
+      
+      console.log('✅ Test profil smazán');
+      console.log('🎉 SUPABASE PLNĚ FUNKČNÍ!');
+      
+      return true;
+      
+    } catch (error) {
+      console.log('❌ Supabase test celkově selhal:', error.message);
+      return false;
+    }
+  };
+
 
   // Přihlášení uživatele
   const login = (profileId, pin) => {
