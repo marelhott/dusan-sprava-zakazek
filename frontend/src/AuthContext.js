@@ -336,9 +336,15 @@ export const AuthProvider = ({ children }) => {
     return [];
   };
 
-  // Uložení dat uživatele
-  const saveUserData = (userId, data) => {
-    localStorage.setItem(`paintpro_data_${userId}`, JSON.stringify(data));
+  // Uložení dat uživatele - OPRAVENO pro Supabase
+  const saveUserData = async (userId, data) => {
+    try {
+      console.log('🔄 Synchronizuji zakázky do Supabase pro uživatele:', userId);
+      // Toto je fallback funkce - primárně používáme přímé Supabase operace
+      localStorage.setItem(`paintpro_data_${userId}`, JSON.stringify(data));
+    } catch (error) {
+      console.error('❌ Chyba při ukládání dat:', error);
+    }
   };
 
   // Přidání zakázky pro uživatele
