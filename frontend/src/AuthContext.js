@@ -371,7 +371,7 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
-          soubory: []
+          soubory: orderData.soubory || []  // Array of file objects: {id, name, url, uploadedAt}
         }])
         .select()
         .single();
