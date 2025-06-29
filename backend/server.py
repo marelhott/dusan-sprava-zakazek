@@ -8,14 +8,10 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 import uuid
 from datetime import datetime
-from .firebase_service import get_firebase_service
 
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
-
-# Firebase service
-firebase_service = get_firebase_service()
 
 # Create the main app without a prefix
 app = FastAPI(title="Dušan - Správa zakázek", version="1.0.0")
