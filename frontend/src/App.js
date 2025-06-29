@@ -313,6 +313,31 @@ const PaintPro = () => {
     
     loadUserData();
   }, [currentUser?.id, getUserData]);
+  
+  // OPRAVA: Inicializace zakazkyData jako prázdné pole
+  const [zakazkyData, setZakazkyData] = useState([]);
+  
+  // Načtení dat při přihlášení uživatele
+  useEffect(() => {
+    const loadUserData = async () => {
+      if (currentUser?.id) {
+        try {
+          const data = await getUserData(currentUser.id);
+          // OPRAVA: Bezpečná kontrola dat z AuthContext
+          const safeData = Array.isArray(data) ? data : [];
+          setZakazkyData(safeData);
+          console.log('✅ Data načtena pro uživatele:', currentUser.id, 'počet zakázek:', safeData.length);
+        } catch (error) {
+          console.error('❌ Chyba při načítání dat:', error);
+          setZakazkyData([]); // Fallback na prázdné pole
+        }
+      } else {
+        setZakazkyData([]); // Žádný uživatel = prázdná data
+      }
+    };
+    
+    loadUserData();
+  }, [currentUser?.id, getUserData]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingZakazka, setEditingZakazka] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
