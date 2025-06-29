@@ -589,6 +589,34 @@ const PaintPro = () => {
     }
   };
 
+  // Funkce pro aktualizaci souborů zakázky
+  const handleFilesUpdate = async (zakazkaId, newFiles) => {
+    try {
+      // Najdi zakázku v aktuálních datech
+      const updatedZakazky = zakazkyData.map(zakazka => {
+        if (zakazka.id === zakazkaId) {
+          return { ...zakazka, soubory: newFiles };
+        }
+        return zakazka;
+      });
+      
+      // Aktualizuj v Supabase
+      const zakazkaToUpdate = zakazkyData.find(z => z.id === zakazkaId);
+      if (zakazkaToUpdate && currentUser?.id) {
+        await editUserOrder(currentUser.id, zakazkaId, {
+          ...zakazkaToUpdate,
+          soubory: newFiles
+        });
+      }
+      
+      // Aktualizuj lokální state
+      setZakazkyData(updatedZakazky);
+      
+    } catch (error) {
+      console.error('❌ Chyba při aktualizaci souborů:', error);
+    }
+  };
+
 
 
   // Aktualizovaná data pro kombinovaný graf - POUZE reálná data ze zakázek
