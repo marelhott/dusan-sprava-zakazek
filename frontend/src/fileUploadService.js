@@ -1,43 +1,53 @@
 import supabase from './supabaseClient';
 
-// Bucket name pro uložení souborů zakázek
-const BUCKET_NAME = 'zakazky-files';
+// Možné názvy bucketů (zkusíme je postupně)
+const POSSIBLE_BUCKETS = ['files', 'uploads', 'documents', 'zakazky-files', 'public'];
+
+let ACTIVE_BUCKET = null;
 
 /**
- * Inicializace bucket - vytvoří ho pokud neexistuje
+ * Najde funkční bucket nebo vytvoří nový
  */
-const initializeBucket = async () => {
+const findOrCreateBucket = async () => {
   try {
     // Zkontroluj existující buckets
     const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
     
     if (bucketsError) {
       console.error('❌ Chyba při načítání buckets:', bucketsError);
-      return false;
+      return null;
     }
     
-    // Zkontroluj, zda bucket existuje
-    const bucketExists = buckets.some(bucket => bucket.name === BUCKET_NAME);
+    console.log('📁 Dostupné buckets:', buckets.map(b => b.name));
     
-    if (!bucketExists) {
-      console.log('📁 Vytvářím bucket:', BUCKET_NAME);
-      
-      const { data, error } = await supabase.storage.createBucket(BUCKET_NAME, {
-        public: true
-      });
-      
-      if (error) {
-        console.error('❌ Chyba při vytváření bucket:', error);
-        return false;
+    // Zkus použít první dostupný bucket
+    if (buckets.length > 0) {
+      ACTIVE_BUCKET = buckets[0].name;
+      console.log('✅ Používám existující bucket:', ACTIVE_BUCKET);
+      return ACTIVE_BUCKET;
+    }
+    
+    // Pokud žádný bucket neexistuje, zkus vytvořit s jednoduchým názvem
+    for (const bucketName of POSSIBLE_BUCKETS) {
+      try {
+        const { data, error } = await supabase.storage.createBucket(bucketName, {
+          public: true
+        });
+        
+        if (!error) {
+          ACTIVE_BUCKET = bucketName;
+          console.log('✅ Bucket vytvořen:', bucketName);
+          return ACTIVE_BUCKET;
+        }
+      } catch (e) {
+        console.log(`⚠️ Nelze vytvořit bucket ${bucketName}:`, e.message);
       }
-      
-      console.log('✅ Bucket úspěšně vytvořen:', data);
     }
     
-    return true;
+    return null;
   } catch (error) {
-    console.error('❌ Chyba při inicializaci bucket:', error);
-    return false;
+    console.error('❌ Chyba při hledání bucket:', error);
+    return null;
   }
 };
 
