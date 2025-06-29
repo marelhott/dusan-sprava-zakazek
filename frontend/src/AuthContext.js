@@ -28,15 +28,72 @@ export const AuthProvider = ({ children }) => {
 
   // Načtení profilů při spuštění
   useEffect(() => {
+    initializeApp();
+  }, []);
+
+  const initializeApp = async () => {
+    try {
+      setIsLoading(true);
+      console.log('🔄 Inicializace aplikace...');
+      
+      // Zkus načíst profily z Supabase, pokud ne, použij localStorage
+      await loadProfiles();
+      
+      // Zkus načíst uloženého uživatele z localStorage
+      const savedUser = localStorage.getItem('paintpro_user');
+      if (savedUser) {
+        try {
+          const userData = JSON.parse(savedUser);
+          setCurrentUser(userData);
+          console.log('✅ Uživatel načten z localStorage:', userData);
+        } catch (error) {
+          console.error('Chyba při načítání uživatele:', error);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Chyba při inicializaci:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadProfiles = async () => {
+    try {
+      // Zkus načíst z Supabase
+      console.log('🔄 Pokus o načtení profilů z Supabase...');
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*');
+      
+      if (!error && data && data.length > 0) {
+        console.log('✅ Profily načteny z Supabase:', data);
+        // Konvertuj Supabase formát na localStorage formát pro kompatibilitu
+        const convertedProfiles = data.map(profile => ({
+          id: profile.id,
+          name: profile.name,
+          pin: profile.pin,
+          avatar: profile.avatar || 'HU',
+          color: profile.color || '#4F46E5',
+          image: null
+        }));
+        setProfiles(convertedProfiles);
+        return;
+      }
+    } catch (supabaseError) {
+      console.log('⚠️ Supabase nedostupný, použiji localStorage:', supabaseError.message);
+    }
+
+    // Fallback na localStorage
+    console.log('🔄 Načítám profily z localStorage...');
     const savedProfiles = localStorage.getItem('paintpro_profiles');
-    const savedUser = localStorage.getItem('paintpro_user');
     
     if (savedProfiles) {
       try {
         const profilesData = JSON.parse(savedProfiles);
         setProfiles(profilesData);
+        console.log('✅ Profily načteny z localStorage:', profilesData);
       } catch (error) {
-        console.error('Error loading profiles:', error);
+        console.error('Chyba při načítání profilů z localStorage:', error);
         setProfiles([DEFAULT_PROFILE]);
         localStorage.setItem('paintpro_profiles', JSON.stringify([DEFAULT_PROFILE]));
       }
@@ -44,10 +101,9 @@ export const AuthProvider = ({ children }) => {
       // První spuštění - vytvoř výchozí profil
       setProfiles([DEFAULT_PROFILE]);
       localStorage.setItem('paintpro_profiles', JSON.stringify([DEFAULT_PROFILE]));
+      console.log('✅ Vytvořen výchozí profil');
     }
-
-    if (savedUser) {
-      try {
+  };
         const user = JSON.parse(savedUser);
         setCurrentUser(user);
       } catch (error) {
