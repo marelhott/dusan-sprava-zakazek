@@ -60,13 +60,14 @@ const findOrCreateBucket = async () => {
 export const uploadFileToSupabase = async (file, zakazkaId) => {
   try {
     // Nejdříve zkontroluj/vytvoř bucket
-    const bucketReady = await initializeBucket();
-    if (!bucketReady) {
+    const activeBucket = await findOrCreateBucket();
+    if (!activeBucket) {
       return {
         success: false,
         error: 'Chyba při přípravě úložiště'
       };
     }
+    ACTIVE_BUCKET = activeBucket;
     
     // Generování unikátního názvu souboru
     const fileExtension = file.name.split('.').pop();
