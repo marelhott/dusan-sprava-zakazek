@@ -32,7 +32,10 @@ const LoginScreen = () => {
       return;
     }
 
-    const success = login(selectedProfile.id, pin);
+    console.log('🔐 LoginScreen odesílá PIN:', pin, 'typ:', typeof pin);
+    
+    // Opraveno: login() nyní očekává jen PIN, ne (profileId, pin)
+    const success = login(pin);
     if (!success) {
       setError('Nesprávný PIN');
       setPin('');
