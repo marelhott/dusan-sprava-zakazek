@@ -280,19 +280,60 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('paintpro_user');
   };
 
-  // Přidání nového profilu
-  const addProfile = (profileData) => {
-    const newId = Math.max(...profiles.map(p => p.id), 0) + 1;
-    const newProfile = {
-      ...profileData,
-      id: newId,
-      avatar: profileData.avatar || profileData.name.slice(0, 2).toUpperCase()
-    };
-    
-    const updatedProfiles = [...profiles, newProfile];
-    setProfiles(updatedProfiles);
-    localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
-    return newProfile;
+  // Přidání nového profilu - OPRAVENO pro Supabase
+  const addProfile = async (profileData) => {
+    try {
+      console.log('🔄 Přidávám profil do Supabase:', profileData);
+      
+      // Vložit do Supabase
+      const { data, error } = await supabase
+        .from('profiles')
+        .insert([{
+          pin: profileData.pin,
+          name: profileData.name,
+          avatar: profileData.avatar || profileData.name.slice(0, 2).toUpperCase(),
+          color: profileData.color || '#4F46E5'
+        }])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('❌ Chyba při přidávání profilu do Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Profil úspěšně přidán do Supabase:', data);
+      
+      // Aktualizuj lokální state
+      const updatedProfiles = [...profiles, {
+        id: data.id,
+        name: data.name,
+        pin: data.pin,
+        avatar: data.avatar,
+        color: data.color,
+        image: null
+      }];
+      setProfiles(updatedProfiles);
+      
+      // Záloha do localStorage
+      localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
+      
+      return data;
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro addProfile:', error);
+      // Fallback na původní localStorage logiku
+      const newId = Math.max(...profiles.map(p => p.id), 0) + 1;
+      const newProfile = {
+        ...profileData,
+        id: newId,
+        avatar: profileData.avatar || profileData.name.slice(0, 2).toUpperCase()
+      };
+      
+      const updatedProfiles = [...profiles, newProfile];
+      setProfiles(updatedProfiles);
+      localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
+      return newProfile;
+    }
   };
 
   // Editace profilu
