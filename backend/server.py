@@ -136,9 +136,9 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup_event():
-    logger.info("🔥 Firebase server spuštěn")
+    logger.info("🔥 Supabase server spuštěn")
     logger.info("✅ Dušan - Správa zakázek API připraveno")
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    logger.info("🔥 Firebase server zastaven")
+    logger.info("🔥 Supabase server zastaven")
