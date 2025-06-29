@@ -83,7 +83,7 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
     
     // Upload do Supabase Storage
     const { data, error } = await supabase.storage
-      .from(BUCKET_NAME)
+      .from(ACTIVE_BUCKET)
       .upload(uniqueFileName, file);
     
     if (error) {
