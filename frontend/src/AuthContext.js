@@ -262,8 +262,44 @@ export const AuthProvider = ({ children }) => {
     return false;
   };
 
-  // Získání dat uživatele
-  const getUserData = (userId) => {
+  // Získání dat uživatele - OPRAVENO pro Supabase
+  const getUserData = async (userId) => {
+    try {
+      console.log('🔄 Načítám zakázky z Supabase pro uživatele:', userId);
+      
+      // Načti z Supabase
+      const { data, error } = await supabase
+        .from('zakazky')
+        .select('*')
+        .eq('profile_id', userId)
+        .order('created_at', { ascending: false });
+      
+      if (!error && data) {
+        console.log('✅ Zakázky načteny z Supabase:', data.length, 'záznamů');
+        // Konvertuj Supabase formát na localStorage formát pro kompatibilitu
+        const convertedData = data.map(zakazka => ({
+          id: zakazka.id,
+          datum: zakazka.datum,
+          druh: zakazka.druh,
+          klient: zakazka.klient,
+          cislo: zakazka.id_zakazky,
+          castka: Number(zakazka.castka),
+          fee: Number(zakazka.fee),
+          material: Number(zakazka.material),
+          pomocnik: Number(zakazka.pomocnik),
+          palivo: Number(zakazka.palivo),
+          zisk: Number(zakazka.zisk),
+          adresa: zakazka.adresa,
+          soubory: zakazka.soubory || []
+        }));
+        return convertedData;
+      }
+    } catch (supabaseError) {
+      console.log('⚠️ Supabase nedostupný pro zakázky, použiji localStorage:', supabaseError.message);
+    }
+
+    // Fallback na localStorage
+    console.log('🔄 Načítám zakázky z localStorage pro uživatele:', userId);
     const userData = localStorage.getItem(`paintpro_data_${userId}`);
     if (userData) {
       try {
