@@ -336,44 +336,82 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Editace profilu
-  const editProfile = (profileId, pin, updatedData) => {
-    const profile = profiles.find(p => p.id === profileId && p.pin === pin);
-    if (!profile) return false;
+  // Editace profilu - OPRAVENO pro Supabase
+  const editProfile = async (profileId, pin, updatedData) => {
+    try {
+      const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+      if (!profile) return false;
 
-    const updatedProfiles = profiles.map(p => 
-      p.id === profileId 
-        ? { 
-            ...p, 
-            ...updatedData,
-            avatar: updatedData.avatar || updatedData.name?.slice(0, 2).toUpperCase() || p.avatar
-          }
-        : p
-    );
-    
-    setProfiles(updatedProfiles);
-    localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
-    
-    // Aktualizovat current user pokud edituje sebe
-    if (currentUser && currentUser.id === profileId) {
-      const updatedUser = updatedProfiles.find(p => p.id === profileId);
-      setCurrentUser({
-        ...currentUser,
-        name: updatedUser.name,
-        avatar: updatedUser.avatar,
-        color: updatedUser.color,
-        image: updatedUser.image
-      });
-      localStorage.setItem('paintpro_user', JSON.stringify({
-        ...currentUser,
-        name: updatedUser.name,
-        avatar: updatedUser.avatar,
-        color: updatedUser.color,
-        image: updatedUser.image
-      }));
+      console.log('🔄 Aktualizuji profil v Supabase:', profileId, updatedData);
+      
+      // Aktualizuj v Supabase
+      const { data, error } = await supabase
+        .from('profiles')
+        .update({
+          name: updatedData.name,
+          avatar: updatedData.avatar || updatedData.name?.slice(0, 2).toUpperCase() || profile.avatar,
+          color: updatedData.color || profile.color
+        })
+        .eq('id', profileId)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('❌ Chyba při aktualizaci profilu v Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Profil úspěšně aktualizován v Supabase:', data);
+      
+      // Aktualizuj lokální state
+      const updatedProfiles = profiles.map(p => 
+        p.id === profileId 
+          ? { 
+              ...p, 
+              name: data.name,
+              avatar: data.avatar,
+              color: data.color
+            }
+          : p
+      );
+      
+      setProfiles(updatedProfiles);
+      localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
+      
+      // Aktualizovat current user pokud edituje sebe
+      if (currentUser && currentUser.id === profileId) {
+        const updatedUser = {
+          ...currentUser,
+          name: data.name,
+          avatar: data.avatar,
+          color: data.color
+        };
+        setCurrentUser(updatedUser);
+        localStorage.setItem('paintpro_user', JSON.stringify(updatedUser));
+      }
+      
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro editProfile:', error);
+      // Fallback na původní localStorage logiku
+      const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+      if (!profile) return false;
+
+      const updatedProfiles = profiles.map(p => 
+        p.id === profileId 
+          ? { 
+              ...p, 
+              ...updatedData,
+              avatar: updatedData.avatar || updatedData.name?.slice(0, 2).toUpperCase() || p.avatar
+            }
+          : p
+      );
+      
+      setProfiles(updatedProfiles);
+      localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
+      return true;
     }
-    
-    return true;
   };
 
   // Smazání profilu
