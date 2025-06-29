@@ -414,23 +414,59 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Smazání profilu
-  const deleteProfile = (profileId, pin) => {
-    if (profiles.length <= 1) return false; // Nesmí smazat poslední profil
-    
-    const profile = profiles.find(p => p.id === profileId && p.pin === pin);
-    if (!profile) return false;
+  // Smazání profilu - OPRAVENO pro Supabase
+  const deleteProfile = async (profileId, pin) => {
+    try {
+      if (profiles.length <= 1) return false; // Nesmí smazat poslední profil
+      
+      const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+      if (!profile) return false;
 
-    const updatedProfiles = profiles.filter(p => p.id !== profileId);
-    setProfiles(updatedProfiles);
-    localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
-    
-    // Pokud smaže sebe, odhlásit
-    if (currentUser && currentUser.id === profileId) {
-      logout();
+      console.log('🔄 Mažu profil z Supabase:', profileId);
+      
+      // Smaž z Supabase
+      const { error } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', profileId);
+      
+      if (error) {
+        console.error('❌ Chyba při mazání profilu z Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Profil úspěšně smazán z Supabase');
+      
+      // Aktualizuj lokální state
+      const updatedProfiles = profiles.filter(p => p.id !== profileId);
+      setProfiles(updatedProfiles);
+      localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
+      
+      // Pokud smaže sebe, odhlásit
+      if (currentUser && currentUser.id === profileId) {
+        logout();
+      }
+      
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro deleteProfile:', error);
+      // Fallback na původní localStorage logiku
+      if (profiles.length <= 1) return false;
+      
+      const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+      if (!profile) return false;
+
+      const updatedProfiles = profiles.filter(p => p.id !== profileId);
+      setProfiles(updatedProfiles);
+      localStorage.setItem('paintpro_profiles', JSON.stringify(updatedProfiles));
+      
+      if (currentUser && currentUser.id === profileId) {
+        logout();
+      }
+      
+      return true;
     }
-    
-    return true;
   };
 
   // Získání všech profilů (bez PIN)
