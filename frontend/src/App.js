@@ -368,15 +368,7 @@ const PaintPro = () => {
     }
   }, []);
 
-  // Získání dat pro aktuálního uživatele
-  const [zakazkyData, setZakazkyData] = useState([]);
 
-  useEffect(() => {
-    if (currentUser) {
-      const userData = getUserData(currentUser.id);
-      setZakazkyData(userData);
-    }
-  }, [currentUser, getUserData]);
 
   // Funkce pro přidání zakázky
   const handleAddZakazka = (zakazkaData) => {
