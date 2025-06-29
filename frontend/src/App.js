@@ -592,8 +592,9 @@ const PaintPro = () => {
 
   // Aktualizovaná data pro kombinovaný graf - POUZE reálná data ze zakázek
   const getCombinedChartData = () => {
-    // Pokud nejsou žádné zakázky, vrať prázdný graf
-    if (zakazkyData.length === 0) {
+    // Pokud nejsou žádné zakázky, vrať prázdný graf - OPRAVENO pro bezpečnost
+    const safeZakazkyDataForChart = Array.isArray(zakazkyData) ? zakazkyData : [];
+    if (safeZakazkyDataForChart.length === 0) {
       return {
         labels: [],
         datasets: []
@@ -603,7 +604,7 @@ const PaintPro = () => {
     // Vytvoř reálné měsíční údaje ze zakázek
     const monthlyStats = {};
     
-    zakazkyData.forEach(zakazka => {
+    safeZakazkyDataForChart.forEach(zakazka => {
       // Parse český formát datumu DD. MM. YYYY
       const dateParts = zakazka.datum.split('. ');
       const day = parseInt(dateParts[0]);
