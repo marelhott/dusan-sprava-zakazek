@@ -130,12 +130,22 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
 /**
  * Smazání souboru ze Supabase Storage
  * @param {string} storagePath - Cesta k souboru v storage
+ * @param {string} bucket - Název bucket (volitelný)
  * @returns {Promise<{success: boolean, error?: string}>}
  */
-export const deleteFileFromSupabase = async (storagePath) => {
+export const deleteFileFromSupabase = async (storagePath, bucket = null) => {
   try {
+    // Pokud není bucket specifikován, najdi dostupný
+    const activeBucket = bucket || await findOrCreateBucket();
+    if (!activeBucket) {
+      return {
+        success: false,
+        error: 'Storage není dostupný'
+      };
+    }
+    
     const { error } = await supabase.storage
-      .from(ACTIVE_BUCKET)
+      .from(activeBucket)
       .remove([storagePath]);
     
     if (error) {
