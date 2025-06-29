@@ -3002,7 +3002,7 @@ const PaintPro = () => {
   const FileUploadCell = ({ zakazka, onFilesUpdate }) => {
     const [isUploading, setIsUploading] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
-    const fileInputRef = React.useRef(null);
+    const fileInputRef = useRef(null);
 
     const handleFileSelect = async (event) => {
       const selectedFiles = Array.from(event.target.files);
