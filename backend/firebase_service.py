@@ -20,8 +20,19 @@ class FirebaseService:
             self._initialized = True
     
     def _initialize_firebase(self):
-        """Inicializace Firebase Admin SDK"""
+        """Inicializace Firebase Admin SDK s fallback pro produkci"""
         try:
+            # Kontrola, zda jsou k dispozici Firebase credentials
+            required_env_vars = ['FIREBASE_PRIVATE_KEY', 'FIREBASE_CLIENT_EMAIL']
+            missing_vars = [var for var in required_env_vars if not os.environ.get(var)]
+            
+            if missing_vars:
+                print(f"⚠️ Firebase credentials chybí ({', '.join(missing_vars)})")
+                print("🔄 Firebase service běží v 'fallback' režimu - data spravuje Supabase")
+                self._app = None
+                self._db = None
+                return
+            
             # Kontrola, zda již není Firebase inicializován
             if not firebase_admin._apps:
                 # Použijeme environment variables místo hardcoded credentials
@@ -52,9 +63,10 @@ class FirebaseService:
             print("✅ Firestore klient úspěšně inicializován")
             
         except Exception as e:
-            print(f"❌ Chyba při inicializaci Firebase: {e}")
-            print("💡 Zkontrolujte environment variables pro Firebase")
-            raise
+            print(f"⚠️ Firebase nedostupný: {e}")
+            print("🔄 Firebase service běží v 'fallback' režimu - data spravuje Supabase")
+            self._app = None
+            self._db = None
     
     @property
     def db(self):
