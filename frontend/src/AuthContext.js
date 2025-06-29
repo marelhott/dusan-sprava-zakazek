@@ -347,15 +347,57 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Přidání zakázky pro uživatele
-  const addUserOrder = (userId, orderData) => {
-    const currentData = getUserData(userId);
-    const id = currentData.length > 0 ? Math.max(...currentData.map(z => z.id)) + 1 : 1;
-    const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
-    const newOrder = { ...orderData, id, zisk, soubory: [] };
-    const updatedData = [...currentData, newOrder];
-    saveUserData(userId, updatedData);
-    return updatedData;
+  // Přidání zakázky pro uživatele - OPRAVENO pro Supabase
+  const addUserOrder = async (userId, orderData) => {
+    try {
+      console.log('🔄 Přidávám zakázku do Supabase:', orderData);
+      
+      const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
+      
+      // Přidej do Supabase
+      const { data, error } = await supabase
+        .from('zakazky')
+        .insert([{
+          profile_id: userId,
+          datum: orderData.datum,
+          druh: orderData.druh,
+          klient: orderData.klient,
+          id_zakazky: orderData.cislo,
+          castka: orderData.castka,
+          fee: orderData.fee,
+          fee_off: orderData.feeOff || 0,
+          palivo: orderData.palivo,
+          material: orderData.material,
+          pomocnik: orderData.pomocnik,
+          zisk: zisk,
+          adresa: orderData.adresa,
+          soubory: []
+        }])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('❌ Chyba při přidávání zakázky do Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Zakázka úspěšně přidána do Supabase:', data);
+      
+      // Načti aktualizovaná data
+      const updatedData = await getUserData(userId);
+      return updatedData;
+      
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro addUserOrder:', error);
+      // Fallback na původní localStorage logiku
+      const currentData = await getUserData(userId);
+      const id = currentData.length > 0 ? Math.max(...currentData.map(z => z.id)) + 1 : 1;
+      const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
+      const newOrder = { ...orderData, id, zisk, soubory: [] };
+      const updatedData = [...currentData, newOrder];
+      await saveUserData(userId, updatedData);
+      return updatedData;
+    }
   };
 
   // Editace zakázky uživatele
