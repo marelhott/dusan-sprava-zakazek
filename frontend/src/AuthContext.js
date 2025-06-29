@@ -104,15 +104,7 @@ export const AuthProvider = ({ children }) => {
       console.log('✅ Vytvořen výchozí profil');
     }
   };
-        const user = JSON.parse(savedUser);
-        setCurrentUser(user);
-      } catch (error) {
-        localStorage.removeItem('paintpro_user');
-      }
-    }
-    
-    setIsLoading(false);
-  }, []);
+
 
   // Přihlášení uživatele
   const login = (profileId, pin) => {
