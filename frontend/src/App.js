@@ -419,10 +419,15 @@ const PaintPro = () => {
   const dashboardData = React.useMemo(() => {
     console.log('=== DASHBOARD DATA DEBUG ===');
     console.log('zakazkyData:', zakazkyData);
+    console.log('zakazkyData type:', typeof zakazkyData);
+    console.log('zakazkyData is array:', Array.isArray(zakazkyData));
     
-    const celkoveTrzby = zakazkyData.reduce((sum, z) => sum + z.castka, 0);
-    const celkovyZisk = zakazkyData.reduce((sum, z) => sum + z.zisk, 0);
-    const pocetZakazek = zakazkyData.length;
+    // OPRAVA: Bezpečná kontrola - zajistí že zakazkyData je vždy array
+    const safeZakazkyData = Array.isArray(zakazkyData) ? zakazkyData : [];
+    
+    const celkoveTrzby = safeZakazkyData.reduce((sum, z) => sum + z.castka, 0);
+    const celkovyZisk = safeZakazkyData.reduce((sum, z) => sum + z.zisk, 0);
+    const pocetZakazek = safeZakazkyData.length;
     const prumernyZisk = pocetZakazek > 0 ? Math.round(celkovyZisk / pocetZakazek) : 0;
 
     console.log('Celkové tržby:', celkoveTrzby);
