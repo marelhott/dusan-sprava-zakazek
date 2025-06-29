@@ -71,91 +71,49 @@ class UserData(BaseModel):
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
-    return {"message": "Dušan - Správa zakázek API", "status": "running", "firebase": "connected"}
+    return {"message": "Dušan - Správa zakázek API", "status": "running", "database": "supabase"}
 
 # Status check endpoints (pro testování)
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
     status_obj = StatusCheck(**input.dict())
-    # Pro jednoduchost zatím bez ukládání do Firebase
+    # Jednoduché API bez databáze - vše řeší frontend přes Supabase
     return status_obj
 
 @api_router.get("/status")
 async def get_status_checks():
-    return {"message": "Status checks - Firebase API", "timestamp": datetime.utcnow()}
+    return {"message": "Status checks - Supabase API", "timestamp": datetime.utcnow()}
 
-# Firebase zakázky endpoints
+# Základní API endpointy - skutečná data se spravují ve frontendu přes Supabase
 @api_router.get("/users/{user_id}/zakazky")
 async def get_user_zakazky(user_id: str):
-    """Získání všech zakázek uživatele"""
-    try:
-        zakazky = await firebase_service.get_user_zakazky(user_id)
-        return {"zakazky": zakazky}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Chyba při načítání zakázek: {str(e)}")
+    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
+    return {"message": "Zakázky se spravují přes Supabase na frontendu", "user_id": user_id}
 
 @api_router.post("/users/{user_id}/zakazky")
 async def create_zakazka(user_id: str, zakazka: ZakazkaCreate):
-    """Vytvoření nové zakázky"""
-    try:
-        zakazka_id = await firebase_service.add_zakazka(user_id, zakazka.dict())
-        if zakazka_id:
-            return {"message": "Zakázka úspěšně vytvořena", "zakazka_id": zakazka_id}
-        else:
-            raise HTTPException(status_code=500, detail="Chyba při vytváření zakázky")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Chyba při vytváření zakázky: {str(e)}")
+    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
+    return {"message": "Zakázka se vytvoří přes Supabase na frontendu", "user_id": user_id}
 
 @api_router.put("/users/{user_id}/zakazky/{zakazka_id}")
 async def update_zakazka(user_id: str, zakazka_id: str, zakazka: ZakazkaUpdate):
-    """Aktualizace zakázky"""
-    try:
-        # Filtrujeme pouze hodnoty, které nejsou None
-        update_data = {k: v for k, v in zakazka.dict().items() if v is not None}
-        
-        success = await firebase_service.update_zakazka(user_id, zakazka_id, update_data)
-        if success:
-            return {"message": "Zakázka úspěšně aktualizována"}
-        else:
-            raise HTTPException(status_code=500, detail="Chyba při aktualizaci zakázky")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Chyba při aktualizaci zakázky: {str(e)}")
+    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
+    return {"message": "Zakázka se aktualizuje přes Supabase na frontendu", "user_id": user_id, "zakazka_id": zakazka_id}
 
 @api_router.delete("/users/{user_id}/zakazky/{zakazka_id}")
 async def delete_zakazka(user_id: str, zakazka_id: str):
-    """Smazání zakázky"""
-    try:
-        success = await firebase_service.delete_zakazka(user_id, zakazka_id)
-        if success:
-            return {"message": "Zakázka úspěšně smazána"}
-        else:
-            raise HTTPException(status_code=500, detail="Chyba při mazání zakázky")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Chyba při mazání zakázky: {str(e)}")
+    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
+    return {"message": "Zakázka se smaže přes Supabase na frontendu", "user_id": user_id, "zakazka_id": zakazka_id}
 
 @api_router.get("/users/{user_id}")
 async def get_user_data(user_id: str):
-    """Získání všech dat uživatele"""
-    try:
-        user_data = await firebase_service.get_user_data(user_id)
-        if user_data:
-            return user_data
-        else:
-            raise HTTPException(status_code=404, detail="Uživatel nenalezen")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Chyba při načítání uživatele: {str(e)}")
+    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
+    return {"message": "Uživatelská data se spravují přes Supabase na frontendu", "user_id": user_id}
 
 @api_router.post("/users/{user_id}")
 async def create_or_update_user_data(user_id: str, data: Dict[str, Any]):
-    """Vytvoření nebo aktualizace uživatelských dat"""
-    try:
-        success = await firebase_service.create_user_data(user_id, data)
-        if success:
-            return {"message": "Uživatelská data úspěšně uložena"}
-        else:
-            raise HTTPException(status_code=500, detail="Chyba při ukládání dat")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Chyba při ukládání dat: {str(e)}")
+    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
+    return {"message": "Uživatelská data se ukládají přes Supabase na frontendu", "user_id": user_id}
 
 
 # Include the router in the main app
