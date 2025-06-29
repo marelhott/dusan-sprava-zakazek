@@ -49,6 +49,15 @@ const initializeBucket = async () => {
  */
 export const uploadFileToSupabase = async (file, zakazkaId) => {
   try {
+    // Nejdříve zkontroluj/vytvoř bucket
+    const bucketReady = await initializeBucket();
+    if (!bucketReady) {
+      return {
+        success: false,
+        error: 'Chyba při přípravě úložiště'
+      };
+    }
+    
     // Generování unikátního názvu souboru
     const fileExtension = file.name.split('.').pop();
     const timestamp = Date.now();
