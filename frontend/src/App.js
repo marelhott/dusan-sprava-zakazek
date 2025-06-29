@@ -489,8 +489,9 @@ const PaintPro = () => {
       categoryStats[category] = 0;
     });
     
-    // Výpočet zisků podle kategorií
-    zakazkyData.forEach(zakazka => {
+    // Agregace dat ze zakázek podle kategorie - OPRAVENO pro bezpečnost
+    const safeZakazkyDataForCategories = Array.isArray(zakazkyData) ? zakazkyData : [];
+    safeZakazkyDataForCategories.forEach(zakazka => {
       if (categoryStats.hasOwnProperty(zakazka.druh)) {
         categoryStats[zakazka.druh] += zakazka.zisk;
       } else {
