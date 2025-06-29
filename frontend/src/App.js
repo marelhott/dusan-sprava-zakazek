@@ -2997,6 +2997,127 @@ const PaintPro = () => {
     );
   };
 
+  // Komponenta pro upload a správu souborů v tabulce
+  const FileUploadCell = ({ zakazka, onFilesUpdate }) => {
+    const [isUploading, setIsUploading] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const fileInputRef = React.useRef(null);
+
+    const handleFileSelect = async (event) => {
+      const selectedFiles = Array.from(event.target.files);
+      if (selectedFiles.length === 0) return;
+
+      setIsUploading(true);
+      
+      try {
+        const uploadPromises = selectedFiles.map(async (file) => {
+          // Validace souboru
+          const validation = await validateFile(file);
+          if (!validation.valid) {
+            throw new Error(validation.error);
+          }
+
+          // Upload do Supabase
+          const result = await uploadFileToSupabase(file, zakazka.id.toString());
+          if (!result.success) {
+            throw new Error(result.error);
+          }
+
+          return result.fileObject;
+        });
+
+        const uploadedFiles = await Promise.all(uploadPromises);
+        const currentFiles = zakazka.soubory || [];
+        const newFiles = [...currentFiles, ...uploadedFiles];
+        
+        // Aktualizuj soubory
+        onFilesUpdate(newFiles);
+        
+      } catch (error) {
+        console.error('❌ Chyba při uploadu:', error);
+        alert(`Chyba při nahrávání souboru: ${error.message}`);
+      } finally {
+        setIsUploading(false);
+        // Reset input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+      }
+    };
+
+    const handleDownload = (fileObj) => {
+      downloadFile(fileObj.url, fileObj.name);
+    };
+
+    const filesCount = zakazka.soubory?.length || 0;
+    const hasFiles = filesCount > 0;
+
+    return (
+      <div className="file-upload-cell">
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          onChange={handleFileSelect}
+          style={{ display: 'none' }}
+          accept="*/*"
+        />
+        
+        {!hasFiles ? (
+          // Zobrazí "nahraj soubor" pokud nejsou žádné soubory
+          <button
+            className="upload-button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+          >
+            {isUploading ? 'Nahrávám...' : 'nahraj soubor'}
+          </button>
+        ) : (
+          // Zobrazí počet souborů s hover efektem
+          <div
+            className="files-count-container"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <span className="files-count" onClick={() => fileInputRef.current?.click()}>
+              {filesCount}
+            </span>
+            
+            {isHovered && (
+              <div className="files-dropdown">
+                <div className="files-list">
+                  {zakazka.soubory.map((file, index) => (
+                    <div key={file.id || index} className="file-item">
+                      <span className="file-name" title={file.name}>
+                        {file.name.length > 20 ? `${file.name.substring(0, 20)}...` : file.name}
+                      </span>
+                      <button
+                        className="download-button"
+                        onClick={() => handleDownload(file)}
+                        title={`Stáhnout ${file.name}`}
+                      >
+                        stáhnout
+                      </button>
+                    </div>
+                  ))}
+                  <div className="add-more-files">
+                    <button
+                      className="add-files-button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isUploading}
+                    >
+                      + přidat další
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   const MapaZakazek = () => {
     // Funkce pro klasifikaci lokace podle adresy
     const getLocationCategory = (adresa) => {
