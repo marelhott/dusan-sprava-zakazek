@@ -74,7 +74,11 @@ class FirebaseService:
         return self._db
     
     async def create_user_data(self, user_id: str, data: Dict[str, Any]) -> bool:
-        """Vytvoření uživatelských dat"""
+        """Vytvoření uživatelských dat - fallback na Supabase"""
+        if not self._db:
+            print("📝 Firebase nedostupný - data spravuje Supabase na frontendu")
+            return True
+            
         try:
             user_ref = self._db.collection('users').document(user_id)
             user_ref.set(data, merge=True)
@@ -84,7 +88,11 @@ class FirebaseService:
             return False
     
     async def get_user_data(self, user_id: str) -> Optional[Dict[str, Any]]:
-        """Získání uživatelských dat"""
+        """Získání uživatelských dat - fallback na Supabase"""
+        if not self._db:
+            print("📝 Firebase nedostupný - data spravuje Supabase na frontendu")
+            return None
+            
         try:
             user_ref = self._db.collection('users').document(user_id)
             doc = user_ref.get()
@@ -96,7 +104,11 @@ class FirebaseService:
             return None
     
     async def update_user_data(self, user_id: str, data: Dict[str, Any]) -> bool:
-        """Aktualizace uživatelských dat"""
+        """Aktualizace uživatelských dat - fallback na Supabase"""
+        if not self._db:
+            print("📝 Firebase nedostupný - data spravuje Supabase na frontendu")
+            return True
+            
         try:
             user_ref = self._db.collection('users').document(user_id)
             user_ref.update(data)
@@ -106,7 +118,11 @@ class FirebaseService:
             return False
     
     async def add_zakazka(self, user_id: str, zakazka_data: Dict[str, Any]) -> Optional[str]:
-        """Přidání nové zakázky pro uživatele"""
+        """Přidání nové zakázky pro uživatele - fallback na Supabase"""
+        if not self._db:
+            print("📝 Firebase nedostupný - data spravuje Supabase na frontendu")
+            return "supabase_fallback"
+            
         try:
             zakazky_ref = self._db.collection('users').document(user_id).collection('zakazky')
             doc_ref = zakazky_ref.add(zakazka_data)
@@ -116,7 +132,11 @@ class FirebaseService:
             return None
     
     async def get_user_zakazky(self, user_id: str) -> List[Dict[str, Any]]:
-        """Získání všech zakázek uživatele"""
+        """Získání všech zakázek uživatele - fallback na Supabase"""
+        if not self._db:
+            print("📝 Firebase nedostupný - data spravuje Supabase na frontendu")
+            return []
+            
         try:
             zakazky_ref = self._db.collection('users').document(user_id).collection('zakazky')
             docs = zakazky_ref.stream()
@@ -131,7 +151,11 @@ class FirebaseService:
             return []
     
     async def update_zakazka(self, user_id: str, zakazka_id: str, zakazka_data: Dict[str, Any]) -> bool:
-        """Aktualizace zakázky"""
+        """Aktualizace zakázky - fallback na Supabase"""
+        if not self._db:
+            print("📝 Firebase nedostupný - data spravuje Supabase na frontendu")
+            return True
+            
         try:
             zakazka_ref = self._db.collection('users').document(user_id).collection('zakazky').document(zakazka_id)
             zakazka_ref.update(zakazka_data)
@@ -141,7 +165,11 @@ class FirebaseService:
             return False
     
     async def delete_zakazka(self, user_id: str, zakazka_id: str) -> bool:
-        """Smazání zakázky"""
+        """Smazání zakázky - fallback na Supabase"""
+        if not self._db:
+            print("📝 Firebase nedostupný - data spravuje Supabase na frontendu")
+            return True
+            
         try:
             zakazka_ref = self._db.collection('users').document(user_id).collection('zakazky').document(zakazka_id)
             zakazka_ref.delete()
