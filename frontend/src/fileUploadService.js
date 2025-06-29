@@ -134,7 +134,7 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
 export const deleteFileFromSupabase = async (storagePath) => {
   try {
     const { error } = await supabase.storage
-      .from(BUCKET_NAME)
+      .from(ACTIVE_BUCKET)
       .remove([storagePath]);
     
     if (error) {
