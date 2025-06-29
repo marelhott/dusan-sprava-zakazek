@@ -1878,14 +1878,15 @@ const PaintPro = () => {
 
     // Data pro graf podle druhů práce (celá doba - měsíce)
     const getDruhyPraceData = () => {
-      if (zakazkyData.length === 0) {
+      const safeDataForDruhy = Array.isArray(zakazkyData) ? zakazkyData : [];
+      if (safeDataForDruhy.length === 0) {
         return [];
       }
 
       const monthlyData = {};
       
-      // Agregace dat podle měsíců
-      zakazkyData.forEach(z => {
+      // Agregace dat podle měsíců - OPRAVENO pro bezpečnost
+      safeDataForDruhy.forEach(z => {
         const date = new Date(z.datum.split('. ').reverse().join('-'));
         const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
         
