@@ -165,6 +165,7 @@ import jsPDF from 'jspdf';
 import { AuthProvider, useAuth } from './AuthContext';
 import LoginScreen from './LoginScreen';
 import { uploadFileToSupabase, downloadFile, validateFile } from './fileUploadService';
+import './storageTest.js';
 import {
   Chart as ChartJS,
   CategoryScale,
