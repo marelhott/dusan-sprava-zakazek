@@ -4,6 +4,44 @@ import supabase from './supabaseClient';
 const BUCKET_NAME = 'zakazky-files';
 
 /**
+ * Inicializace bucket - vytvoří ho pokud neexistuje
+ */
+const initializeBucket = async () => {
+  try {
+    // Zkontroluj existující buckets
+    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+    
+    if (bucketsError) {
+      console.error('❌ Chyba při načítání buckets:', bucketsError);
+      return false;
+    }
+    
+    // Zkontroluj, zda bucket existuje
+    const bucketExists = buckets.some(bucket => bucket.name === BUCKET_NAME);
+    
+    if (!bucketExists) {
+      console.log('📁 Vytvářím bucket:', BUCKET_NAME);
+      
+      const { data, error } = await supabase.storage.createBucket(BUCKET_NAME, {
+        public: true
+      });
+      
+      if (error) {
+        console.error('❌ Chyba při vytváření bucket:', error);
+        return false;
+      }
+      
+      console.log('✅ Bucket úspěšně vytvořen:', data);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('❌ Chyba při inicializaci bucket:', error);
+    return false;
+  }
+};
+
+/**
  * Upload souboru do Supabase Storage
  * @param {File} file - File objekt z input
  * @param {string} zakazkaId - ID zakázky pro organizaci souborů
