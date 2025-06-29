@@ -71,49 +71,88 @@ class UserData(BaseModel):
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
-    return {"message": "Dušan - Správa zakázek API", "status": "running", "database": "supabase"}
+    return {"message": "Dušan - Správa zakázek API", "status": "running", "database": "supabase (primary), firebase (fallback)"}
 
 # Status check endpoints (pro testování)
 @api_router.post("/status", response_model=StatusCheck)
 async def create_status_check(input: StatusCheckCreate):
     status_obj = StatusCheck(**input.dict())
-    # Jednoduché API bez databáze - vše řeší frontend přes Supabase
     return status_obj
 
 @api_router.get("/status")
 async def get_status_checks():
-    return {"message": "Status checks - Supabase API", "timestamp": datetime.utcnow()}
+    return {"message": "Status checks - Hybrid API (Supabase + Firebase)", "timestamp": datetime.utcnow()}
 
-# Základní API endpointy - skutečná data se spravují ve frontendu přes Supabase
+# Hybrid API endpointy - Firebase s fallback na Supabase frontend
 @api_router.get("/users/{user_id}/zakazky")
 async def get_user_zakazky(user_id: str):
-    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
-    return {"message": "Zakázky se spravují přes Supabase na frontendu", "user_id": user_id}
+    """Získání všech zakázek uživatele - Firebase s fallback na Supabase"""
+    try:
+        zakazky = await firebase_service.get_user_zakazky(user_id)
+        return {"zakazky": zakazky, "source": "firebase" if zakazky else "supabase_frontend"}
+    except Exception as e:
+        return {"message": f"Fallback na Supabase frontend: {str(e)}", "user_id": user_id}
 
 @api_router.post("/users/{user_id}/zakazky")
 async def create_zakazka(user_id: str, zakazka: ZakazkaCreate):
-    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
-    return {"message": "Zakázka se vytvoří přes Supabase na frontendu", "user_id": user_id}
+    """Vytvoření nové zakázky - Firebase s fallback na Supabase"""
+    try:
+        zakazka_id = await firebase_service.add_zakazka(user_id, zakazka.dict())
+        if zakazka_id:
+            return {"message": "Zakázka úspěšně vytvořena", "zakazka_id": zakazka_id, "source": "firebase"}
+        else:
+            return {"message": "Fallback na Supabase frontend", "source": "supabase_frontend"}
+    except Exception as e:
+        return {"message": f"Fallback na Supabase frontend: {str(e)}", "user_id": user_id}
 
 @api_router.put("/users/{user_id}/zakazky/{zakazka_id}")
 async def update_zakazka(user_id: str, zakazka_id: str, zakazka: ZakazkaUpdate):
-    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
-    return {"message": "Zakázka se aktualizuje přes Supabase na frontendu", "user_id": user_id, "zakazka_id": zakazka_id}
+    """Aktualizace zakázky - Firebase s fallback na Supabase"""
+    try:
+        update_data = {k: v for k, v in zakazka.dict().items() if v is not None}
+        success = await firebase_service.update_zakazka(user_id, zakazka_id, update_data)
+        if success:
+            return {"message": "Zakázka úspěšně aktualizována", "source": "firebase"}
+        else:
+            return {"message": "Fallback na Supabase frontend", "source": "supabase_frontend"}
+    except Exception as e:
+        return {"message": f"Fallback na Supabase frontend: {str(e)}", "user_id": user_id}
 
 @api_router.delete("/users/{user_id}/zakazky/{zakazka_id}")
 async def delete_zakazka(user_id: str, zakazka_id: str):
-    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
-    return {"message": "Zakázka se smaže přes Supabase na frontendu", "user_id": user_id, "zakazka_id": zakazka_id}
+    """Smazání zakázky - Firebase s fallback na Supabase"""
+    try:
+        success = await firebase_service.delete_zakazka(user_id, zakazka_id)
+        if success:
+            return {"message": "Zakázka úspěšně smazána", "source": "firebase"}
+        else:
+            return {"message": "Fallback na Supabase frontend", "source": "supabase_frontend"}
+    except Exception as e:
+        return {"message": f"Fallback na Supabase frontend: {str(e)}", "user_id": user_id}
 
 @api_router.get("/users/{user_id}")
 async def get_user_data(user_id: str):
-    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
-    return {"message": "Uživatelská data se spravují přes Supabase na frontendu", "user_id": user_id}
+    """Získání všech dat uživatele - Firebase s fallback na Supabase"""
+    try:
+        user_data = await firebase_service.get_user_data(user_id)
+        if user_data:
+            return {"data": user_data, "source": "firebase"}
+        else:
+            return {"message": "Fallback na Supabase frontend", "source": "supabase_frontend"}
+    except Exception as e:
+        return {"message": f"Fallback na Supabase frontend: {str(e)}", "user_id": user_id}
 
 @api_router.post("/users/{user_id}")
 async def create_or_update_user_data(user_id: str, data: Dict[str, Any]):
-    """API pro kompatibilitu - skutečná data spravuje frontend přes Supabase"""
-    return {"message": "Uživatelská data se ukládají přes Supabase na frontendu", "user_id": user_id}
+    """Vytvoření nebo aktualizace uživatelských dat - Firebase s fallback na Supabase"""
+    try:
+        success = await firebase_service.create_user_data(user_id, data)
+        if success:
+            return {"message": "Uživatelská data úspěšně uložena", "source": "firebase"}
+        else:
+            return {"message": "Fallback na Supabase frontend", "source": "supabase_frontend"}
+    except Exception as e:
+        return {"message": f"Fallback na Supabase frontend: {str(e)}", "user_id": user_id}
 
 
 # Include the router in the main app
