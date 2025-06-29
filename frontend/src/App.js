@@ -345,23 +345,51 @@ const PaintPro = () => {
 
 
 
-  // Funkce pro přidání zakázky
-  const handleAddZakazka = (zakazkaData) => {
-    const updatedData = addUserOrder(currentUser.id, zakazkaData);
-    setZakazkyData(updatedData);
+  // Funkce pro přidání zakázky - OPRAVENO pro async
+  const handleAddZakazka = async (zakazkaData) => {
+    try {
+      const updatedData = await addUserOrder(currentUser.id, zakazkaData);
+      // OPRAVA: Bezpečná kontrola dat před nastavením state
+      const safeData = Array.isArray(updatedData) ? updatedData : [];
+      setZakazkyData(safeData);
+      console.log('✅ Zakázka přidána, nová data:', safeData.length, 'záznamů');
+    } catch (error) {
+      console.error('❌ Chyba při přidávání zakázky:', error);
+      // Znovu načti data z databáze pro jistotu
+      if (currentUser?.id) {
+        const refreshedData = await getUserData(currentUser.id);
+        const safeRefreshedData = Array.isArray(refreshedData) ? refreshedData : [];
+        setZakazkyData(safeRefreshedData);
+      }
+    }
   };
 
-  // Funkce pro editaci zakázky
-  const handleEditZakazka = (zakazkaData) => {
-    const updatedData = editUserOrder(currentUser.id, editingZakazka.id, zakazkaData);
-    setZakazkyData(updatedData);
-    setEditingZakazka(null);
+  // Funkce pro editaci zakázky - OPRAVENO pro async
+  const handleEditZakazka = async (zakazkaData) => {
+    try {
+      const updatedData = await editUserOrder(currentUser.id, editingZakazka.id, zakazkaData);
+      // OPRAVA: Bezpečná kontrola dat před nastavením state
+      const safeData = Array.isArray(updatedData) ? updatedData : [];
+      setZakazkyData(safeData);
+      setEditingZakazka(null);
+      console.log('✅ Zakázka upravena, nová data:', safeData.length, 'záznamů');
+    } catch (error) {
+      console.error('❌ Chyba při úpravě zakázky:', error);
+      setEditingZakazka(null);
+    }
   };
 
-  // Funkce pro smazání zakázky
-  const handleDeleteZakazka = (orderId) => {
-    const updatedData = deleteUserOrder(currentUser.id, orderId);
-    setZakazkyData(updatedData);
+  // Funkce pro smazání zakázky - OPRAVENO pro async
+  const handleDeleteZakazka = async (orderId) => {
+    try {
+      const updatedData = await deleteUserOrder(currentUser.id, orderId);
+      // OPRAVA: Bezpečná kontrola dat před nastavením state
+      const safeData = Array.isArray(updatedData) ? updatedData : [];
+      setZakazkyData(safeData);
+      console.log('✅ Zakázka smazána, nová data:', safeData.length, 'záznamů');
+    } catch (error) {
+      console.error('❌ Chyba při mazání zakázky:', error);
+    }
   };
   const getMonthlyPerformance = () => {
     const monthNames = ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'];
