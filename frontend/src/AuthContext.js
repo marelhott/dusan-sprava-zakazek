@@ -422,7 +422,8 @@ export const AuthProvider = ({ children }) => {
           material: orderData.material,
           pomocnik: orderData.pomocnik,
           zisk: zisk,
-          adresa: orderData.adresa
+          adresa: orderData.adresa,
+          soubory: orderData.soubory || []
         })
         .eq('id', orderId)
         .eq('profile_id', userId)
