@@ -453,12 +453,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Smazání zakázky uživatele
-  const deleteUserOrder = (userId, orderId) => {
-    const currentData = getUserData(userId);
-    const updatedData = currentData.filter(order => order.id !== orderId);
-    saveUserData(userId, updatedData);
-    return updatedData;
+  // Smazání zakázky uživatele - OPRAVENO pro Supabase
+  const deleteUserOrder = async (userId, orderId) => {
+    try {
+      console.log('🔄 Mažu zakázku z Supabase:', orderId);
+      
+      // Smaž z Supabase
+      const { error } = await supabase
+        .from('zakazky')
+        .delete()
+        .eq('id', orderId)
+        .eq('profile_id', userId);
+      
+      if (error) {
+        console.error('❌ Chyba při mazání zakázky z Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Zakázka úspěšně smazána z Supabase');
+      
+      // Načti aktualizovaná data
+      const updatedData = await getUserData(userId);
+      return updatedData;
+      
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro deleteUserOrder:', error);
+      // Fallback na původní localStorage logiku
+      const currentData = await getUserData(userId);
+      const updatedData = currentData.filter(order => order.id !== orderId);
+      await saveUserData(userId, updatedData);
+      return updatedData;
+    }
   };
 
   // Odhlášení uživatele
