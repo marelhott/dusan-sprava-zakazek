@@ -373,6 +373,7 @@ export const AuthProvider = ({ children }) => {
     addUserOrder,
     editUserOrder,
     deleteUserOrder,
+    testSupabaseConnection,  // Přidání test funkce
     isAuthenticated: !!currentUser
   };
 
