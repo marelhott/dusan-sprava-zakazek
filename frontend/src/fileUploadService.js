@@ -1,117 +1,58 @@
 import supabase from './supabaseClient';
 
-// Možné názvy bucketů (zkusíme je postupně)
-const POSSIBLE_BUCKETS = ['files', 'uploads', 'documents', 'zakazky-files', 'public'];
-
-let ACTIVE_BUCKET = null;
-
 /**
- * Najde funkční bucket nebo vytvoří nový
+ * Konverze souboru na base64
+ * @param {File} file 
+ * @returns {Promise<string>}
  */
-const findOrCreateBucket = async () => {
-  try {
-    // Zkontroluj existující buckets
-    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
-    
-    if (bucketsError) {
-      console.error('❌ Chyba při načítání buckets:', bucketsError);
-      return null;
-    }
-    
-    console.log('📁 Dostupné buckets:', buckets.map(b => b.name));
-    
-    // Zkus použít první dostupný bucket
-    if (buckets.length > 0) {
-      ACTIVE_BUCKET = buckets[0].name;
-      console.log('✅ Používám existující bucket:', ACTIVE_BUCKET);
-      return ACTIVE_BUCKET;
-    }
-    
-    // Pokud žádný bucket neexistuje, zkus vytvořit s jednoduchým názvem
-    for (const bucketName of POSSIBLE_BUCKETS) {
-      try {
-        const { data, error } = await supabase.storage.createBucket(bucketName, {
-          public: true
-        });
-        
-        if (!error) {
-          ACTIVE_BUCKET = bucketName;
-          console.log('✅ Bucket vytvořen:', bucketName);
-          return ACTIVE_BUCKET;
-        }
-      } catch (e) {
-        console.log(`⚠️ Nelze vytvořit bucket ${bucketName}:`, e.message);
-      }
-    }
-    
-    return null;
-  } catch (error) {
-    console.error('❌ Chyba při hledání bucket:', error);
-    return null;
-  }
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 };
 
 /**
- * Upload souboru do Supabase Storage
+ * Upload souboru do localStorage (dočasné řešení)
  * @param {File} file - File objekt z input
  * @param {string} zakazkaId - ID zakázky pro organizaci souborů
  * @returns {Promise<{success: boolean, fileObject?: object, error?: string}>}
  */
 export const uploadFileToSupabase = async (file, zakazkaId) => {
   try {
-    // Nejdříve najdi/vytvoř bucket
-    const activeBucket = await findOrCreateBucket();
-    if (!activeBucket) {
-      return {
-        success: false,
-        error: 'Supabase Storage není dostupný. Kontaktujte administrátora.'
-      };
-    }
-    
-    // Generování unikátního názvu souboru
-    const fileExtension = file.name.split('.').pop();
-    const timestamp = Date.now();
-    const uniqueFileName = `${zakazkaId}/${timestamp}_${file.name}`;
-    
-    console.log('📁 Nahrávám soubor:', {
+    console.log('📁 Nahrávám soubor do localStorage:', {
       originalName: file.name,
-      uniqueName: uniqueFileName,
       size: file.size,
       type: file.type,
-      bucket: activeBucket
+      zakazkaId: zakazkaId
     });
     
-    // Upload do Supabase Storage
-    const { data, error } = await supabase.storage
-      .from(activeBucket)
-      .upload(uniqueFileName, file);
+    // Konverze souboru na base64
+    const base64Data = await fileToBase64(file);
     
-    if (error) {
-      console.error('❌ Chyba při uploadu souboru:', error);
-      return {
-        success: false,
-        error: `Chyba při nahrávání: ${error.message}`
-      };
-    }
-    
-    // Získání veřejné URL
-    const { data: urlData } = supabase.storage
-      .from(activeBucket)
-      .getPublicUrl(uniqueFileName);
+    // Generování unikátního ID souboru
+    const timestamp = Date.now();
+    const fileId = `${zakazkaId}_${timestamp}`;
     
     // Vytvoření file objektu s metadaty
     const fileObject = {
-      id: timestamp.toString(),
+      id: fileId,
       name: file.name,
-      url: urlData.publicUrl,
+      url: base64Data, // base64 data jako URL
       uploadedAt: new Date().toISOString(),
       size: file.size,
       type: file.type,
-      storagePath: uniqueFileName,
-      bucket: activeBucket
+      storagePath: fileId,
+      storage: 'localStorage' // označení pro budoucí migraci
     };
     
-    console.log('✅ Soubor úspěšně nahrán:', fileObject);
+    // Uložení do localStorage
+    const storageKey = `file_${fileId}`;
+    localStorage.setItem(storageKey, JSON.stringify(fileObject));
+    
+    console.log('✅ Soubor úspěšně uložen do localStorage:', fileObject.name);
     
     return {
       success: true,
@@ -119,10 +60,10 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
     };
     
   } catch (error) {
-    console.error('❌ Neočekávaná chyba při uploadu:', error);
+    console.error('❌ Chyba při ukládání souboru:', error);
     return {
       success: false,
-      error: `Neočekávaná chyba: ${error.message}`
+      error: `Chyba při ukládání: ${error.message}`
     };
   }
 };
