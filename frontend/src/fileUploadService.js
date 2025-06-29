@@ -96,7 +96,7 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
     
     // Získání veřejné URL
     const { data: urlData } = supabase.storage
-      .from(BUCKET_NAME)
+      .from(ACTIVE_BUCKET)
       .getPublicUrl(uniqueFileName);
     
     // Vytvoření file objektu s metadaty
