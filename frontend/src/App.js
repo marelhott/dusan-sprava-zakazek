@@ -401,8 +401,9 @@ const PaintPro = () => {
       monthlyData[key] = { revenue: 0, orders: 0, month: i, year: 2025 };
     }
     
-    // Agregace dat ze zakázek
-    zakazkyData.forEach(zakazka => {
+    // Agregace dat ze zakázek - OPRAVENO pro bezpečnost
+    const safeZakazkyData = Array.isArray(zakazkyData) ? zakazkyData : [];
+    safeZakazkyData.forEach(zakazka => {
       const date = new Date(zakazka.datum.split('. ').reverse().join('-'));
       const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
       
