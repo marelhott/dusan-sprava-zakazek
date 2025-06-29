@@ -59,15 +59,14 @@ const findOrCreateBucket = async () => {
  */
 export const uploadFileToSupabase = async (file, zakazkaId) => {
   try {
-    // Nejdříve zkontroluj/vytvoř bucket
+    // Nejdříve najdi/vytvoř bucket
     const activeBucket = await findOrCreateBucket();
     if (!activeBucket) {
       return {
         success: false,
-        error: 'Chyba při přípravě úložiště'
+        error: 'Supabase Storage není dostupný. Kontaktujte administrátora.'
       };
     }
-    ACTIVE_BUCKET = activeBucket;
     
     // Generování unikátního názvu souboru
     const fileExtension = file.name.split('.').pop();
@@ -78,12 +77,13 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
       originalName: file.name,
       uniqueName: uniqueFileName,
       size: file.size,
-      type: file.type
+      type: file.type,
+      bucket: activeBucket
     });
     
     // Upload do Supabase Storage
     const { data, error } = await supabase.storage
-      .from(ACTIVE_BUCKET)
+      .from(activeBucket)
       .upload(uniqueFileName, file);
     
     if (error) {
@@ -96,7 +96,7 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
     
     // Získání veřejné URL
     const { data: urlData } = supabase.storage
-      .from(ACTIVE_BUCKET)
+      .from(activeBucket)
       .getPublicUrl(uniqueFileName);
     
     // Vytvoření file objektu s metadaty
@@ -107,7 +107,8 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
       uploadedAt: new Date().toISOString(),
       size: file.size,
       type: file.type,
-      storagePath: uniqueFileName
+      storagePath: uniqueFileName,
+      bucket: activeBucket
     };
     
     console.log('✅ Soubor úspěšně nahrán:', fileObject);
