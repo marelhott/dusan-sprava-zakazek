@@ -28,6 +28,67 @@ export const AuthProvider = ({ children }) => {
 
   // Načtení profilů při spuštění
   useEffect(() => {
+    // TEST FUNKCE - přidání do window pro snadné testování
+    useEffect(() => {
+      window.testSupabaseInsert = async () => {
+        try {
+          console.log('🧪 TESTOVÁNÍ SUPABASE INSERT...');
+          
+          const testProfile = {
+            pin: `test_${Date.now()}`,
+            name: 'Test Profile',
+            avatar: 'TP',
+            color: '#FF0000'
+          };
+          
+          const { data, error } = await supabase
+            .from('profiles')
+            .insert([testProfile])
+            .select()
+            .single();
+          
+          if (error) {
+            console.error('❌ Test INSERT selhal:', error);
+            return false;
+          }
+          
+          console.log('✅ Test INSERT úspěšný:', data);
+          
+          // Vymaž test záznam
+          await supabase.from('profiles').delete().eq('id', data.id);
+          console.log('✅ Test záznam vymazán');
+          
+          return true;
+        } catch (error) {
+          console.error('❌ Test INSERT error:', error);
+          return false;
+        }
+      };
+      
+      window.testSupabaseSelect = async () => {
+        try {
+          console.log('🧪 TESTOVÁNÍ SUPABASE SELECT...');
+          
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('*');
+          
+          if (error) {
+            console.error('❌ Test SELECT selhal:', error);
+            return null;
+          }
+          
+          console.log('✅ Test SELECT úspěšný - počet záznamů:', data.length);
+          console.log('📋 Všechny profily:', data);
+          
+          return data;
+        } catch (error) {
+          console.error('❌ Test SELECT error:', error);
+          return null;
+        }
+      };
+    }, []);
+
     initializeApp();
   }, []);
 
