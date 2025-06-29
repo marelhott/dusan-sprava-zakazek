@@ -173,9 +173,15 @@ export const AuthProvider = ({ children }) => {
   };
 
 
-  // Přihlášení uživatele
-  const login = (profileId, pin) => {
-    const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+  // Přihlášení uživatele - opraveno pro PIN-only login
+  const login = (pin) => {
+    console.log('🔐 Pokus o přihlášení s PIN:', pin);
+    console.log('📋 Dostupné profily:', profiles);
+    
+    // Najdi profil pouze podle PIN (ne podle ID)
+    const profile = profiles.find(p => p.pin === pin);
+    console.log('👤 Nalezený profil:', profile);
+    
     if (profile) {
       const user = {
         id: profile.id,
@@ -187,8 +193,11 @@ export const AuthProvider = ({ children }) => {
       };
       setCurrentUser(user);
       localStorage.setItem('paintpro_user', JSON.stringify(user));
+      console.log('✅ Přihlášení úspěšné:', user);
       return true;
     }
+    
+    console.log('❌ PIN nenalezen');
     return false;
   };
 
