@@ -5512,6 +5512,25 @@ body::after {
    FILE UPLOAD CELL STYLES
    ================================= */
 
+/* Order number column styling */
+.order-number {
+  text-align: center;
+  font-weight: 600;
+  color: #6B7280;
+  background: rgba(249, 250, 251, 0.5);
+  min-width: 50px;
+  max-width: 50px;
+  font-size: 13px;
+}
+
+.orders-table th:first-child {
+  text-align: center;
+  min-width: 50px;
+  max-width: 50px;
+  font-weight: 700;
+  color: #374151;
+}
+
 .file-upload-cell {
   position: relative;
   min-width: 120px;
