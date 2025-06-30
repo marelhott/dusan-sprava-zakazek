@@ -6076,6 +6076,19 @@ body::after {
     white-space: nowrap;
   }
   
+  /* Order number responsive */
+  .order-number {
+    min-width: 30px;
+    max-width: 30px;
+    font-size: 10px;
+  }
+  
+  .orders-table th:first-child {
+    min-width: 30px;
+    max-width: 30px;
+    font-size: 10px;
+  }
+  
   .action-buttons {
     display: flex;
     flex-direction: column;
