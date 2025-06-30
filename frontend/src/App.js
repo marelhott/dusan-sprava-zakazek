@@ -3362,20 +3362,32 @@ const PaintPro = () => {
               // Barva markeru podle druhu práce - dynamicky ze správce kategorií
               const color = workCategoryManager.getCategoryColor(zakazka.druh);
               
-              // Vytvoření custom markeru
+              // Vytvoření custom markeru s ikonou uvnitř
               const marker = L.marker(coords, {
                 icon: L.divIcon({
                   className: 'custom-div-icon',
                   html: `<div style="
                     background-color: ${color};
-                    width: 20px;
-                    height: 20px;
+                    width: 30px;
+                    height: 30px;
                     border-radius: 50%;
                     border: 3px solid white;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-                  "></div>`,
-                  iconSize: [26, 26],
-                  iconAnchor: [13, 13]
+                    box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                  ">
+                    <div style="
+                      color: white;
+                      font-size: 16px;
+                      font-weight: 700;
+                      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+                      line-height: 1;
+                    ">💼</div>
+                  </div>`,
+                  iconSize: [36, 36],
+                  iconAnchor: [18, 18]
                 })
               }).addTo(map);
               
