@@ -1443,7 +1443,7 @@ const PaintPro = () => {
                     Ano
                   </label>
                 </div>
-                {formData.hasFee && formData.castka > 0 && (
+                {formData.hasFee && formData.castka && Number(formData.castka) > 0 && (
                   <div style={{ marginTop: '8px', fontSize: '13px', color: '#6B7280' }}>
                     Automaticky vypočítáno: {Math.round(Number(formData.castka) * 0.261)} Kč
                   </div>
