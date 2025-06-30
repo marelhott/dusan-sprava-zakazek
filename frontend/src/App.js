@@ -3362,32 +3362,43 @@ const PaintPro = () => {
               // Barva markeru podle druhu práce - dynamicky ze správce kategorií
               const color = workCategoryManager.getCategoryColor(zakazka.druh);
               
-              // Vytvoření custom markeru s ikonou uvnitř
+              // Vytvoření custom markeru s kontextovou ikonou
+              const getIconForCategory = (druh) => {
+                const categoryLower = druh.toLowerCase();
+                if (categoryLower.includes('malování') || categoryLower.includes('malíř')) return '🎨';
+                if (categoryLower.includes('korálek') || categoryLower.includes('bead')) return '⚪';
+                if (categoryLower.includes('adam')) return '👤';
+                if (categoryLower.includes('mvč')) return '🏢';
+                return '📋'; // Default pro ostatní
+              };
+              
               const marker = L.marker(coords, {
                 icon: L.divIcon({
                   className: 'custom-div-icon',
                   html: `<div style="
                     background-color: ${color};
-                    width: 30px;
-                    height: 30px;
+                    width: 32px;
+                    height: 32px;
                     border-radius: 50%;
                     border: 3px solid white;
-                    box-shadow: 0 3px 12px rgba(0,0,0,0.3);
+                    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     position: relative;
+                    backdrop-filter: blur(2px);
                   ">
                     <div style="
                       color: white;
-                      font-size: 16px;
+                      font-size: 18px;
                       font-weight: 700;
-                      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+                      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
                       line-height: 1;
-                    ">💼</div>
+                      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+                    ">${getIconForCategory(zakazka.druh)}</div>
                   </div>`,
-                  iconSize: [36, 36],
-                  iconAnchor: [18, 18]
+                  iconSize: [38, 38],
+                  iconAnchor: [19, 19]
                 })
               }).addTo(map);
               
