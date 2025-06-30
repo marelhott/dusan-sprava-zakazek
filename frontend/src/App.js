@@ -2925,6 +2925,7 @@ const PaintPro = () => {
                   barThickness: 32,
                 };
               })
+            })()
             }} options={{
               responsive: true,
               maintainAspectRatio: false,
