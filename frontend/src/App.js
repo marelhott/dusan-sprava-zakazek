@@ -1360,23 +1360,21 @@ const PaintPro = () => {
           <form onSubmit={handleSubmit} className="modal-form">
             <div className="form-row">
               <div className="form-group">
-                <label>Datum *</label>
+                <label>Datum</label>
                 <input
                   type="date"
                   value={formData.datum}
                   onChange={e => setFormData({...formData, datum: e.target.value})}
-                  required
                 />
               </div>
               <div className="form-group">
-                <label>Druh práce *</label>
+                <label>Druh práce</label>
                 <input
                   type="text"
                   value={formData.druh}
                   onChange={e => setFormData({...formData, druh: e.target.value})}
                   placeholder="Vložit druh práce"
                   list="work-categories-list"
-                  required
                 />
                 <datalist id="work-categories-list">
                   {workCategories.map(category => (
@@ -1387,23 +1385,21 @@ const PaintPro = () => {
             </div>
             <div className="form-row">
               <div className="form-group">
-                <label>Klient *</label>
+                <label>Klient</label>
                 <input
                   type="text"
                   value={formData.klient}
                   onChange={e => setFormData({...formData, klient: e.target.value})}
                   placeholder="Jméno klienta"
-                  required
                 />
               </div>
               <div className="form-group">
-                <label>Číslo zakázky *</label>
+                <label>Číslo zakázky</label>
                 <input
                   type="text"
                   value={formData.cislo}
                   onChange={e => setFormData({...formData, cislo: e.target.value})}
                   placeholder="Číslo zakázky"
-                  required
                 />
               </div>
             </div>
@@ -1418,13 +1414,12 @@ const PaintPro = () => {
             </div>
             <div className="form-row">
               <div className="form-group">
-                <label>Částka (Kč) *</label>
+                <label>Částka (Kč)</label>
                 <input
                   type="number"
                   value={formData.castka}
                   onChange={e => setFormData({...formData, castka: e.target.value})}
                   placeholder="0"
-                  required
                 />
               </div>
               <div className="form-group">
