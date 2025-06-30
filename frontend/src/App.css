@@ -645,10 +645,10 @@ body::after {
   color: var(--accent-orange);
 }
 
-/* Moderní kontextové ikony pro dashboard metriky */
+/* Moderní kontextové ikony pro dashboard metriky - větší a lépe proporční */
 .stat-icon.icon-money::before { 
   content: "$";
-  font-size: 18px;
+  font-size: 28px;
   font-weight: 700;
   line-height: 1;
   color: currentColor;
@@ -656,20 +656,21 @@ body::after {
 
 .stat-icon.icon-chart::before { 
   content: "";
-  width: 4px;
-  height: 10px;
+  width: 6px;
+  height: 16px;
   background: currentColor;
-  border-radius: 1px;
+  border-radius: 2px;
   position: absolute;
-  left: 18px;
+  left: 16px;
+  top: 16px;
 }
 
 .stat-icon.icon-chart::after { 
   content: "";
-  width: 4px;
-  height: 6px;
+  width: 6px;
+  height: 10px;
   background: currentColor;
-  border-radius: 1px;
+  border-radius: 2px;
   position: absolute;
   left: 26px;
   top: 22px;
@@ -677,16 +678,16 @@ body::after {
 
 .stat-icon.icon-orders::before { 
   content: "";
-  width: 12px;
-  height: 12px;
-  border: 2px solid currentColor;
-  border-radius: 2px;
+  width: 20px;
+  height: 20px;
+  border: 3px solid currentColor;
+  border-radius: 3px;
   position: relative;
 }
 
 .stat-icon.icon-orders::after { 
   content: "✓";
-  font-size: 8px;
+  font-size: 14px;
   font-weight: 700;
   color: currentColor;
   position: absolute;
@@ -698,16 +699,16 @@ body::after {
 
 .stat-icon.icon-target::before { 
   content: "";
-  width: 10px;
-  height: 10px;
-  border: 2px solid currentColor;
+  width: 18px;
+  height: 18px;
+  border: 3px solid currentColor;
   border-radius: 50%;
   position: relative;
 }
 
 .stat-icon.icon-target::after { 
   content: "Ø";
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 400;
   color: currentColor;
   position: absolute;
