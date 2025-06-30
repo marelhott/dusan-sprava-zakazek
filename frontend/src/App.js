@@ -1298,7 +1298,7 @@ const PaintPro = () => {
       cislo: '',
       adresa: '',
       castka: 0,
-      fee: 0,
+      hasFee: false, // Místo fee používáme boolean pro Ano/Ne
       material: 0,
       pomocnik: 0,
       palivo: 0
@@ -1317,14 +1317,26 @@ const PaintPro = () => {
       }
       
       const processedData = {
-        ...formData,
         datum: new Date(formData.datum).toLocaleDateString('cs-CZ'),
+        druh: formData.druh,
+        klient: formData.klient,
+        cislo: formData.cislo,
+        adresa: formData.adresa,
         castka: Number(formData.castka),
-        fee: Number(formData.fee),
         material: Number(formData.material),
         pomocnik: Number(formData.pomocnik),
         palivo: Number(formData.palivo)
       };
+      
+      // Přidat fee pouze pokud je hasFee true
+      if (formData.hasFee) {
+        const castka = Number(formData.castka);
+        if (castka > 0) {
+          processedData.fee = Math.round(castka * 0.261); // 26.1% fee
+        }
+      }
+      // Pokud hasFee je false, fee se nepřidá vůbec
+      
       addZakazka(processedData);
     };
 
