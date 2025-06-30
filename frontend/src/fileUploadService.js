@@ -4,6 +4,20 @@ import supabase from './supabaseClient';
 const BUCKET_NAME = 'files';
 
 /**
+ * Konverze souboru na base64
+ * @param {File} file 
+ * @returns {Promise<string>}
+ */
+const fileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+};
+
+/**
  * Ověření a inicializace bucket pro file storage
  */
 const ensureBucketExists = async () => {
