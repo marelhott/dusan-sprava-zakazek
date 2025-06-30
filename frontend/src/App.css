@@ -5619,9 +5619,9 @@ body::after {
 
 /* Upload button pro "nahraj soubor" */
 .upload-button {
-  background: linear-gradient(135deg, #64748B 0%, #475569 100%);
-  color: white;
-  border: none;
+  background: transparent;
+  color: rgba(55, 65, 81, 0.7);
+  border: 1px solid rgba(203, 213, 225, 0.5);
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 13px;
@@ -5629,13 +5629,15 @@ body::after {
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(100, 116, 139, 0.2);
+  box-shadow: none;
 }
 
 .upload-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #475569 0%, #334155 100%);
+  background: rgba(248, 250, 252, 0.5);
+  color: rgba(55, 65, 81, 0.9);
+  border-color: rgba(203, 213, 225, 0.8);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .upload-button:disabled {
