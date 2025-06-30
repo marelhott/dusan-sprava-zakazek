@@ -668,64 +668,34 @@ body::after {
 
 /* Nové čisté, velké ikony - vyplňují 50% prostoru kruhu (24px z 48px) */
 
-/* CELKOVÉ TRŽBY - Bankovní ikona se sloupky */
+/* CELKOVÉ TRŽBY - Dolarový znak */
 .stat-icon.icon-money::before { 
-  content: "";
-  width: 24px;
-  height: 2px;
-  background: currentColor;
-  border-radius: 1px;
+  content: "$";
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+  color: currentColor;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateY(6px);
-  box-shadow: 
-    0 -10px 0 0 currentColor,
-    -6px -8px 0 0 currentColor,
-    -3px -8px 0 0 currentColor,
-    0px -8px 0 0 currentColor,
-    3px -8px 0 0 currentColor,
-    6px -8px 0 0 currentColor;
+  transform: translate(-50%, -50%);
 }
 
-.stat-icon.icon-money::after { 
-  content: "";
-  width: 0;
-  height: 0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-bottom: 6px solid currentColor;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translateY(-8px);
-}
-
-/* CELKOVÝ ZISK - Přepracovaná ikona růstu/trendu */
+/* CELKOVÝ ZISK - Dolarový znak */
 .stat-icon.icon-chart::before { 
-  content: "";
-  width: 26px;
-  height: 3px;
-  background: currentColor;
-  border-radius: 2px;
+  content: "$";
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+  color: currentColor;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(25deg);
-  transform-origin: center;
+  transform: translate(-50%, -50%);
 }
 
 .stat-icon.icon-chart::after { 
-  content: "";
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-bottom: 10px solid currentColor;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) translate(8px, -8px) rotate(25deg);
+  content: none;
 }
 
 /* POČET ZAKÁZEK - Checklist ikona */
