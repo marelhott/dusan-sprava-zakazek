@@ -5515,6 +5515,16 @@ body::after {
 .file-upload-cell {
   position: relative;
   min-width: 120px;
+  overflow: visible;
+}
+
+/* Zajistí, že tabulka má správné overflow pro dropdowns */
+.orders-table {
+  overflow: visible;
+}
+
+.orders-table td {
+  overflow: visible;
 }
 
 /* Upload button pro "nahraj soubor" */
