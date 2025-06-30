@@ -1307,7 +1307,7 @@ const PaintPro = () => {
     const handleSubmit = (e) => {
       e.preventDefault();
       
-      // Přidat kategorii, pokud neexistuje (jednoduše při submitu)
+      // Přidat kategorii, pokud není prázdná a neexistuje
       if (formData.druh && formData.druh.trim()) {
         const trimmedCategory = formData.druh.trim();
         if (!workCategoryManager.getCategoryNames().includes(trimmedCategory)) {
@@ -1317,25 +1317,22 @@ const PaintPro = () => {
       }
       
       const processedData = {
-        datum: new Date(formData.datum).toLocaleDateString('cs-CZ'),
-        druh: formData.druh,
-        klient: formData.klient,
-        cislo: formData.cislo,
-        adresa: formData.adresa,
-        castka: Number(formData.castka),
-        material: Number(formData.material),
-        pomocnik: Number(formData.pomocnik),
-        palivo: Number(formData.palivo)
+        datum: formData.datum ? new Date(formData.datum).toLocaleDateString('cs-CZ') : '',
+        druh: formData.druh || '',
+        klient: formData.klient || '',
+        cislo: formData.cislo || '',
+        adresa: formData.adresa || '',
+        castka: formData.castka ? Number(formData.castka) : 0,
+        material: formData.material ? Number(formData.material) : 0,
+        pomocnik: formData.pomocnik ? Number(formData.pomocnik) : 0,
+        palivo: formData.palivo ? Number(formData.palivo) : 0
       };
       
-      // Přidat fee pouze pokud je hasFee true
-      if (formData.hasFee) {
-        const castka = Number(formData.castka);
-        if (castka > 0) {
-          processedData.fee = Math.round(castka * 0.261); // 26.1% fee
-        }
+      // Přidat fee pouze pokud je hasFee true a částka je validní
+      if (formData.hasFee && formData.castka && Number(formData.castka) > 0) {
+        processedData.fee = Math.round(Number(formData.castka) * 0.261); // 26.1% fee
       }
-      // Pokud hasFee je false, fee se nepřidá vůbec
+      // Pokud hasFee je false nebo částka není vyplněná, fee se nepřidá vůbec
       
       addZakazka(processedData);
     };
