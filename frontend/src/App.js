@@ -2996,22 +2996,6 @@ const PaintPro = () => {
               <div className="action-button-subtitle">Všechny stránky</div>
             </div>
           </div>
-          
-          <div className="action-button-card" onClick={() => {}}>
-            <div className="modern-icon size-large icon-export"></div>
-            <div className="action-button-content">
-              <div className="action-button-title">Export do CSV</div>
-              <div className="action-button-subtitle">Data pro další analýzu</div>
-            </div>
-          </div>
-          
-          <div className="action-button-card" onClick={() => setShowAddModal(true)}>
-            <div className="modern-icon size-large icon-add"></div>
-            <div className="action-button-content">
-              <div className="action-button-title">Nová zakázka</div>
-              <div className="action-button-subtitle">Rychlé přidání</div>
-            </div>
-          </div>
         </div>
       </div>
     );
