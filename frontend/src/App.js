@@ -2765,7 +2765,8 @@ const PaintPro = () => {
                   pointRadius: 0,
                   pointHoverRadius: 0,
                 }))
-              }} options={{
+              })()
+            }} options={{
                 ...lineChartOptions,
                 scales: {
                   x: {
