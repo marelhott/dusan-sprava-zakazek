@@ -5521,9 +5521,20 @@ body::after {
 /* Zajistí, že tabulka má správné overflow pro dropdowns */
 .orders-table {
   overflow: visible;
+  position: relative;
 }
 
 .orders-table td {
+  overflow: visible;
+  position: relative;
+}
+
+.orders-table tr {
+  position: relative;
+}
+
+/* Také table container */
+.table-container {
   overflow: visible;
 }
 
