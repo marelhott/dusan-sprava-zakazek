@@ -1428,13 +1428,34 @@ const PaintPro = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Fee (Kč)</label>
-                <input
-                  type="number"
-                  value={formData.fee}
-                  onChange={e => setFormData({...formData, fee: e.target.value})}
-                  placeholder="0"
-                />
+                <label>Fee (26.1% z částky)</label>
+                <div style={{ display: 'flex', gap: '20px', marginTop: '8px' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '14px' }}>
+                    <input
+                      type="radio"
+                      name="hasFee"
+                      checked={formData.hasFee === false}
+                      onChange={() => setFormData({...formData, hasFee: false})}
+                      style={{ marginRight: '8px' }}
+                    />
+                    Ne
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '14px' }}>
+                    <input
+                      type="radio"
+                      name="hasFee"
+                      checked={formData.hasFee === true}
+                      onChange={() => setFormData({...formData, hasFee: true})}
+                      style={{ marginRight: '8px' }}
+                    />
+                    Ano
+                  </label>
+                </div>
+                {formData.hasFee && formData.castka > 0 && (
+                  <div style={{ marginTop: '8px', fontSize: '13px', color: '#6B7280' }}>
+                    Automaticky vypočítáno: {Math.round(Number(formData.castka) * 0.261)} Kč
+                  </div>
+                )}
               </div>
             </div>
             <div className="form-row">
