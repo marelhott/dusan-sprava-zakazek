@@ -5617,15 +5617,15 @@ body::after {
   overflow: visible;
 }
 
-/* Upload button pro "nahraj soubor" - skutečně průhledný */
+/* Upload button pro "nahraj soubor" - outlined button style */
 .upload-button {
   background: transparent;
-  color: rgba(156, 163, 175, 0.6);
-  border: 1px solid rgba(229, 231, 235, 0.3);
+  color: #6b7280;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
@@ -5633,9 +5633,9 @@ body::after {
 }
 
 .upload-button:hover:not(:disabled) {
-  background: rgba(249, 250, 251, 0.3);
-  color: rgba(107, 114, 128, 0.8);
-  border-color: rgba(229, 231, 235, 0.5);
+  background: transparent;
+  color: #374151;
+  border-color: #9ca3af;
   transform: none;
   box-shadow: none;
 }
