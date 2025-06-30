@@ -1756,7 +1756,7 @@ const PaintPro = () => {
           <table className="orders-table">
             <thead>
               <tr>
-                <th></th>
+                <th>#</th>
                 <th>DATUM</th>
                 <th>DRUH PRÁCE</th>
                 <th>KLIENT</th>
