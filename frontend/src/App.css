@@ -681,19 +681,8 @@ body::after {
   transform: translate(-50%, -50%);
 }
 
-/* CELKOVÝ ZISK - Dolarový znak */
-.stat-icon.icon-chart::before { 
-  content: "$";
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1;
-  color: currentColor;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
+/* CELKOVÝ ZISK - nejprve kompletní vyčištění */
+.stat-icon.icon-chart::before,
 .stat-icon.icon-chart::after { 
   content: none;
 }
