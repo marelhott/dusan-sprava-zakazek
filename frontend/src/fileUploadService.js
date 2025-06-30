@@ -1,17 +1,58 @@
 import supabase from './supabaseClient';
 
+// Zkusíme použít jednoduchý bucket název
+const BUCKET_NAME = 'files';
+
 /**
- * Konverze souboru na base64
- * @param {File} file 
- * @returns {Promise<string>}
+ * Ověření a inicializace bucket pro file storage
  */
-const fileToBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
+const ensureBucketExists = async () => {
+  try {
+    // Zkontroluj existující buckets
+    const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
+    
+    if (bucketsError) {
+      console.error('❌ Chyba při načítání buckets:', bucketsError);
+      // Pokusíme se pokračovat s výchozím bucket názvem
+      return BUCKET_NAME;
+    }
+    
+    console.log('📁 Dostupné buckets:', buckets?.map(b => b.name) || []);
+    
+    // Zkontroluj, zda náš bucket existuje
+    const targetBucket = buckets?.find(bucket => bucket.name === BUCKET_NAME);
+    
+    if (targetBucket) {
+      console.log('✅ Používám existující bucket:', BUCKET_NAME);
+      return BUCKET_NAME;
+    }
+    
+    // Zkus vytvořit nový bucket
+    console.log('📁 Vytvářím bucket:', BUCKET_NAME);
+    const { data: newBucket, error: createError } = await supabase.storage.createBucket(BUCKET_NAME, {
+      public: true,
+      allowedMimeTypes: null, // Umožní všechny typy souborů
+      fileSizeLimit: 50 * 1024 * 1024 // 50MB limit
+    });
+    
+    if (createError) {
+      console.error('⚠️ Nelze vytvořit bucket:', createError);
+      // Zkusíme použít jiný existující bucket
+      if (buckets && buckets.length > 0) {
+        const fallbackBucket = buckets[0].name;
+        console.log('🔄 Používám fallback bucket:', fallbackBucket);
+        return fallbackBucket;
+      }
+      return BUCKET_NAME; // Zkusíme pokračovat přesto
+    }
+    
+    console.log('✅ Bucket úspěšně vytvořen:', newBucket);
+    return BUCKET_NAME;
+    
+  } catch (error) {
+    console.error('❌ Chyba při inicializaci bucket:', error);
+    return BUCKET_NAME; // Fallback
+  }
 };
 
 /**
