@@ -2748,7 +2748,13 @@ const PaintPro = () => {
             <div className="chart-container-small">
               <Line data={{
                 labels: zakazkyData.map((z, index) => `Zakázka ${index + 1}`),
-                datasets: workCategories.map(category => ({
+                datasets: (() => {
+                // Filtrujeme kategorie, které mají nějaká data
+                const categoriesWithData = workCategories.filter(category => {
+                  return zakazkyData.some(z => z.druh === category.name && z.zisk > 0);
+                });
+                
+                return categoriesWithData.map((category, index) => ({
                   label: category.name,
                   data: zakazkyData.map(z => z.druh === category.name ? z.zisk : 0),
                   borderColor: category.color,
