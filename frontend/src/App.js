@@ -1297,11 +1297,11 @@ const PaintPro = () => {
       klient: '',
       cislo: '',
       adresa: '',
-      castka: 0,
+      castka: '',
       hasFee: false, // Místo fee používáme boolean pro Ano/Ne
-      material: 0,
-      pomocnik: 0,
-      palivo: 0
+      material: '',
+      pomocnik: '',
+      palivo: ''
     });
 
     const handleSubmit = (e) => {
