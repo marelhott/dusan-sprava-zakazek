@@ -2853,7 +2853,13 @@ const PaintPro = () => {
                 });
                 return Object.keys(monthlyLabels).sort();
               })(),
-              datasets: workCategories.map((category, index) => {
+              datasets: (() => {
+                // Filtrujeme kategorie, které mají nějaká data
+                const categoriesWithData = workCategories.filter(category => {
+                  return zakazkyData.some(z => z.druh === category.name && z.zisk > 0);
+                });
+                
+                return categoriesWithData.map((category, index) => {
                 // Generování gradient barev pro každou kategorii
                 const baseColor = category.color;
                 const rgbaMatch = baseColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
