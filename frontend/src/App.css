@@ -668,17 +668,48 @@ body::after {
 
 /* Nové čisté, velké ikony - vyplňují 50% prostoru kruhu (24px z 48px) */
 
-/* CELKOVÉ TRŽBY - Dolarový znak */
+/* CELKOVÉ TRŽBY - Bankovní ikona se sloupky */
 .stat-icon.icon-money::before { 
-  content: "$";
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1;
-  color: currentColor;
+  content: "";
+  width: 28px;
+  height: 4px;
+  background: currentColor;
+  border-radius: 2px;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateY(8px);
+}
+
+.stat-icon.icon-money::after { 
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 8px solid currentColor;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateY(-10px);
+}
+
+/* Sloupky banky */
+.stat-icon.icon-money {
+  position: relative;
+}
+
+.stat-icon.icon-money:before {
+  box-shadow: 
+    -8px -6px 0 0 currentColor,
+    -4px -6px 0 0 currentColor,
+    0px -6px 0 0 currentColor,
+    4px -6px 0 0 currentColor,
+    8px -6px 0 0 currentColor;
+}
+
+.stat-icon.icon-money:after {
+  border-radius: 1px 1px 0 0;
 }
 
 /* CELKOVÝ ZISK - Přepracovaná ikona růstu/trendu */
