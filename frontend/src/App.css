@@ -666,6 +666,94 @@ body::after {
   content: none;
 }
 
+/* Nové čisté, velké ikony - vyplňují 50% prostoru kruhu (24px z 48px) */
+
+/* CELKOVÉ TRŽBY - Dolarový znak */
+.stat-icon.icon-money::before { 
+  content: "$";
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+  color: currentColor;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* CELKOVÝ ZISK - Jednoduchý graf (2 sloupce) */
+.stat-icon.icon-chart::before { 
+  content: "";
+  width: 8px;
+  height: 20px;
+  background: currentColor;
+  border-radius: 2px;
+  position: absolute;
+  left: 16px;
+  top: 14px;
+}
+
+.stat-icon.icon-chart::after { 
+  content: "";
+  width: 8px;
+  height: 14px;
+  background: currentColor;
+  border-radius: 2px;
+  position: absolute;
+  left: 28px;
+  top: 20px;
+}
+
+/* POČET ZAKÁZEK - Checklist ikona */
+.stat-icon.icon-orders::before { 
+  content: "";
+  width: 24px;
+  height: 24px;
+  border: 3px solid currentColor;
+  border-radius: 4px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.stat-icon.icon-orders::after { 
+  content: "✓";
+  font-size: 18px;
+  font-weight: 700;
+  color: currentColor;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
+
+/* PRŮMĚRNÝ ZISK - Terčová ikona */
+.stat-icon.icon-target::before { 
+  content: "";
+  width: 24px;
+  height: 24px;
+  border: 3px solid currentColor;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.stat-icon.icon-target::after { 
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: currentColor;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .stat-icon {
   width: 48px;
   height: 48px;
