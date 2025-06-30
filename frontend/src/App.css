@@ -480,7 +480,7 @@ body::after {
   border: 1px solid var(--border-color);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Enhanced Transparent Cards */
