@@ -3094,9 +3094,9 @@ const PaintPro = () => {
           // Zobrazí "nahraj soubor" pokud nejsou žádné soubory
           <button
             style={{
-              background: 'linear-gradient(135deg, #64748B 0%, #475569 100%)',
-              color: 'white',
-              border: 'none',
+              background: 'transparent',
+              color: '#6b7280',
+              border: '1px solid #d1d5db',
               borderRadius: '8px',
               padding: '8px 16px',
               fontSize: '13px',
