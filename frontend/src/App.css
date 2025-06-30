@@ -681,23 +681,27 @@ body::after {
   transform: translate(-50%, -50%);
 }
 
-/* CELKOVÝ ZISK - nejprve kompletní vyčištění */
-.stat-icon.icon-chart::before,
-.stat-icon.icon-chart::after { 
-  content: none;
+/* CELKOVÝ ZISK - důkladné vyčištění všech elementů */
+.stat-icon.icon-chart::before { 
+  content: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  position: static !important;
 }
 
-/* CELKOVÝ ZISK - nový čistý dolarový znak */
-.stat-icon.icon-chart::before { 
-  content: "$";
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1;
-  color: currentColor;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.stat-icon.icon-chart::after { 
+  content: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+  position: static !important;
 }
 
 /* POČET ZAKÁZEK - Checklist ikona */
