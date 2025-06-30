@@ -1801,10 +1801,10 @@ const PaintPro = () => {
                   
                   return clientMatch && druhMatch && dateMatch;
                 })
-                .map((zakazka) => (
+                .map((zakazka, index) => (
                 <tr key={zakazka.id} className="table-row">
-                  <td>
-                    <input type="checkbox" />
+                  <td className="order-number">
+                    {index + 1}
                   </td>
                   <td>{zakazka.datum}</td>
                   <td>{zakazka.druh}</td>
