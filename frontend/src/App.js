@@ -3096,7 +3096,7 @@ const PaintPro = () => {
             style={{
               background: 'transparent',
               color: '#6b7280',
-              border: '1px solid #d1d5db',
+              border: '1px solid #9ca3af',
               borderRadius: '8px',
               padding: '8px 16px',
               fontSize: '13px',
