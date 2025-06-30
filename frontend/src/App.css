@@ -5621,7 +5621,7 @@ body::after {
 .upload-button {
   background: transparent;
   color: #6b7280;
-  border: 1px solid #d1d5db;
+  border: 1px solid #9ca3af;
   border-radius: 8px;
   padding: 8px 16px;
   font-size: 13px;
@@ -5635,7 +5635,7 @@ body::after {
 .upload-button:hover:not(:disabled) {
   background: transparent;
   color: #374151;
-  border-color: #9ca3af;
+  border-color: #6b7280;
   transform: none;
   box-shadow: none;
 }
