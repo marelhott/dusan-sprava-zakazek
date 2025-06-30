@@ -6239,6 +6239,330 @@ body::after {
   }
 }
 
+/* =================================
+   ENHANCED ZAKÁZKY PAGE RESPONSIVENESS
+   ================================= */
+
+/* Medium to Large screens (1200px to 1599px) - Zakázky optimizations */
+@media (max-width: 1599px) and (min-width: 1200px) {
+  .zakazky .page-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .zakazky .filters-section {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .zakazky .filter-item {
+    min-width: 180px;
+    flex: 1;
+  }
+  
+  .zakazky .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .zakazky .orders-table {
+    min-width: 1000px;
+  }
+}
+
+/* Medium screens (768px to 1199px) - Zakázky layout changes */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .zakazky .page-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .zakazky .page-header h1 {
+    font-size: 28px;
+  }
+  
+  .zakazky .filters-section {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .zakazky .filters-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  
+  .zakazky .filter-actions {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .zakazky .table-card {
+    margin: 0 -16px;
+    border-radius: 0;
+  }
+  
+  .zakazky .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 16px;
+  }
+  
+  .zakazky .orders-table {
+    min-width: 900px;
+    font-size: 13px;
+  }
+  
+  .zakazky .orders-table th,
+  .zakazky .orders-table td {
+    padding: 8px 6px;
+  }
+  
+  /* File upload responsive */
+  .zakazky .file-upload-cell {
+    min-width: 100px;
+  }
+  
+  .zakazky .upload-button {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+  
+  .zakazky .files-count {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+}
+
+/* Small screens (576px to 767px) - Compact Zakázky layout */
+@media (max-width: 767px) and (min-width: 576px) {
+  .zakazky .page-header h1 {
+    font-size: 24px;
+  }
+  
+  .zakazky .filters-section {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .zakazky .filters-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .zakazky .filter-item {
+    width: 100%;
+  }
+  
+  .zakazky .filter-item label {
+    font-size: 13px;
+  }
+  
+  .zakazky .filter-item input,
+  .zakazky .filter-item select {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .zakazky .table-card {
+    margin: 0 -12px;
+    border-radius: 0;
+  }
+  
+  .zakazky .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -12px;
+    padding: 0 12px;
+  }
+  
+  .zakazky .orders-table {
+    min-width: 800px;
+    font-size: 11px;
+  }
+  
+  .zakazky .orders-table th,
+  .zakazky .orders-table td {
+    padding: 6px 4px;
+    white-space: nowrap;
+  }
+  
+  /* Order number column */
+  .zakazky .order-number {
+    min-width: 35px;
+    max-width: 35px;
+    font-size: 10px;
+  }
+  
+  .zakazky .orders-table th:first-child {
+    min-width: 35px;
+    max-width: 35px;
+    font-size: 10px;
+  }
+  
+  /* Action buttons */
+  .zakazky .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  
+  .zakazky .action-buttons button {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+  
+  /* File upload */
+  .zakazky .file-upload-cell {
+    min-width: 80px;
+  }
+  
+  .zakazky .upload-button {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+  
+  .zakazky .files-count {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+}
+
+/* Extra small screens (up to 575px) - Mobile Zakázky */
+@media (max-width: 575px) {
+  .zakazky .page-header h1 {
+    font-size: 20px;
+  }
+  
+  .zakazky .page-header p {
+    font-size: 13px;
+  }
+  
+  .zakazky .filters-section {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .zakazky .filter-item {
+    width: 100%;
+  }
+  
+  .zakazky .filter-item label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  
+  .zakazky .filter-item input,
+  .zakazky .filter-item select {
+    padding: 10px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    width: 100%;
+  }
+  
+  .zakazky .filter-actions {
+    margin-top: 8px;
+  }
+  
+  .zakazky .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .zakazky .table-card {
+    margin: 0 -8px;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    border-top: 1px solid rgba(229, 231, 235, 0.5);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  }
+  
+  .zakazky .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -8px;
+    padding: 0 8px;
+  }
+  
+  .zakazky .orders-table {
+    min-width: 700px;
+    font-size: 10px;
+  }
+  
+  .zakazky .orders-table th,
+  .zakazky .orders-table td {
+    padding: 4px 3px;
+    white-space: nowrap;
+  }
+  
+  /* Order number extra small */
+  .zakazky .order-number {
+    min-width: 30px;
+    max-width: 30px;
+    font-size: 9px;
+  }
+  
+  .zakazky .orders-table th:first-child {
+    min-width: 30px;
+    max-width: 30px;
+    font-size: 9px;
+  }
+  
+  /* Mobile action buttons */
+  .zakazky .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .zakazky .action-buttons button {
+    padding: 3px 4px;
+    font-size: 9px;
+  }
+  
+  /* Mobile file upload */
+  .zakazky .file-upload-cell {
+    min-width: 60px;
+  }
+  
+  .zakazky .upload-button {
+    padding: 4px 6px;
+    font-size: 9px;
+  }
+  
+  .zakazky .files-count {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+  
+  .zakazky .files-dropdown-content {
+    min-width: 180px;
+    max-width: 250px;
+  }
+  
+  .zakazky .file-name {
+    font-size: 11px;
+    max-width: 100px;
+  }
+  
+  .zakazky .download-button {
+    padding: 3px 6px;
+    font-size: 9px;
+    min-width: 50px;
+  }
+  
+  /* Table footer */
+  .zakazky .table-footer {
+    padding: 8px;
+    font-size: 11px;
+  }
+}
+
 /* High DPI screens */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .stat-card,
