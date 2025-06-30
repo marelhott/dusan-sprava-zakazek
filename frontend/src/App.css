@@ -645,72 +645,76 @@ body::after {
   color: var(--accent-orange);
 }
 
-/* Moderní geometrické ikony místo emoji - bez stínů */
+/* Moderní kontextové ikony pro dashboard metriky */
 .stat-icon.icon-money::before { 
-  content: "";
-  width: 8px;
-  height: 8px;
-  border: 2px solid currentColor;
-  border-radius: 50%;
-  display: block;
+  content: "$";
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  color: currentColor;
 }
 
 .stat-icon.icon-chart::before { 
   content: "";
-  width: 3px;
-  height: 8px;
+  width: 4px;
+  height: 10px;
   background: currentColor;
   border-radius: 1px;
+  position: absolute;
+  left: 18px;
 }
 
 .stat-icon.icon-chart::after { 
   content: "";
-  width: 3px;
+  width: 4px;
   height: 6px;
   background: currentColor;
   border-radius: 1px;
   position: absolute;
-  left: 7px;
-  top: 8px;
+  left: 26px;
+  top: 22px;
 }
 
 .stat-icon.icon-orders::before { 
   content: "";
-  width: 8px;
-  height: 1.5px;
-  background: currentColor;
-  border-radius: 1px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+  position: relative;
 }
 
 .stat-icon.icon-orders::after { 
-  content: "";
-  width: 8px;
-  height: 1.5px;
-  background: currentColor;
-  border-radius: 1px;
+  content: "✓";
+  font-size: 8px;
+  font-weight: 700;
+  color: currentColor;
   position: absolute;
-  top: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
 }
 
 .stat-icon.icon-target::before { 
   content: "";
-  width: 6px;
-  height: 6px;
+  width: 10px;
+  height: 10px;
   border: 2px solid currentColor;
   border-radius: 50%;
   position: relative;
 }
 
 .stat-icon.icon-target::after { 
-  content: "";
-  width: 2px;
-  height: 2px;
-  background: currentColor;
-  border-radius: 50%;
+  content: "Ø";
+  font-size: 12px;
+  font-weight: 400;
+  color: currentColor;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  line-height: 1;
 }
 
 .stat-icon {
