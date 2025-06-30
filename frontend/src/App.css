@@ -671,45 +671,34 @@ body::after {
 /* CELKOVÉ TRŽBY - Bankovní ikona se sloupky */
 .stat-icon.icon-money::before { 
   content: "";
-  width: 28px;
-  height: 4px;
+  width: 24px;
+  height: 2px;
   background: currentColor;
-  border-radius: 2px;
+  border-radius: 1px;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateY(8px);
+  transform: translate(-50%, -50%) translateY(6px);
+  box-shadow: 
+    0 -10px 0 0 currentColor,
+    -6px -8px 0 0 currentColor,
+    -3px -8px 0 0 currentColor,
+    0px -8px 0 0 currentColor,
+    3px -8px 0 0 currentColor,
+    6px -8px 0 0 currentColor;
 }
 
 .stat-icon.icon-money::after { 
   content: "";
   width: 0;
   height: 0;
-  border-left: 14px solid transparent;
-  border-right: 14px solid transparent;
-  border-bottom: 8px solid currentColor;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 6px solid currentColor;
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) translateY(-10px);
-}
-
-/* Sloupky banky */
-.stat-icon.icon-money {
-  position: relative;
-}
-
-.stat-icon.icon-money:before {
-  box-shadow: 
-    -8px -6px 0 0 currentColor,
-    -4px -6px 0 0 currentColor,
-    0px -6px 0 0 currentColor,
-    4px -6px 0 0 currentColor,
-    8px -6px 0 0 currentColor;
-}
-
-.stat-icon.icon-money:after {
-  border-radius: 1px 1px 0 0;
+  transform: translate(-50%, -50%) translateY(-8px);
 }
 
 /* CELKOVÝ ZISK - Přepracovaná ikona růstu/trendu */
