@@ -109,6 +109,33 @@
   z-index: 3;
 }
 
+/* Calendar Icon */
+.icon-calendar::after {
+  content: '';
+  width: 14px;
+  height: 12px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 2px;
+  position: relative;
+  z-index: 2;
+}
+
+.icon-calendar::before {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 3px 0 rgba(255, 255, 255, 0.9),
+    0 6px 0 rgba(255, 255, 255, 0.9);
+  z-index: 3;
+}
+
 /* Settings/Gear Icon - inspired by Compliance */
 .icon-settings::after {
   content: '';
