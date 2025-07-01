@@ -163,6 +163,16 @@ const CalendarComponent = ({
       const year = parseInt(dateParts[2]);
       const eventDate = new Date(year, month, day);
 
+      // Extract telefon from adresa if it's there (format: "address | Tel: phone")
+      let cleanAdresa = zakazka.adresa || 'Bez adresy';
+      let telefon = zakazka.telefon || 'Bez telefonu';
+      
+      if (zakazka.adresa && zakazka.adresa.includes(' | Tel: ')) {
+        const parts = zakazka.adresa.split(' | Tel: ');
+        cleanAdresa = parts[0] || 'Bez adresy';
+        telefon = parts[1] || 'Bez telefonu';
+      }
+
       return {
         id: zakazka.id,
         title: zakazka.klient || zakazka.jmeno || 'Bez názvu',
@@ -171,9 +181,9 @@ const CalendarComponent = ({
         allDay: true,
         resource: {
           jmeno: zakazka.klient || zakazka.jmeno || 'Bez názvu',
-          adresa: zakazka.adresa || 'Bez adresy',
+          adresa: cleanAdresa,
           cena: zakazka.castka || zakazka.cena || 0,
-          telefon: zakazka.telefon || 'Bez telefonu',
+          telefon: telefon,
           originalData: zakazka
         }
       };
