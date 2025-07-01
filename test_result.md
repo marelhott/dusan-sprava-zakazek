@@ -193,7 +193,9 @@ test_plan:
     - "Firebase frontend integrace"
     - "Změna názvu aplikace a přesun uživatele"
     - "Kompletní PDF export všech stránek"
-  stuck_tasks: []
+    - "Kalendářová funkcionalita API"
+  stuck_tasks: 
+    - "Kalendářová funkcionalita API"
   test_all: false
   test_priority: "high_first"
 
