@@ -62,6 +62,7 @@ class ZakazkaUpdate(BaseModel):
     pomocnik: Optional[float] = None
     zisk: Optional[float] = None
     adresa: Optional[str] = None
+    telefon: Optional[str] = None  # NEW - telefon field
     soubory: Optional[List[str]] = None
 
 class UserData(BaseModel):
