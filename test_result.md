@@ -168,6 +168,18 @@ backend:
         -working: true
         -agent: "testing"
         -comment: "Provedl jsem kompletní test Firebase backend API. Všechny testy prošly úspěšně. Otestoval jsem: 1) Základní API konektivitu - endpoint /api/ vrací správnou odpověď s informací o Firebase připojení, 2) Firebase service inicializaci - server úspěšně inicializuje Firebase Admin SDK, 3) Status endpointy - /api/status POST a GET fungují správně, 4) Firebase specifické endpointy - GET a POST /api/users/{user_id} a GET a POST /api/users/{user_id}/zakazky fungují správně. Vytvořil jsem testovacího uživatele 'user_1' a přidal mu zakázku. Všechny Firebase operace fungují bez problémů."
+  
+  - task: "Kalendářová funkcionalita API"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py, /app/backend/firebase_service.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: false
+        -agent: "testing"
+        -comment: "Provedl jsem kompletní test kalendářové funkcionality API. Základní API endpointy fungují správně, Supabase integrace je detekována. Problém je v ukládání a načítání kalendářových zakázek - při vytvoření nové zakázky s kalendářovými daty (včetně pole 'telefon' a českého formátu datumu) server vrací úspěšnou odpověď s 'zakazka_id': 'supabase_fallback', ale data nejsou skutečně uložena a nelze je následně načíst. Firebase služba pravděpodobně není správně inicializována a vrací fallback hodnoty, ale data nejsou nikde ukládána. API správně zpracovává chybná data (422 status kód)."
 
 metadata:
   created_by: "main_agent"
