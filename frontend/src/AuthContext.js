@@ -407,7 +407,7 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('🔄 Přidávám kalendářovou událost do Supabase:', eventData);
       
-      // Přidej do Supabase s doplněnými údaji
+      // Přidej do Supabase s doplněnými údaji (bez telefon pole prozatím)
       const { data, error } = await supabase
         .from('zakazky')
         .insert([{
@@ -423,8 +423,7 @@ export const AuthProvider = ({ children }) => {
           material: 0,
           pomocnik: 0,
           zisk: eventData.cena || 0, // Celá částka jako zisk pro jednoduchost
-          adresa: eventData.adresa || '',
-          telefon: eventData.telefon || '',
+          adresa: eventData.adresa ? `${eventData.adresa} | Tel: ${eventData.telefon || 'N/A'}` : `Tel: ${eventData.telefon || 'N/A'}`, // Telefon přidáme do adresy
           soubory: []
         }])
         .select()
@@ -458,7 +457,7 @@ export const AuthProvider = ({ children }) => {
         pomocnik: 0,
         palivo: 0,
         zisk: eventData.cena || 0,
-        adresa: eventData.adresa || '',
+        adresa: eventData.adresa ? `${eventData.adresa} | Tel: ${eventData.telefon || 'N/A'}` : `Tel: ${eventData.telefon || 'N/A'}`,
         telefon: eventData.telefon || '',
         soubory: [] 
       };
