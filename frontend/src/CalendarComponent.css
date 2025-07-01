@@ -455,19 +455,26 @@
 .date-picker-input {
   width: 100% !important;
   padding: 12px !important;
-  border: 1px solid var(--border-color) !important;
+  border: 2px solid var(--border-color) !important;
   border-radius: 8px !important;
-  background: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   color: var(--text-primary) !important;
   font-size: 14px !important;
+  font-weight: 500 !important;
   transition: all 0.2s ease !important;
+  cursor: pointer !important;
 }
 
 .date-picker-input:focus {
   outline: none !important;
   border-color: var(--accent-blue) !important;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-  background: rgba(255, 255, 255, 0.9) !important;
+  background: rgba(255, 255, 255, 1) !important;
+}
+
+.date-picker-input::placeholder {
+  color: var(--text-muted) !important;
+  font-weight: 400 !important;
 }
 
 /* Custom date picker dropdown */
