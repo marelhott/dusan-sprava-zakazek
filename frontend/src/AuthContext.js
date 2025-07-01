@@ -295,7 +295,8 @@ export const AuthProvider = ({ children }) => {
           // NEW fields for calendar functionality
           endDate: zakazka.end_date || zakazka.datum,
           color: zakazka.color || '#4F46E5',
-          status: zakazka.status || 'incoming'
+          status: zakazka.status || 'incoming',
+          calendar_origin: zakazka.calendar_origin || false
         }));
         return convertedData;
       }
