@@ -521,6 +521,12 @@ const CalendarComponent = ({
           messages={messages}
           popup={true}
           popupOffset={30}
+          // Rozšířený rozsah kalendáře pro dlouhodobé plánování
+          min={new Date(2020, 0, 1)} // Od roku 2020
+          max={new Date(2030, 11, 31)} // Do roku 2030
+          // Nastavení pro lepší navigaci
+          toolbar={true}
+          defaultDate={new Date()}
           components={{
             event: ({ event }) => (
               <EventComponent 
