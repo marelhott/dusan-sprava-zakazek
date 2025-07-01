@@ -360,23 +360,23 @@
 }
 
 .inline-editor {
-  background: var(--card-bg);
+  background: rgba(255, 255, 255, 0.98);
   border-radius: 16px;
   padding: 24px;
   max-width: 600px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: var(--backdrop-blur);
+  border: 1px solid rgba(226, 232, 240, 0.6);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(25px);
   animation: slideIn 0.3s ease-out;
 }
 
 .inline-editor h4 {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #1e293b;
   margin: 0 0 20px 0;
   text-align: center;
 }
@@ -397,18 +397,19 @@
 .form-group label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #1e293b;
   margin-bottom: 6px;
 }
 
 .inline-editor input,
 .inline-editor select {
   padding: 12px;
-  border: 1px solid var(--border-color);
+  border: 2px solid rgba(226, 232, 240, 0.8);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e293b;
   font-size: 14px;
+  font-weight: 500;
   transition: all 0.2s ease;
 }
 
@@ -417,11 +418,12 @@
   outline: none;
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 1);
 }
 
 .inline-editor input::placeholder {
-  color: var(--text-muted);
+  color: #94a3b8;
+  font-weight: 400;
 }
 
 /* Druh práce select */
