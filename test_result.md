@@ -211,7 +211,7 @@ backend:
     file: "/app/backend/server.py, /app/backend/firebase_service.py"
     stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         -working: false
         -agent: "testing"
@@ -219,6 +219,9 @@ backend:
         -working: false
         -agent: "testing"
         -comment: "Při testování kalendářové komponenty v UI jsem zjistil, že při pokusu o přidání nové zakázky se objevuje chyba v backend API - 'Could not find the 'telefon' column of 'zakazky' in the schema cache'. Toto naznačuje, že v databázovém schématu chybí sloupec 'telefon', který je potřebný pro ukládání telefonních čísel z kalendářových událostí. Aplikace správně přechází na fallback řešení a ukládá data do localStorage, ale pro plnou funkčnost by bylo potřeba upravit backend API schéma."
+        -working: false
+        -agent: "testing"
+        -comment: "Při pokusu o testování kalendářových funkcí jsem narazil na problém s načítáním aplikace. Aplikace se zasekává na obrazovce 'Načítání...' a nelze se dostat k funkcím kalendáře. Zkontroloval jsem logy frontendu a zjistil jsem několik varování týkajících se React komponent a závislostí, ale žádné kritické chyby. Restartoval jsem frontend službu, ale problém přetrvává. Vzhledem k tomu, že aplikace se nezobrazuje správně, není možné otestovat nové kalendářové funkce."
 
 metadata:
   created_by: "main_agent"
