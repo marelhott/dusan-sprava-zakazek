@@ -489,7 +489,6 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
-          telefon: orderData.telefon || '',  // NEW - telefon
           soubory: orderData.soubory || []
         })
         .eq('id', orderId)
