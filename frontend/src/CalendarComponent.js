@@ -320,7 +320,7 @@ const CalendarComponent = ({
       <div className="financial-summary-panel">
         <div className="summary-cards">
           <div className="summary-card incoming">
-            <div className="summary-icon">📅</div>
+            <div className="summary-icon modern-icon icon-count"></div>
             <div className="summary-content">
               <div className="summary-value">{financialSummary.incomingCount}</div>
               <div className="summary-label">Příchozí zakázky</div>
@@ -328,7 +328,7 @@ const CalendarComponent = ({
           </div>
           
           <div className="summary-card total-incoming">
-            <div className="summary-icon">💰</div>
+            <div className="summary-icon modern-icon icon-money"></div>
             <div className="summary-content">
               <div className="summary-value">{financialSummary.totalIncoming.toLocaleString()} Kč</div>
               <div className="summary-label">Celková hodnota příchozích</div>
@@ -336,7 +336,7 @@ const CalendarComponent = ({
           </div>
           
           <div className="summary-card completed">
-            <div className="summary-icon">✅</div>
+            <div className="summary-icon modern-icon icon-chart"></div>
             <div className="summary-content">
               <div className="summary-value">{financialSummary.totalCompleted.toLocaleString()} Kč</div>
               <div className="summary-label">Realizováno celkem</div>
