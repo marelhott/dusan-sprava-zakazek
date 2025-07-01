@@ -96,15 +96,31 @@ const InlineCellEditor = ({ date, onSave, onCancel, existingEvents }) => {
     adresa: '',
     cena: '',
     telefon: '',
+    druh: 'Ostatní', // Výchozí druh práce
     startDate: date,
     endDate: date
   });
+
+  // Možnosti pro druh práce
+  const druhPraceOptions = [
+    'MVČ',
+    'Adam', 
+    'Korálek',
+    'Ostatní'
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const handleDateChange = (date, field) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: date
     }));
   };
 
@@ -157,49 +173,126 @@ const InlineCellEditor = ({ date, onSave, onCancel, existingEvents }) => {
       <div className="inline-editor">
         <h4>Nová zakázka ({daysDuration} {daysDuration === 1 ? 'den' : daysDuration < 5 ? 'dny' : 'dní'})</h4>
         
-        <div className="duration-controls">
-          <button type="button" onClick={reduceEndDate} disabled={daysDuration <= 1}>-</button>
-          <span>{moment(formData.startDate).format('DD.MM')} - {moment(formData.endDate).format('DD.MM')}</span>
-          <button type="button" onClick={extendEndDate}>+</button>
-        </div>
-
         <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="jmeno"
-            placeholder="Jméno klienta"
-            value={formData.jmeno}
-            onChange={handleChange}
-            autoFocus
-            required
-          />
-          <input
-            type="text"
-            name="adresa"
-            placeholder="Adresa"
-            value={formData.adresa}
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="cena"
-            placeholder="Cena (Kč)"
-            value={formData.cena}
-            onChange={handleChange}
-            min="0"
-            step="1"
-          />
-          <input
-            type="tel"
-            name="telefon"
-            placeholder="Telefon"
-            value={formData.telefon}
-            onChange={handleChange}
-          />
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="jmeno">Jméno klienta *</label>
+              <input
+                type="text"
+                id="jmeno"
+                name="jmeno"
+                value={formData.jmeno}
+                onChange={handleChange}
+                placeholder="Zadejte jméno klienta"
+                autoFocus
+                required
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="druh">Druh práce</label>
+              <select
+                id="druh"
+                name="druh"
+                value={formData.druh}
+                onChange={handleChange}
+                className="druh-select"
+              >
+                {druhPraceOptions.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="adresa">Adresa</label>
+            <input
+              type="text"
+              id="adresa"
+              name="adresa"
+              value={formData.adresa}
+              onChange={handleChange}
+              placeholder="Zadejte adresu"
+            />
+          </div>
+          
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="cena">Cena (Kč)</label>
+              <input
+                type="number"
+                id="cena"
+                name="cena"
+                value={formData.cena}
+                onChange={handleChange}
+                placeholder="0"
+                min="0"
+                step="1"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="telefon">Telefon</label>
+              <input
+                type="tel"
+                id="telefon"
+                name="telefon"
+                value={formData.telefon}
+                onChange={handleChange}
+                placeholder="Zadejte telefonní číslo"
+              />
+            </div>
+          </div>
+
+          {/* Datum výběr s DatePicker */}
+          <div className="date-selection-section">
+            <h5>📅 Termín zakázky</h5>
+            
+            <div className="form-row">
+              <div className="form-group">
+                <label>Začátek zakázky</label>
+                <DatePicker
+                  selected={formData.startDate}
+                  onChange={(date) => handleDateChange(date, 'startDate')}
+                  dateFormat="dd.MM.yyyy"
+                  placeholderText="Vyberte datum začátku"
+                  className="date-picker-input"
+                  locale="cs"
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  minDate={new Date()}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Konec zakázky</label>
+                <DatePicker
+                  selected={formData.endDate}
+                  onChange={(date) => handleDateChange(date, 'endDate')}
+                  dateFormat="dd.MM.yyyy"
+                  placeholderText="Vyberte datum konce"
+                  className="date-picker-input"
+                  locale="cs"
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  minDate={formData.startDate || new Date()}
+                />
+              </div>
+            </div>
+
+            <div className="duration-info">
+              <span className="duration-badge">
+                📊 Doba trvání: {daysDuration} {daysDuration === 1 ? 'den' : daysDuration < 5 ? 'dny' : 'dní'}
+              </span>
+            </div>
+          </div>
           
           <div className="inline-editor-actions">
             <button type="button" onClick={onCancel}>Zrušit</button>
-            <button type="submit">Přidat</button>
+            <button type="submit">Přidat zakázku</button>
           </div>
         </form>
       </div>
