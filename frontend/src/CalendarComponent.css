@@ -363,8 +363,10 @@
   background: var(--card-bg);
   border-radius: 16px;
   padding: 24px;
-  max-width: 400px;
+  max-width: 600px;
   width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-lg);
   backdrop-filter: var(--backdrop-blur);
@@ -375,58 +377,32 @@
   font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
-  margin: 0 0 16px 0;
-}
-
-.duration-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 12px;
-  background: var(--surface-bg);
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
-}
-
-.duration-controls button {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  background: var(--card-bg);
-  color: var(--text-primary);
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.duration-controls button:hover:not(:disabled) {
-  background: var(--accent-blue);
-  color: white;
-  border-color: var(--accent-blue);
-}
-
-.duration-controls button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.duration-controls span {
-  flex: 1;
+  margin: 0 0 20px 0;
   text-align: center;
-  font-weight: 500;
-  color: var(--text-primary);
 }
 
-.inline-editor form {
+/* Form layout */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
-.inline-editor input {
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.inline-editor input,
+.inline-editor select {
   padding: 12px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -436,7 +412,8 @@
   transition: all 0.2s ease;
 }
 
-.inline-editor input:focus {
+.inline-editor input:focus,
+.inline-editor select:focus {
   outline: none;
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
@@ -447,15 +424,120 @@
   color: var(--text-muted);
 }
 
+/* Druh práce select */
+.druh-select {
+  cursor: pointer;
+}
+
+.druh-select option {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  padding: 8px;
+}
+
+/* Date selection section */
+.date-selection-section {
+  background: rgba(249, 250, 251, 0.7);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+  border: 1px solid var(--border-color);
+}
+
+.date-selection-section h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+}
+
+/* Date picker styling */
+.date-picker-input {
+  width: 100% !important;
+  padding: 12px !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+  transition: all 0.2s ease !important;
+}
+
+.date-picker-input:focus {
+  outline: none !important;
+  border-color: var(--accent-blue) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Custom date picker dropdown */
+.react-datepicker {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-lg) !important;
+  font-family: inherit !important;
+}
+
+.react-datepicker__header {
+  background: var(--surface-bg) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.react-datepicker__current-month {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+
+.react-datepicker__day {
+  color: var(--text-primary) !important;
+}
+
+.react-datepicker__day:hover {
+  background: var(--accent-blue) !important;
+  color: white !important;
+}
+
+.react-datepicker__day--selected {
+  background: var(--accent-blue) !important;
+  color: white !important;
+}
+
+.react-datepicker__day--today {
+  background: rgba(59, 130, 246, 0.1) !important;
+  color: var(--accent-blue) !important;
+  font-weight: 600 !important;
+}
+
+/* Duration info badge */
+.duration-info {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.duration-badge {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent-blue);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
 .inline-editor-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
 }
 
 .inline-editor-actions button {
-  padding: 10px 20px;
+  padding: 12px 24px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
