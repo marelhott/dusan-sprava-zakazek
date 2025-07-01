@@ -17,11 +17,12 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
     document.body.appendChild(loadingDiv);
 
     const originalTab = activeTab;
-    const tabs = ['dashboard', 'zakazky', 'reporty', 'mapa'];
+    const tabs = ['dashboard', 'zakazky', 'reporty', 'kalendar', 'mapa'];
     const tabNames = {
       'dashboard': 'Dashboard - Přehled',
       'zakazky': 'Zakázky - Správa', 
       'reporty': 'Reporty - Analýzy',
+      'kalendar': 'Kalendář - Plánování',
       'mapa': 'Mapa zakázek'
     };
     
