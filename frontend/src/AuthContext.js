@@ -417,7 +417,7 @@ export const AuthProvider = ({ children }) => {
         .insert([{
           profile_id: userId,
           datum: eventData.datum,
-          druh: 'Ostatní', // Výchozí kategorie pro kalendářové události
+          druh: eventData.druh || 'Ostatní', // Druh práce z kalendáře
           klient: eventData.jmeno,
           id_zakazky: `CAL-${Date.now()}`, // Automatické ID pro kalendářové události
           castka: eventData.cena || 0,
