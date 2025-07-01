@@ -243,6 +243,13 @@ const CalendarComponent = ({
         telefon = parts[1] || 'Bez telefonu';
       }
 
+      // Kontroluj, zda je to kalendářová zakázka
+      const isCalendarEvent = (
+        (zakazka.cislo && zakazka.cislo.toString().startsWith('CAL-')) ||
+        (zakazka.id_zakazky && zakazka.id_zakazky.toString().startsWith('CAL-')) ||
+        zakazka.calendar_origin === true
+      );
+
       return {
         id: zakazka.id,
         title: zakazka.klient || zakazka.jmeno || 'Bez názvu',
@@ -256,7 +263,8 @@ const CalendarComponent = ({
           telefon: telefon,
           color: zakazka.color || generateEventColor(index),
           status: zakazka.status || 'incoming',
-          originalData: zakazka
+          originalData: zakazka,
+          isCalendarEvent: isCalendarEvent // Označení kalendářové události
         }
       };
     });
