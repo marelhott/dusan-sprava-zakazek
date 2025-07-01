@@ -3210,6 +3210,8 @@ const PaintPro = () => {
   };
 
   const MapaZakazek = () => {
+    const { addCalendarOrder } = useAuth();
+
     // Funkce pro klasifikaci lokace podle adresy
     const getLocationCategory = (adresa) => {
       if (!adresa) return 'Okolí Prahy';
@@ -3224,6 +3226,21 @@ const PaintPro = () => {
       
       const isPrague = pragueAreas.some(area => addressLower.includes(area));
       return isPrague ? 'Praha' : 'Okolí Prahy';
+    };
+
+    // Handler pro přidání nové zakázky z kalendáře
+    const handleAddCalendarOrder = async (orderData) => {
+      try {
+        if (currentUser?.id) {
+          await addCalendarOrder(currentUser.id, orderData);
+          console.log('✅ Kalendářová událost přidána:', orderData);
+        } else {
+          alert('Chyba: Uživatel není přihlášen');
+        }
+      } catch (error) {
+        console.error('❌ Chyba při přidávání kalendářové události:', error);
+        alert('Chyba při přidávání události. Zkuste to prosím znovu.');
+      }
     };
 
     // Výpočet statistik podle lokace
