@@ -3653,6 +3653,8 @@ const PaintPro = () => {
         return <Zakazky />;
       case 'reporty':
         return <Reporty />;
+      case 'kalendar':
+        return <Kalendar />;
       case 'mapa':
         return <MapaZakazek />;
       default:
