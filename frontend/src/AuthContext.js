@@ -431,7 +431,8 @@ export const AuthProvider = ({ children }) => {
           // NEW fields for calendar functionality
           end_date: eventData.endDate || eventData.datum, // Multi-day support
           color: eventData.color || '#4F46E5', // Event color
-          status: eventData.status || 'incoming' // Event status
+          status: eventData.status || 'incoming', // Event status
+          calendar_origin: true // Mark as calendar-created
         }])
         .select()
         .single();
