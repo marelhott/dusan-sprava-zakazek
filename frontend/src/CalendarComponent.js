@@ -314,7 +314,14 @@ const CalendarComponent = ({
   const handleSaveOrder = async (orderData) => {
     if (onAddOrder) {
       try {
-        await onAddOrder(orderData);
+        // Explicitně označíme jako kalendářovou zakázku
+        const calendarOrderData = {
+          ...orderData,
+          calendar_origin: true,
+          cislo: `CAL-${Date.now()}`
+        };
+        
+        await onAddOrder(calendarOrderData);
         setIsEditing(false);
         setEditingDate(null);
       } catch (error) {
