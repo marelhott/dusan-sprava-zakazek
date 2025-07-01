@@ -423,7 +423,11 @@ export const AuthProvider = ({ children }) => {
           pomocnik: 0,
           zisk: eventData.cena || 0, // Celá částka jako zisk pro jednoduchost
           adresa: eventData.adresa ? `${eventData.adresa} | Tel: ${eventData.telefon || 'N/A'}` : `Tel: ${eventData.telefon || 'N/A'}`, // Telefon přidáme do adresy
-          soubory: []
+          soubory: [],
+          // NEW fields for calendar functionality
+          end_date: eventData.endDate || eventData.datum, // Multi-day support
+          color: eventData.color || '#4F46E5', // Event color
+          status: eventData.status || 'incoming' // Event status
         }])
         .select()
         .single();
@@ -458,7 +462,11 @@ export const AuthProvider = ({ children }) => {
         zisk: eventData.cena || 0,
         adresa: eventData.adresa ? `${eventData.adresa} | Tel: ${eventData.telefon || 'N/A'}` : `Tel: ${eventData.telefon || 'N/A'}`,
         telefon: eventData.telefon || '',
-        soubory: [] 
+        soubory: [],
+        // NEW fields for calendar functionality
+        endDate: eventData.endDate || eventData.datum,
+        color: eventData.color || '#4F46E5',
+        status: eventData.status || 'incoming'
       };
       const updatedData = [...currentData, newOrder];
       await saveUserData(userId, updatedData);
