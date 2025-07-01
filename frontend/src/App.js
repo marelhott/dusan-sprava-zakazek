@@ -995,6 +995,13 @@ const PaintPro = () => {
             Reporty
           </div>
           <div
+            className={`nav-item ${activeTab === 'kalendar' ? 'active' : ''}`}
+            onClick={() => setActiveTab('kalendar')}
+          >
+            <div className="modern-icon icon-calendar"></div>
+            Kalendář
+          </div>
+          <div
             className={`nav-item ${activeTab === 'mapa' ? 'active' : ''}`}
             onClick={() => setActiveTab('mapa')}
           >
