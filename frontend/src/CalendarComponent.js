@@ -265,10 +265,20 @@ const CalendarComponent = ({
     setEditingDate(null);
   };
 
-  // Výpočet finančních sumarizací
+  // Výpočet finančních sumarizací - pouze pro kalendářové zakázky
   const financialSummary = React.useMemo(() => {
-    const incomingOrders = events.filter(event => event.resource.status === 'incoming');
-    const completedOrders = events.filter(event => event.resource.status === 'realizovana');
+    // Filtruj pouze kalendářové zakázky (začínají "CAL-" nebo mají calendar origin)
+    const calendarEvents = events.filter(event => {
+      const originalData = event.resource.originalData;
+      return originalData && (
+        (originalData.cislo && originalData.cislo.toString().startsWith('CAL-')) ||
+        (originalData.id_zakazky && originalData.id_zakazky.toString().startsWith('CAL-')) ||
+        originalData.calendar_origin === true
+      );
+    });
+    
+    const incomingOrders = calendarEvents.filter(event => event.resource.status === 'incoming');
+    const completedOrders = calendarEvents.filter(event => event.resource.status === 'realizovana');
     
     const totalIncoming = incomingOrders.reduce((sum, event) => sum + event.resource.cena, 0);
     const totalCompleted = completedOrders.reduce((sum, event) => sum + event.resource.cena, 0);
@@ -278,7 +288,7 @@ const CalendarComponent = ({
       totalIncoming,
       totalCompleted,
       incomingCount,
-      totalOrders: events.length
+      totalCalendarOrders: calendarEvents.length
     };
   }, [events]);
 
