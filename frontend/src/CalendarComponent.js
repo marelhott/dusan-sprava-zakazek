@@ -51,35 +51,37 @@ const EventComponent = ({ event, onEdit, onToggleStatus, onDelete }) => {
     >
       {isCompleted && <span className="check-mark">✓</span>}
       
-      <div className="event-content">
-        <div className="event-line event-name">{event.resource.jmeno || 'Bez názvu'}</div>
-        <div className="event-line event-address">{event.resource.adresa || 'Bez adresy'}</div>
-        <div className="event-line event-price">{event.resource.cena ? `${event.resource.cena.toLocaleString()} Kč` : '0 Kč'}</div>
-        <div className="event-line event-phone">{event.resource.telefon || 'Bez telefonu'}</div>
-      </div>
+      <div className="event-main-content">
+        <div className="event-content">
+          <div className="event-line event-name">{event.resource.jmeno || 'Bez názvu'}</div>
+          <div className="event-line event-address">{event.resource.adresa || 'Bez adresy'}</div>
+          <div className="event-line event-price">{event.resource.cena ? `${event.resource.cena.toLocaleString()} Kč` : '0 Kč'}</div>
+          <div className="event-line event-phone">{event.resource.telefon || 'Bez telefonu'}</div>
+        </div>
 
-      <div className="event-actions">
-        <button 
-          className="event-btn edit-btn" 
-          onClick={handleEdit}
-          title="Upravit"
-        >
-          ✏️
-        </button>
-        <button 
-          className={`event-btn status-btn ${isCompleted ? 'completed' : 'pending'}`}
-          onClick={handleToggleStatus}
-          title={isCompleted ? 'Označit jako nehotové' : 'Označit jako hotové'}
-        >
-          {isCompleted ? '↩️' : '✅'}
-        </button>
-        <button 
-          className="event-btn delete-btn" 
-          onClick={handleDelete}
-          title="Smazat"
-        >
-          🗑️
-        </button>
+        <div className="event-actions">
+          <button 
+            className="event-btn edit-btn" 
+            onClick={handleEdit}
+            title="Upravit"
+          >
+            ✏️
+          </button>
+          <button 
+            className={`event-btn status-btn ${isCompleted ? 'completed' : 'pending'}`}
+            onClick={handleToggleStatus}
+            title={isCompleted ? 'Označit jako nehotové' : 'Označit jako hotové'}
+          >
+            {isCompleted ? '↩️' : '✅'}
+          </button>
+          <button 
+            className="event-btn delete-btn" 
+            onClick={handleDelete}
+            title="Smazat"
+          >
+            🗑️
+          </button>
+        </div>
       </div>
     </div>
   );
