@@ -471,7 +471,8 @@ export const AuthProvider = ({ children }) => {
         // NEW fields for calendar functionality
         endDate: eventData.endDate || eventData.datum,
         color: eventData.color || '#4F46E5',
-        status: eventData.status || 'incoming'
+        status: eventData.status || 'incoming',
+        calendar_origin: true // Mark as calendar-created
       };
       const updatedData = [...currentData, newOrder];
       await saveUserData(userId, updatedData);
