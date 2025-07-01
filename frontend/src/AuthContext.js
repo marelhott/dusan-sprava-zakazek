@@ -765,6 +765,7 @@ export const AuthProvider = ({ children }) => {
     getUserData,
     saveUserData,
     addUserOrder,
+    addCalendarOrder,  // NEW - kalendářová událost
     editUserOrder,
     deleteUserOrder,
     testSupabaseConnection,  // Přidání test funkce
