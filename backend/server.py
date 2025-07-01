@@ -46,6 +46,7 @@ class ZakazkaCreate(BaseModel):
     pomocnik: float
     zisk: float
     adresa: str
+    telefon: Optional[str] = ""  # NEW - telefon field
     soubory: List[str] = []
 
 class ZakazkaUpdate(BaseModel):
