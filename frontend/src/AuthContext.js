@@ -501,7 +501,11 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
-          soubory: orderData.soubory || []
+          soubory: orderData.soubory || [],
+          // NEW fields for calendar functionality
+          end_date: orderData.endDate || orderData.datum,
+          color: orderData.color || '#4F46E5',
+          status: orderData.status || 'incoming'
         })
         .eq('id', orderId)
         .eq('profile_id', userId)
