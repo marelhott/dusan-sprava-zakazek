@@ -698,17 +698,16 @@
   
   .inline-editor {
     padding: 20px;
-    max-width: 350px;
+    max-width: 500px;
   }
   
-  .duration-controls {
-    padding: 10px;
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   
-  .duration-controls button {
-    width: 28px;
-    height: 28px;
-    font-size: 14px;
+  .date-selection-section {
+    padding: 12px;
   }
 }
 
@@ -765,7 +764,21 @@
   
   .inline-editor {
     padding: 16px;
-    max-width: 300px;
+    max-width: 350px;
+  }
+  
+  .date-selection-section {
+    padding: 10px;
+  }
+  
+  .form-group label {
+    font-size: 13px;
+  }
+  
+  .inline-editor input,
+  .inline-editor select {
+    padding: 10px;
+    font-size: 13px;
   }
 }
 
