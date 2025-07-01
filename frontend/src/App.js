@@ -3591,6 +3591,27 @@ const PaintPro = () => {
     );
   };
 
+  // Kalendář komponenta - samostatná sekce
+  const Kalendar = () => {
+    return (
+      <div className="kalendar">
+        <div className="page-header">
+          <div>
+            <h1>Kalendář</h1>
+            <p>Plánování a přehled zakázek v kalendářním zobrazení</p>
+          </div>
+        </div>
+        
+        <CalendarComponent 
+          zakazkyData={zakazkyData}
+          onAddOrder={handleAddZakazka}
+          onEditOrder={handleEditZakazka}
+          onDeleteOrder={handleDeleteZakazka}
+        />
+      </div>
+    );
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
