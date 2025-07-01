@@ -6,11 +6,12 @@
   border: 1px solid var(--border-color);
   margin-bottom: 32px;
   transition: all 0.3s ease;
+  backdrop-filter: var(--backdrop-blur);
 }
 
 .calendar-container:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
 }
 
 .calendar-header {
@@ -40,6 +41,7 @@
   padding: 20px;
   margin-bottom: 24px;
   border: 1px solid var(--border-color);
+  backdrop-filter: var(--backdrop-blur);
 }
 
 .summary-cards {
@@ -59,6 +61,7 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  backdrop-filter: var(--backdrop-blur);
 }
 
 .summary-card::before {
@@ -85,7 +88,7 @@
 
 .summary-card:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
 }
 
 .summary-icon {
@@ -126,6 +129,7 @@
   border-radius: 12px;
   padding: 16px;
   border: 1px solid var(--border-color);
+  backdrop-filter: var(--backdrop-blur);
 }
 
 /* React Big Calendar Customization */
