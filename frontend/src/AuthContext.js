@@ -457,7 +457,7 @@ export const AuthProvider = ({ children }) => {
       const newOrder = { 
         id, 
         datum: eventData.datum,
-        druh: 'Ostatní',
+        druh: eventData.druh || 'Ostatní',
         klient: eventData.jmeno,
         cislo: `CAL-${Date.now()}`,
         castka: eventData.cena || 0,
