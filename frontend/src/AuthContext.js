@@ -291,7 +291,11 @@ export const AuthProvider = ({ children }) => {
           zisk: Number(zakazka.zisk),
           adresa: zakazka.adresa,
           telefon: zakazka.telefon || '',  // NEW - telefon pro kalendář
-          soubory: zakazka.soubory || []
+          soubory: zakazka.soubory || [],
+          // NEW fields for calendar functionality
+          endDate: zakazka.end_date || zakazka.datum,
+          color: zakazka.color || '#4F46E5',
+          status: zakazka.status || 'incoming'
         }));
         return convertedData;
       }
