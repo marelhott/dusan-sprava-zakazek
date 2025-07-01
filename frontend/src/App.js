@@ -3574,17 +3574,9 @@ const PaintPro = () => {
         <div className="page-header">
           <div>
             <h1>Mapa zakázek</h1>
-            <p>Kalendář a geografické zobrazení všech realizovaných zakázek</p>
+            <p>Geografické zobrazení všech realizovaných zakázek</p>
           </div>
         </div>
-
-        {/* Kalendář zakázek - NOVÝ */}
-        <CalendarComponent 
-          zakazkyData={zakazkyData}
-          onAddOrder={handleAddCalendarOrder}
-          onEditOrder={handleEditZakazka}
-          onDeleteOrder={handleDeleteZakazka}
-        />
 
         {/* Statistiky podle lokace - ve stylu dashboard buněk */}
         <div className="location-stats-grid">
