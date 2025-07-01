@@ -472,41 +472,137 @@
 
 /* Custom date picker dropdown */
 .react-datepicker {
-  background: var(--card-bg) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
   border: 1px solid var(--border-color) !important;
   border-radius: 12px !important;
-  box-shadow: var(--shadow-lg) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
   font-family: inherit !important;
+  backdrop-filter: blur(20px) !important;
 }
 
 .react-datepicker__header {
-  background: var(--surface-bg) !important;
+  background: rgba(255, 255, 255, 0.95) !important;
   border-bottom: 1px solid var(--border-color) !important;
   border-radius: 12px 12px 0 0 !important;
+  padding: 12px !important;
 }
 
 .react-datepicker__current-month {
   color: var(--text-primary) !important;
   font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
+.react-datepicker__day-names {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5) !important;
+}
+
+.react-datepicker__day-name {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+}
+
+.react-datepicker__month {
+  background: rgba(255, 255, 255, 0.95) !important;
+  padding: 8px !important;
 }
 
 .react-datepicker__day {
   color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 6px !important;
+  margin: 1px !important;
+  font-weight: 500 !important;
 }
 
 .react-datepicker__day:hover {
   background: var(--accent-blue) !important;
   color: white !important;
+  transform: scale(1.05) !important;
+  transition: all 0.2s ease !important;
 }
 
 .react-datepicker__day--selected {
   background: var(--accent-blue) !important;
   color: white !important;
+  font-weight: 600 !important;
 }
 
 .react-datepicker__day--today {
-  background: rgba(59, 130, 246, 0.1) !important;
+  background: rgba(59, 130, 246, 0.15) !important;
   color: var(--accent-blue) !important;
+  font-weight: 600 !important;
+  border: 2px solid var(--accent-blue) !important;
+}
+
+.react-datepicker__day--outside-month {
+  color: var(--text-muted) !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+}
+
+.react-datepicker__day--disabled {
+  color: var(--text-muted) !important;
+  background: rgba(255, 255, 255, 0.5) !important;
+  opacity: 0.5 !important;
+}
+
+/* Navigation arrows */
+.react-datepicker__navigation {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.react-datepicker__navigation:hover {
+  background: var(--accent-blue) !important;
+  border-color: var(--accent-blue) !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: var(--text-primary) !important;
+}
+
+.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+  border-color: white !important;
+}
+
+/* Month/Year dropdowns */
+.react-datepicker__month-dropdown,
+.react-datepicker__year-dropdown {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.react-datepicker__month-option,
+.react-datepicker__year-option {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: var(--text-primary) !important;
+  padding: 8px 12px !important;
+  margin: 2px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+}
+
+.react-datepicker__month-option:hover,
+.react-datepicker__year-option:hover {
+  background: var(--accent-blue) !important;
+  color: white !important;
+}
+
+.react-datepicker__month-option--selected,
+.react-datepicker__year-option--selected {
+  background: var(--accent-blue) !important;
+  color: white !important;
   font-weight: 600 !important;
 }
 
