@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import './ModernIcons.css';
 import html2pdf from 'html2pdf.js';
+import CalendarComponent from './CalendarComponent';
 
 // Funkce pro kompletní PDF export všech stránek
 const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
