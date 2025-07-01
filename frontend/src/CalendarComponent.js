@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import DatePicker from 'react-datepicker';
 import 'moment/locale/cs';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import './CalendarComponent.css';
 
 // Nastavení českého locale pro moment
