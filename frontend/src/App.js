@@ -3219,44 +3219,6 @@ const PaintPro = () => {
     );
   };
 
-  const Kalendar = () => {
-    const { addCalendarOrder } = useAuth();
-
-    // Handler pro přidání nové zakázky z kalendáře
-    const handleAddCalendarOrder = async (orderData) => {
-      try {
-        if (currentUser?.id) {
-          await addCalendarOrder(currentUser.id, orderData);
-          console.log('✅ Kalendářová událost přidána:', orderData);
-        } else {
-          alert('Chyba: Uživatel není přihlášen');
-        }
-      } catch (error) {
-        console.error('❌ Chyba při přidávání kalendářové události:', error);
-        alert('Chyba při přidávání události. Zkuste to prosím znovu.');
-      }
-    };
-
-    return (
-      <div className="kalendar">
-        <div className="page-header">
-          <div>
-            <h1>Kalendář zakázek</h1>
-            <p>Plánování a správa termínů zakázek v kalendářovém zobrazení</p>
-          </div>
-        </div>
-
-        {/* Kalendář zakázek */}
-        <CalendarComponent 
-          zakazkyData={zakazkyData}
-          onAddOrder={handleAddCalendarOrder}
-          onEditOrder={handleEditZakazka}
-          onDeleteOrder={handleDeleteZakazka}
-        />
-      </div>
-    );
-  };
-
   const MapaZakazek = () => {
     // Funkce pro klasifikaci lokace podle adresy
     const getLocationCategory = (adresa) => {
