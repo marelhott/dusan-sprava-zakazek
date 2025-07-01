@@ -400,6 +400,72 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Přidání kalendářové události - NEW pro kalendář
+  const addCalendarOrder = async (userId, eventData) => {
+    try {
+      console.log('🔄 Přidávám kalendářovou událost do Supabase:', eventData);
+      
+      // Přidej do Supabase s doplněnými údaji
+      const { data, error } = await supabase
+        .from('zakazky')
+        .insert([{
+          profile_id: userId,
+          datum: eventData.datum,
+          druh: 'Ostatní', // Výchozí kategorie pro kalendářové události
+          klient: eventData.jmeno,
+          id_zakazky: `CAL-${Date.now()}`, // Automatické ID pro kalendářové události
+          castka: eventData.cena || 0,
+          fee: 0,
+          fee_off: 0,
+          palivo: 0,
+          material: 0,
+          pomocnik: 0,
+          zisk: eventData.cena || 0, // Celá částka jako zisk pro jednoduchost
+          adresa: eventData.adresa || '',
+          telefon: eventData.telefon || '',
+          soubory: []
+        }])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('❌ Chyba při přidávání kalendářové události do Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Kalendářová událost úspěšně přidána do Supabase:', data);
+      
+      // Načti aktualizovaná data
+      const updatedData = await getUserData(userId);
+      return updatedData;
+      
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro addCalendarOrder:', error);
+      // Fallback na původní localStorage logiku
+      const currentData = await getUserData(userId);
+      const id = currentData.length > 0 ? Math.max(...currentData.map(z => z.id)) + 1 : 1;
+      const newOrder = { 
+        id, 
+        datum: eventData.datum,
+        druh: 'Ostatní',
+        klient: eventData.jmeno,
+        cislo: `CAL-${Date.now()}`,
+        castka: eventData.cena || 0,
+        fee: 0,
+        material: 0,
+        pomocnik: 0,
+        palivo: 0,
+        zisk: eventData.cena || 0,
+        adresa: eventData.adresa || '',
+        telefon: eventData.telefon || '',
+        soubory: [] 
+      };
+      const updatedData = [...currentData, newOrder];
+      await saveUserData(userId, updatedData);
+      return updatedData;
+    }
+  };
+
   // Editace zakázky uživatele - OPRAVENO pro Supabase
   const editUserOrder = async (userId, orderId, orderData) => {
     try {
