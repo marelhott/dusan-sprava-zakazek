@@ -3240,7 +3240,8 @@ const PaintPro = () => {
     const handleAddCalendarOrder = async (orderData) => {
       try {
         if (currentUser?.id) {
-          await addCalendarOrder(currentUser.id, orderData);
+          // Use handleAddZakazka instead of addCalendarOrder
+          await handleAddZakazka(orderData);
           console.log('✅ Kalendářová událost přidána:', orderData);
         } else {
           alert('Chyba: Uživatel není přihlášen');
