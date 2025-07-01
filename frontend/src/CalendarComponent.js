@@ -415,7 +415,8 @@ const CalendarComponent = ({
         const calendarOrderData = {
           ...orderData,
           calendar_origin: true,
-          cislo: `CAL-${Date.now()}`
+          cislo: `CAL-${Date.now()}`,
+          druh: orderData.druh || 'Ostatní' // Přidáme druh práce
         };
         
         await onAddOrder(calendarOrderData);
