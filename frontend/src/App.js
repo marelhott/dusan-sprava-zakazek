@@ -48,6 +48,8 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
           element = document.querySelector('.zakazky');
         } else if (tab === 'reporty') {
           element = document.querySelector('.reporty');
+        } else if (tab === 'kalendar') {
+          element = document.querySelector('.kalendar');
         } else if (tab === 'mapa') {
           element = document.querySelector('.mapa-zakazek');
         }
