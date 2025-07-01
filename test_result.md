@@ -201,6 +201,9 @@ backend:
         -working: false
         -agent: "testing"
         -comment: "Provedl jsem kompletní test kalendářové funkcionality API. Základní API endpointy fungují správně, Supabase integrace je detekována. Problém je v ukládání a načítání kalendářových zakázek - při vytvoření nové zakázky s kalendářovými daty (včetně pole 'telefon' a českého formátu datumu) server vrací úspěšnou odpověď s 'zakazka_id': 'supabase_fallback', ale data nejsou skutečně uložena a nelze je následně načíst. Firebase služba není správně inicializována kvůli chybějícím závislostem - v logu je chyba 'ModuleNotFoundError: No module named 'google''. Firebase běží v 'fallback' režimu, ale data nejsou nikde ukládána. API správně zpracovává chybná data (422 status kód)."
+        -working: false
+        -agent: "testing"
+        -comment: "Při testování kalendářové komponenty v UI jsem zjistil, že při pokusu o přidání nové zakázky se objevuje chyba v backend API - 'Could not find the 'telefon' column of 'zakazky' in the schema cache'. Toto naznačuje, že v databázovém schématu chybí sloupec 'telefon', který je potřebný pro ukládání telefonních čísel z kalendářových událostí. Aplikace správně přechází na fallback řešení a ukládá data do localStorage, ale pro plnou funkčnost by bylo potřeba upravit backend API schéma."
 
 metadata:
   created_by: "main_agent"
@@ -215,6 +218,7 @@ test_plan:
     - "Změna názvu aplikace a přesun uživatele"
     - "Kompletní PDF export všech stránek"
     - "Kalendářová funkcionalita API"
+    - "Kalendářová komponenta v sekci Mapa zakázek"
   stuck_tasks: 
     - "Kalendářová funkcionalita API"
   test_all: false
