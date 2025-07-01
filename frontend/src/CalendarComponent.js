@@ -278,25 +278,37 @@ const CalendarComponent = ({
     setIsEditing(true);
   }, []);
 
-  // Handling kliknutí na událost
+  // Handling kliknutí na událost - nyní jen pro non-button kliky
   const handleSelectEvent = useCallback((event) => {
+    // Prázdný handler - akce jsou nyní na buttonech
+  }, []);
+
+  // Handler pro editaci události
+  const handleEditEvent = useCallback((event) => {
+    // TODO: Implementovat editaci události
+    alert(`Editace události: ${event.resource.jmeno}`);
+  }, []);
+
+  // Handler pro změnu statusu události
+  const handleToggleEventStatus = useCallback((event) => {
     const isCompleted = event.resource.status === 'realizovana';
-    const actionText = isCompleted ? 'označit jako nehotovou' : 'označit jako realizovanou';
-    const message = `Zakázka: ${event.resource.jmeno}\nAdresa: ${event.resource.adresa}\nCena: ${event.resource.cena.toLocaleString()} Kč\nTelefon: ${event.resource.telefon}\nStav: ${isCompleted ? 'Realizováno' : 'Příchozí'}`;
+    const newStatus = isCompleted ? 'incoming' : 'realizovana';
+    const updatedOrder = {
+      ...event.resource.originalData,
+      status: newStatus
+    };
     
-    if (window.confirm(`${message}\n\nChcete ${actionText}?`)) {
-      // Toggle status
-      const newStatus = isCompleted ? 'incoming' : 'realizovana';
-      const updatedOrder = {
-        ...event.resource.originalData,
-        status: newStatus
-      };
-      
-      if (onEditOrder) {
-        onEditOrder(event.resource.originalData.id, updatedOrder);
-      }
+    if (onEditOrder) {
+      onEditOrder(event.resource.originalData.id, updatedOrder);
     }
   }, [onEditOrder]);
+
+  // Handler pro smazání události
+  const handleDeleteEvent = useCallback((event) => {
+    if (onDeleteOrder) {
+      onDeleteOrder(event.resource.originalData.id);
+    }
+  }, [onDeleteOrder]);
 
   // Uložení nové zakázky
   const handleSaveOrder = async (orderData) => {
