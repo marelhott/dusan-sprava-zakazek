@@ -290,6 +290,7 @@ export const AuthProvider = ({ children }) => {
           palivo: Number(zakazka.palivo),
           zisk: Number(zakazka.zisk),
           adresa: zakazka.adresa,
+          telefon: zakazka.telefon || '',  // NEW - telefon pro kalendář
           soubory: zakazka.soubory || []
         }));
         return convertedData;
