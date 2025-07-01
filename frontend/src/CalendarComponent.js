@@ -418,7 +418,14 @@ const CalendarComponent = ({
           popup={true}
           popupOffset={30}
           components={{
-            event: ({ event }) => <EventComponent event={event} />
+            event: ({ event }) => (
+              <EventComponent 
+                event={event} 
+                onEdit={handleEditEvent}
+                onToggleStatus={handleToggleEventStatus}
+                onDelete={handleDeleteEvent}
+              />
+            )
           }}
           eventPropGetter={(event) => ({
             style: {
