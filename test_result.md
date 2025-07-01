@@ -185,6 +185,9 @@ frontend:
         -working: true
         -agent: "testing"
         -comment: "Provedl jsem analýzu kódu a ověřil, že kalendář byl úspěšně přesunut do samostatné sekce. V App.js byla přidána nová komponenta Kalendar, která zobrazuje CalendarComponent v samostatné sekci. V navigačním menu byla přidána položka 'Kalendář' mezi 'Reporty' a 'Mapa zakázek'. Komponenta MapaZakazek již neobsahuje kalendář, který byl dříve součástí této sekce. Kalendářová komponenta si zachovává plnou funkcionalitu včetně zobrazení měsíčního pohledu a možnosti přidávání nových zakázek. Design je konzistentní s ostatními částmi aplikace. Implementace je správná a splňuje požadavky zadání."
+        -working: true
+        -agent: "testing"
+        -comment: "Provedl jsem kompletní test pokročilých kalendářových funkcí v samostatné sekci 'Kalendář'. Ověřil jsem, že nad kalendářem se správně zobrazuje finanční summary panel se třemi kartami: 'Příchozí zakázky', 'Celková hodnota příchozích' a 'Realizováno celkem'. Inline přidávání zakázky funguje správně - po kliknutí na den v kalendáři se otevře inline editor (ne modal), který umožňuje nastavení více dnů pomocí +/- tlačítek. Formulář obsahuje všechna požadovaná pole (jméno, adresa, cena, telefon) a po vyplnění a potvrzení se zakázka správně přidá do kalendáře. Události v kalendáři mají různé barvy pro lepší přehlednost. Kliknutím na událost lze změnit její stav na 'realizovaná', což se projeví vizuální změnou (šedá barva, zaškrtnutí) a přesunem hodnoty do kategorie 'Realizováno celkem' ve finančním panelu. Kalendář je plně responzivní a správně se zobrazuje na různých velikostech obrazovky. Všechny testované funkce pracují správně a splňují požadavky zadání."
 
 backend:
   - task: "Firebase Admin SDK integrace"
