@@ -1858,9 +1858,19 @@ const PaintPro = () => {
                   <td className="profit-bold-green">{zakazka.zisk.toLocaleString()} Kč</td>
                   <td className="address-cell">{zakazka.adresa || '-'}</td>
                   <td>
+                    {/* DÉLKA REALIZACE */}
+                    {zakazka.delkaRealizace || '-'}
+                  </td>
+                  <td>
+                    {/* SOUBORY */}
                     <FileUploadCell zakazka={zakazka} onFilesUpdate={(files) => handleFilesUpdate(zakazka.id, files)} />
                   </td>
                   <td>
+                    {/* POZNÁMKY */}
+                    {zakazka.poznamky || '-'}
+                  </td>
+                  <td>
+                    {/* AKCE */}
                     <div className="action-buttons">
                       <button className="btn-icon btn-edit" onClick={() => editZakazka(zakazka)} title="Upravit zakázku">
                         ✏️
