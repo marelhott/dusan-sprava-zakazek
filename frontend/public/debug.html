@@ -73,7 +73,7 @@
                 
                 log('Supabase client created, testing profiles table...');
                 
-                const { data, error } = await supabase.from('profiles').select('count', { count: 'exact' });
+                const { data, error } = await supabaseClient.from('profiles').select('count', { count: 'exact' });
                 
                 if (error) {
                     log(`❌ Error: ${error.message}`);
