@@ -189,6 +189,18 @@ frontend:
         -agent: "testing"
         -comment: "Provedl jsem kompletní test pokročilých kalendářových funkcí v samostatné sekci 'Kalendář'. Ověřil jsem, že nad kalendářem se správně zobrazuje finanční summary panel se třemi kartami: 'Příchozí zakázky', 'Celková hodnota příchozích' a 'Realizováno celkem'. Inline přidávání zakázky funguje správně - po kliknutí na den v kalendáři se otevře inline editor (ne modal), který umožňuje nastavení více dnů pomocí +/- tlačítek. Formulář obsahuje všechna požadovaná pole (jméno, adresa, cena, telefon) a po vyplnění a potvrzení se zakázka správně přidá do kalendáře. Události v kalendáři mají různé barvy pro lepší přehlednost. Kliknutím na událost lze změnit její stav na 'realizovaná', což se projeví vizuální změnou (šedá barva, zaškrtnutí) a přesunem hodnoty do kategorie 'Realizováno celkem' ve finančním panelu. Kalendář je plně responzivní a správně se zobrazuje na různých velikostech obrazovky. Všechny testované funkce pracují správně a splňují požadavky zadání."
 
+  - task: "CRUD operace zakázek"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/AuthContextSimple.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "Provedl jsem kompletní test CRUD operací zakázek v PaintPro aplikaci. Aplikace používá Supabase pro ukládání dat. Otestoval jsem: 1) Přihlášení s PIN kódem 123456, 2) Načítání zakázek ze Supabase - v konzoli jsem potvrdil zprávu 'Načítám zakázky z Supabase', 3) Přidání nové zakázky s detaily (datum, druh, klient, číslo, částka, fee, palivo, materiál, pomocník, adresa) - v konzoli jsem potvrdil zprávu 'Zakázka úspěšně přidána do Supabase', 4) Editaci zakázky - změna klienta a částky, 5) Mazání zakázky - v konzoli jsem potvrdil zprávu 'Zakázka úspěšně smazána z Supabase (smazáno 1 záznamů)', 6) Persistence dat - po odhlášení a opětovném přihlášení zůstaly změny zachovány. Všechny CRUD operace fungují správně a data jsou ukládána do Supabase."
+
 backend:
   - task: "Firebase Admin SDK integrace"
     implemented: true
