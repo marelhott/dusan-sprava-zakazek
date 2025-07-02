@@ -404,13 +404,19 @@ export const AuthProvider = ({ children }) => {
 
   const deleteProfile = async (profileId, pin) => {
     console.log('🚨 DEBUG: deleteProfile volána s:', { profileId, pin });
+    console.log('🚨 DEBUG: Dostupné profily:', profiles.map(p => ({ id: p.id, name: p.name, pin: p.pin })));
+    
     try {
       if (profiles.length <= 1) {
         console.log('🚨 DEBUG: Nelze smazat poslední profil');
         return false; // Nesmí smazat poslední profil
       }
       
-      const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+      const profile = profiles.find(p => {
+        console.log('🚨 DEBUG: Porovnávám:', { pId: p.id, profileId, pPin: p.pin, pin, match: p.id === profileId && p.pin === pin });
+        return p.id === profileId && p.pin === pin;
+      });
+      
       if (!profile) {
         console.log('🚨 DEBUG: Profil nenalezen nebo špatný PIN');
         return false;
