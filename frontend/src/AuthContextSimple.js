@@ -226,7 +226,7 @@ export const AuthProvider = ({ children }) => {
       
       const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
       
-      const { data, error } = await supabaseAdmin
+      const { data, error } = await supabase
         .from('zakazky')
         .update({
           datum: orderData.datum,
