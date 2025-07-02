@@ -192,9 +192,9 @@ frontend:
 backend:
   - task: "Firebase Admin SDK integrace"
     implemented: true
-    working: true
+    working: false
     file: "/app/backend/firebase_service.py, /app/backend/server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -204,6 +204,9 @@ backend:
         -working: true
         -agent: "testing"
         -comment: "Provedl jsem kompletní test Firebase backend API. Všechny testy prošly úspěšně. Otestoval jsem: 1) Základní API konektivitu - endpoint /api/ vrací správnou odpověď s informací o Firebase připojení, 2) Firebase service inicializaci - server úspěšně inicializuje Firebase Admin SDK, 3) Status endpointy - /api/status POST a GET fungují správně, 4) Firebase specifické endpointy - GET a POST /api/users/{user_id} a GET a POST /api/users/{user_id}/zakazky fungují správně. Vytvořil jsem testovacího uživatele 'user_1' a přidal mu zakázku. Všechny Firebase operace fungují bez problémů."
+        -working: false
+        -agent: "testing"
+        -comment: "Provedl jsem kompletní test všech API endpointů podle požadavků. Zjistil jsem, že Firebase integrace není plně funkční. V logu serveru je chyba 'ModuleNotFoundError: No module named 'firebase_service'', což naznačuje, že chybí potřebné závislosti pro Firebase. Server běží v 'fallback' režimu, což znamená, že všechny API endpointy fungují a vrací správné odpovědi, ale data nejsou skutečně ukládána do Firebase. Základní endpointy (/api/, /api/status) fungují správně. Endpointy pro správu uživatelů a zakázek (/api/users/{user_id}, /api/users/{user_id}/zakazky) také fungují, ale vrací 'source': 'supabase_frontend' nebo 'zakazka_id': 'supabase_fallback', což potvrzuje, že Firebase není správně inicializován. Pro plnou funkčnost by bylo potřeba nainstalovat chybějící Firebase závislosti a nastavit správné Firebase credentials."
   
   - task: "Kalendářová funkcionalita API"
     implemented: true
@@ -222,6 +225,9 @@ backend:
         -working: false
         -agent: "testing"
         -comment: "Při pokusu o testování kalendářových funkcí jsem narazil na problém s načítáním aplikace. Aplikace se zasekává na obrazovce 'Načítání...' a nelze se dostat k funkcím kalendáře. Zkontroloval jsem logy frontendu a zjistil jsem několik varování týkajících se React komponent a závislostí, ale žádné kritické chyby. Restartoval jsem frontend službu, ale problém přetrvává. Vzhledem k tomu, že aplikace se nezobrazuje správně, není možné otestovat nové kalendářové funkce."
+        -working: false
+        -agent: "testing"
+        -comment: "Provedl jsem kompletní test API endpointů pro kalendářovou funkcionalitu. Zjistil jsem, že API endpointy pro správu zakázek fungují správně z hlediska API rozhraní - server přijímá požadavky a vrací správné odpovědi. Problém je v tom, že data nejsou skutečně ukládána kvůli chybějící Firebase integraci. Při vytvoření nové zakázky s kalendářovými daty server vrací 'zakazka_id': 'supabase_fallback', ale při následném dotazu na seznam zakázek je seznam prázdný. Testy pro ověření vytvoření, aktualizace a smazání zakázky selhávají, protože data nejsou perzistentní. API správně zpracovává chybná data a vrací 422 status kód. Pro plnou funkčnost kalendářové funkcionality by bylo potřeba opravit Firebase integraci."
 
 metadata:
   created_by: "main_agent"
