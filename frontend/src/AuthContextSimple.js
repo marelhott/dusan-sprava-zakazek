@@ -424,7 +424,7 @@ export const AuthProvider = ({ children }) => {
       
       // KROK 2: Teď smaž profil (admin klíč)
       console.log('🗑️ Mažu profil...');
-      const { error, count: deletedProfiles } = await supabaseAdmin
+      const { error, count: deletedProfiles } = await supabase
         .from('profiles')
         .delete({ count: 'exact' })
         .eq('id', profileId);
