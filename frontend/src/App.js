@@ -3654,29 +3654,14 @@ const PaintPro = () => {
 
 // Auth-protected app wrapper
 const AuthenticatedApp = () => {
-  const { currentUser, isLoading, debugInfo } = useAuth();
+  const { currentUser, isLoading } = useAuth();
 
   if (isLoading) {
     return (
       <div className="login-screen">
         <div className="login-container">
-          <div style={{ textAlign: 'center', color: 'var(--text-primary)', padding: '20px' }}>
-            <h3>Načítání...</h3>
-            <div style={{ 
-              textAlign: 'left', 
-              background: '#f5f5f5', 
-              padding: '10px', 
-              borderRadius: '5px', 
-              fontSize: '12px',
-              marginTop: '20px',
-              maxHeight: '200px',
-              overflow: 'auto'
-            }}>
-              <strong>Debug info:</strong><br/>
-              {debugInfo && debugInfo.map((info, index) => (
-                <div key={index}>{info}</div>
-              ))}
-            </div>
+          <div style={{ textAlign: 'center', color: 'var(--text-primary)' }}>
+            Načítání...
           </div>
         </div>
       </div>
