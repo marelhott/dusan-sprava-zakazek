@@ -1485,13 +1485,41 @@ const PaintPro = () => {
                 />
               </div>
             </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Palivo (Kč)</label>
+                <input
+                  type="number"
+                  value={formData.palivo}
+                  onChange={e => setFormData({...formData, palivo: e.target.value})}
+                  placeholder="0"
+                />
+              </div>
+              <div className="form-group">
+                <label>Délka realizace</label>
+                <input
+                  type="text"
+                  value={formData.delkaRealizace}
+                  onChange={e => setFormData({...formData, delkaRealizace: e.target.value})}
+                  placeholder="např. 3 dny, 1 týden"
+                />
+              </div>
+            </div>
             <div className="form-group">
-              <label>Palivo (Kč)</label>
-              <input
-                type="number"
-                value={formData.palivo}
-                onChange={e => setFormData({...formData, palivo: e.target.value})}
-                placeholder="0"
+              <label>Poznámky</label>
+              <textarea
+                value={formData.poznamky}
+                onChange={e => setFormData({...formData, poznamky: e.target.value})}
+                placeholder="Volitelné poznámky k zakázce"
+                rows="3"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  resize: 'vertical',
+                  fontFamily: 'inherit'
+                }}
               />
             </div>
             <div className="modal-actions">
