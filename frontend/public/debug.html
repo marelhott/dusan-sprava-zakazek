@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaintPro Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #4F46E5;
+        }
+        #logs {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        button {
+            background-color: #4F46E5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #3730a3;
+        }
+    </style>
+</head>
+<body>
+    <h1>PaintPro Debug Console</h1>
+    <div>
+        <button id="testSupabase">Test Supabase Connection</button>
+        <button id="clearLogs">Clear Logs</button>
+    </div>
+    <div id="logs"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.50.2"></script>
+    <script>
+        const logsElement = document.getElementById('logs');
+        
+        function log(message) {
+            const timestamp = new Date().toISOString();
+            logsElement.innerHTML += `[${timestamp}] ${message}\n`;
+            logsElement.scrollTop = logsElement.scrollHeight;
+        }
+        
+        document.getElementById('clearLogs').addEventListener('click', () => {
+            logsElement.innerHTML = '';
+        });
+        
+        document.getElementById('testSupabase').addEventListener('click', async () => {
+            try {
+                log('Testing Supabase connection...');
+                
+                const supabaseUrl = 'https://bnffmohurdvkqcnyfgcn.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJuZmZtb2h1cmR2a3FjbnlmZ2NuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExNzI5NjksImV4cCI6MjA2Njc0ODk2OX0.WGEVVRnyvxVLMl7NF0yM6IdCdvOKT5bJmOQu--G_dZo';
+                
+                log(`Supabase URL: ${supabaseUrl}`);
+                log(`Supabase Key: ${supabaseKey.substring(0, 10)}...`);
+                
+                const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+                
+                log('Supabase client created, testing profiles table...');
+                
+                const { data, error } = await supabase.from('profiles').select('count', { count: 'exact' });
+                
+                if (error) {
+                    log(`❌ Error: ${error.message}`);
+                    return;
+                }
+                
+                log(`✅ Success! Count: ${data}`);
+                
+                // Try to get profiles
+                const { data: profiles, error: profilesError } = await supabase.from('profiles').select('*');
+                
+                if (profilesError) {
+                    log(`❌ Error getting profiles: ${profilesError.message}`);
+                    return;
+                }
+                
+                log(`✅ Profiles retrieved: ${profiles.length}`);
+                profiles.forEach(profile => {
+                    log(`  - ID: ${profile.id}, Name: ${profile.name}`);
+                });
+                
+            } catch (error) {
+                log(`❌ Exception: ${error.message}`);
+            }
+        });
+        
+        // Initial log
+        log('Debug page loaded. Click "Test Supabase Connection" to begin testing.');
+    </script>
+</body>
+</html>
