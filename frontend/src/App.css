@@ -6212,8 +6212,8 @@ body::after {
   }
   
   .stat-card .stat-value {
-    font-size: 26px !important; /* Zvětšeno z 20px o 30% s !important */
-    color: #374151 !important; /* Stejně tmavá barva */
+    font-size: 22px !important; /* 10% větší: 20px * 1.1 = 22px */
+    color: #64748b !important; /* Světlejší barva */
   }
   
   .stat-label {
