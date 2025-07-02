@@ -467,7 +467,6 @@ export const AuthProvider = ({ children }) => {
         palivo: 0,
         zisk: eventData.cena || 0,
         adresa: eventData.adresa ? `${eventData.adresa} | Tel: ${eventData.telefon || 'N/A'}` : `Tel: ${eventData.telefon || 'N/A'}`,
-        telefon: eventData.telefon || '',
         soubory: [],
         // NEW fields for calendar functionality
         endDate: eventData.endDate || eventData.datum,
