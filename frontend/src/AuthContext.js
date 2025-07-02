@@ -634,16 +634,16 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Editace profilu - OPRAVENO pro Supabase
+  // Editace profilu - OPRAVENO pro Supabase + admin operace
   const editProfile = async (profileId, pin, updatedData) => {
     try {
       const profile = profiles.find(p => p.id === profileId && p.pin === pin);
       if (!profile) return false;
 
-      console.log('🔄 Aktualizuji profil v Supabase:', profileId, updatedData);
+      console.log('🔄 Aktualizuji profil v Supabase (admin operace):', profileId, updatedData);
       
-      // Aktualizuj v Supabase
-      const { data, error } = await supabase
+      // Aktualizuj v Supabase s admin klíčem
+      const { data, error } = await supabaseAdmin
         .from('profiles')
         .update({
           name: updatedData.name,
