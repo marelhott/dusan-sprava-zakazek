@@ -290,12 +290,14 @@ export const AuthProvider = ({ children }) => {
           palivo: Number(zakazka.palivo),
           zisk: Number(zakazka.zisk),
           adresa: zakazka.adresa,
-          // Extract telefon from adresa field (format: "adresa | Tel: telefon")
-          let telefon = 'Bez telefonu';
-          if (zakazka.adresa && zakazka.adresa.includes('Tel:')) {
-            const parts = zakazka.adresa.split(' | Tel: ');
-            telefon = parts[1] || 'Bez telefonu';
-          }
+          telefon: (() => {
+            // Extract telefon from adresa field (format: "adresa | Tel: telefon")
+            if (zakazka.adresa && zakazka.adresa.includes('Tel:')) {
+              const parts = zakazka.adresa.split(' | Tel: ');
+              return parts[1] || 'Bez telefonu';
+            }
+            return 'Bez telefonu';
+          })(),
           soubory: zakazka.soubory || [],
           // NEW fields for calendar functionality
           endDate: zakazka.end_date || zakazka.datum,
