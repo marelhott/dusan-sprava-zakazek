@@ -348,7 +348,7 @@ export const AuthProvider = ({ children }) => {
       console.log('🔄 Aktualizuji profil v Supabase (admin operace):', profileId, updatedData);
       
       // Aktualizuj v Supabase s admin klíčem
-      const { data, error } = await supabaseAdmin
+      const { data, error } = await supabase
         .from('profiles')
         .update({
           name: updatedData.name,
