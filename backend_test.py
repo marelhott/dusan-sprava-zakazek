@@ -29,8 +29,13 @@ def run_tests():
     backend_url = get_backend_url()
     api_url = f"{backend_url}/api"
     
+    print(f"RYCHLÉ TEST VŠECH OPRAV - backend API test")
     print(f"Testing backend API at: {api_url}")
     print("=" * 50)
+    
+    # Use the specific user ID from the review request
+    user_id = "24787d4a-0139-407c-93c0-b4f369e913a9"
+    print(f"Using user ID from review request: {user_id}")
     
     test_results = {
         "total_tests": 0,
