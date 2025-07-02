@@ -201,8 +201,6 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
-          delka_realizace: orderData.delkaRealizace || '',
-          poznamky: orderData.poznamky || '',
           soubory: orderData.soubory || []
         }])
         .select()
