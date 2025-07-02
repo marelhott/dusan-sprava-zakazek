@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import supabase from './supabaseClient';
+import { supabase, supabaseAdmin } from './lib/supabase';
 
 // Výchozí první profil
 const DEFAULT_PROFILE = {
