@@ -1312,7 +1312,9 @@ const PaintPro = () => {
       hasFee: false, // Místo fee používáme boolean pro Ano/Ne
       material: '',
       pomocnik: '',
-      palivo: ''
+      palivo: '',
+      delkaRealizace: '', // NOVÝ - délka realizace
+      poznamky: '' // NOVÝ - poznámky
     });
 
     const handleSubmit = (e) => {
