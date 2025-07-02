@@ -6,7 +6,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabaseServiceKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJuZmZtb2h1cmR2a3FjbnlmZ2NuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTE3Mjk2OSwiZXhwIjoyMDY2NzQ4OTY5fQ.6IKUawhHiwOkRSYvFjmS3xbvVjDrk1IhC4h1O5InsyI'
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
+export const supabaseAdmin = createClient(supabaseUrl, supabaseKey) // Použít anon klíč místo service_role
 
 // Test připojení
 export const testSupabaseConnection = async () => {
