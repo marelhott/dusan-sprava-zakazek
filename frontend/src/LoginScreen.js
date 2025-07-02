@@ -512,9 +512,9 @@ const EditProfileModal = ({ show, profile, onClose, onEdit }) => {
     }
   };
 
-  const handleDeleteProfile = () => {
+  const handleDeleteProfile = async () => {
     if (window.confirm('Opravdu chcete smazat tento profil? Tato akce je nevratná a smažete všechna data včetně zakázek.')) {
-      const success = deleteProfile(profile.id, formData.pin);
+      const success = await deleteProfile(profile.id, formData.pin);
       if (success) {
         onClose();
       } else {
