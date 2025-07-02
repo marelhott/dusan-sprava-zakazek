@@ -1338,7 +1338,9 @@ const PaintPro = () => {
         castka: formData.castka ? Number(formData.castka) : 0,
         material: formData.material ? Number(formData.material) : 0,
         pomocnik: formData.pomocnik ? Number(formData.pomocnik) : 0,
-        palivo: formData.palivo ? Number(formData.palivo) : 0
+        palivo: formData.palivo ? Number(formData.palivo) : 0,
+        delkaRealizace: formData.delkaRealizace || '', // NOVÝ
+        poznamky: formData.poznamky || '' // NOVÝ
       };
       
       // Přidat fee pouze pokud je hasFee true a částka je validní
