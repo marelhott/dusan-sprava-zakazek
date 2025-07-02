@@ -256,6 +256,7 @@ test_plan:
     - "Kalendářová funkcionalita API"
     - "Kalendářová komponenta v sekci Mapa zakázek"
     - "Přesun kalendáře do samostatné sekce"
+    - "CRUD operace zakázek"
   stuck_tasks: 
     - "Kalendářová funkcionalita API"
   test_all: false
