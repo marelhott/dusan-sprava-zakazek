@@ -174,17 +174,20 @@ frontend:
         -agent: "testing"
         -comment: "Provedl jsem kompletní test kalendářové komponenty v sekci 'Mapa zakázek'. Kalendář se správně zobrazuje nad mapou, je v měsíčním pohledu a umožňuje přidávání nových zakázek kliknutím na den. Formulář pro přidání nové zakázky funguje správně a obsahuje všechna požadovaná pole (jméno, adresa, cena, telefon). Při pokusu o přidání nové zakázky se objevila chyba v backend API - 'Could not find the 'telefon' column of 'zakazky' in the schema cache', ale aplikace správně přešla na fallback řešení a uložila data do localStorage. Kalendář je responzivní a správně se zobrazuje na různých velikostech obrazovky. Data v kalendáři přetrvávají i po přepnutí mezi záložkami. Celkově kalendářová komponenta funguje správně, ale pro plnou funkčnost by bylo potřeba upravit backend API schéma."
 
-  - task: "CRUD operace zakázek"
+  - task: "Přesun kalendáře do samostatné sekce"
     implemented: true
     working: true
-    file: "/app/frontend/src/AuthContextSimple.js"
+    file: "/app/frontend/src/App.js, /app/frontend/src/CalendarComponent.js"
     stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
         -working: true
         -agent: "testing"
-        -comment: "Provedl jsem kompletní test CRUD operací zakázek v PaintPro aplikaci. Aplikace používá Supabase pro ukládání dat. Otestoval jsem: 1) Přihlášení s PIN kódem 123456, 2) Načítání zakázek ze Supabase - v konzoli jsem potvrdil zprávu 'Načítám zakázky z Supabase', 3) Přidání nové zakázky s detaily (datum, druh, klient, číslo, částka, fee, palivo, materiál, pomocník, adresa) - v konzoli jsem potvrdil zprávu 'Zakázka úspěšně přidána do Supabase', 4) Editaci zakázky - změna klienta a částky, 5) Mazání zakázky - v konzoli jsem potvrdil zprávu 'Zakázka úspěšně smazána z Supabase (smazáno 1 záznamů)', 6) Persistence dat - po odhlášení a opětovném přihlášení zůstaly změny zachovány. Všechny CRUD operace fungují správně a data jsou ukládána do Supabase."
+        -comment: "Provedl jsem analýzu kódu a ověřil, že kalendář byl úspěšně přesunut do samostatné sekce. V App.js byla přidána nová komponenta Kalendar, která zobrazuje CalendarComponent v samostatné sekci. V navigačním menu byla přidána položka 'Kalendář' mezi 'Reporty' a 'Mapa zakázek'. Komponenta MapaZakazek již neobsahuje kalendář, který byl dříve součástí této sekce. Kalendářová komponenta si zachovává plnou funkcionalitu včetně zobrazení měsíčního pohledu a možnosti přidávání nových zakázek. Design je konzistentní s ostatními částmi aplikace. Implementace je správná a splňuje požadavky zadání."
+        -working: true
+        -agent: "testing"
+        -comment: "Provedl jsem kompletní test pokročilých kalendářových funkcí v samostatné sekci 'Kalendář'. Ověřil jsem, že nad kalendářem se správně zobrazuje finanční summary panel se třemi kartami: 'Příchozí zakázky', 'Celková hodnota příchozích' a 'Realizováno celkem'. Inline přidávání zakázky funguje správně - po kliknutí na den v kalendáři se otevře inline editor (ne modal), který umožňuje nastavení více dnů pomocí +/- tlačítek. Formulář obsahuje všechna požadovaná pole (jméno, adresa, cena, telefon) a po vyplnění a potvrzení se zakázka správně přidá do kalendáře. Události v kalendáři mají různé barvy pro lepší přehlednost. Kliknutím na událost lze změnit její stav na 'realizovaná', což se projeví vizuální změnou (šedá barva, zaškrtnutí) a přesunem hodnoty do kategorie 'Realizováno celkem' ve finančním panelu. Kalendář je plně responzivní a správně se zobrazuje na různých velikostech obrazovky. Všechny testované funkce pracují správně a splňují požadavky zadání."
 
 backend:
   - task: "Firebase Admin SDK integrace"
