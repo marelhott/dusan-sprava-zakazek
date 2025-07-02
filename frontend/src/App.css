@@ -6226,7 +6226,7 @@ body::after {
     font-size: 22px !important; /* 10% větší: 20px * 1.1 */
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif !important;
     font-weight: 700 !important;
-    color: var(--text-primary) !important;
+    color: #374151 !important; /* O 5% méně sytá černá */
     letter-spacing: -0.01em !important;
     font-feature-settings: 'tnum' 1 !important;
   }
