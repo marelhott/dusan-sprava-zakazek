@@ -412,12 +412,28 @@ export const AuthProvider = ({ children }) => {
   };
 
   const deleteProfile = async (profileId, pin) => {
+    console.log('🚨 DEBUG deleteProfile START:', { profileId, pin, profilesCount: profiles.length });
+    
     try {
-      if (profiles.length <= 1) return false;
+      if (profiles.length <= 1) {
+        console.log('🚨 DEBUG: Pouze 1 profil, nelze smazat');
+        return false;
+      }
+      
+      console.log('🚨 DEBUG: Hledám profil v profiles array...');
+      profiles.forEach((p, index) => {
+        console.log(`  ${index}: ID=${p.id}, PIN='${p.pin}', name='${p.name}'`);
+        console.log(`     Match s hledaným: ID=${p.id === profileId}, PIN=${p.pin === pin}`);
+      });
       
       const profile = profiles.find(p => p.id === profileId && p.pin === pin);
-      if (!profile) return false;
+      
+      if (!profile) {
+        console.log('🚨 DEBUG: Profil nenalezen! profileId:', profileId, 'pin:', pin);
+        return false;
+      }
 
+      console.log('🚨 DEBUG: Profil nalezen, pokračuji s mazáním...');
       console.log('🔄 Mažu profil z Supabase...');
       
       // Smaž nejdříve všechny zakázky profilu
@@ -431,6 +447,8 @@ export const AuthProvider = ({ children }) => {
         throw zakazkyError;
       }
       
+      console.log('🚨 DEBUG: Zakázky smazány, mažu profil...');
+      
       // Smaž profil
       const { error: profileError } = await supabase
         .from('profiles')
@@ -441,6 +459,8 @@ export const AuthProvider = ({ children }) => {
         console.error('❌ KRITICKÁ CHYBA - profil se nesmazal z Supabase:', profileError);
         throw profileError;
       }
+      
+      console.log('🚨 DEBUG: Profil smazán z Supabase, ověřuji...');
       
       // 100% OVĚŘENÍ - kontrola že je skutečně smazán
       const { data: verify, error: verifyError } = await supabase
@@ -455,17 +475,23 @@ export const AuthProvider = ({ children }) => {
       }
       
       console.log('✅ 100% POTVRZENO - profil smazán z Supabase');
+      console.log('🚨 DEBUG: Aktualizuji lokální state...');
       
       // Aktualizuj lokální state
       const updatedProfiles = profiles.filter(p => p.id !== profileId);
       setProfiles(updatedProfiles);
       
+      console.log('🚨 DEBUG: Lokální state aktualizován, nový počet:', updatedProfiles.length);
+      
       // Pokud smaže sebe, odhlásit
       if (currentUser && currentUser.id === profileId) {
+        console.log('🚨 DEBUG: Mazám sebe, odhlašuji...');
         logout();
       }
       
+      console.log('🚨 DEBUG: deleteProfile ÚSPĚCH, vracím true');
       return true;
+      
     } catch (error) {
       console.error('❌ Fatální chyba při mazání profilu:', error);
       alert('CHYBA: Profil se nesmazal z databáze! ' + error.message);
