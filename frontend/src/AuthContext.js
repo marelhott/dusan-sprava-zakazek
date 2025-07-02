@@ -712,7 +712,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Smazání profilu - OPRAVENO pro Supabase
+  // Smazání profilu - OPRAVENO pro Supabase + foreign key constraints
   const deleteProfile = async (profileId, pin) => {
     try {
       if (profiles.length <= 1) return false; // Nesmí smazat poslední profil
@@ -722,7 +722,22 @@ export const AuthProvider = ({ children }) => {
 
       console.log('🔄 Mažu profil z Supabase:', profileId);
       
-      // Smaž z Supabase
+      // KROK 1: Smaž nejdříve všechny zakázky profilu
+      console.log('🗑️ Mažu zakázky profilu...');
+      const { error: zakazkyError } = await supabase
+        .from('zakazky')
+        .delete()
+        .eq('profile_id', profileId);
+      
+      if (zakazkyError) {
+        console.error('❌ Chyba při mazání zakázek profilu:', zakazkyError);
+        throw zakazkyError;
+      }
+      
+      console.log('✅ Zakázky profilu smazány');
+      
+      // KROK 2: Teď smaž profil
+      console.log('🗑️ Mažu profil...');
       const { error } = await supabase
         .from('profiles')
         .delete()
