@@ -294,7 +294,7 @@ export const AuthProvider = ({ children }) => {
       console.log('🔄 Přidávám profil do Supabase (admin operace):', profileData);
       
       // Vložit do Supabase s admin klíčem
-      const { data, error } = await supabaseAdmin
+      const { data, error } = await supabase
         .from('profiles')
         .insert([{
           pin: profileData.pin,
