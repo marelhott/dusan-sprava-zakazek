@@ -6203,7 +6203,7 @@ body::after {
   
   .dashboard-grid {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 12px; /* Mírně zvětšeno z 8px */
   }
   
   .stat-card {
