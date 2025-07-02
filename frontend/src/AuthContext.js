@@ -712,7 +712,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Smazání profilu - OPRAVENO pro Supabase + foreign key constraints
+  // Smazání profilu - OPRAVENO pro Supabase + service_role pro admin operace
   const deleteProfile = async (profileId, pin) => {
     try {
       if (profiles.length <= 1) return false; // Nesmí smazat poslední profil
@@ -720,13 +720,13 @@ export const AuthProvider = ({ children }) => {
       const profile = profiles.find(p => p.id === profileId && p.pin === pin);
       if (!profile) return false;
 
-      console.log('🔄 Mažu profil z Supabase:', profileId);
+      console.log('🔄 Mažu profil z Supabase (admin operace):', profileId);
       
-      // KROK 1: Smaž nejdříve všechny zakázky profilu
+      // KROK 1: Smaž nejdříve všechny zakázky profilu (admin klíč)
       console.log('🗑️ Mažu zakázky profilu...');
-      const { error: zakazkyError } = await supabase
+      const { error: zakazkyError, count: deletedZakazky } = await supabaseAdmin
         .from('zakazky')
-        .delete()
+        .delete({ count: 'exact' })
         .eq('profile_id', profileId);
       
       if (zakazkyError) {
@@ -734,13 +734,13 @@ export const AuthProvider = ({ children }) => {
         throw zakazkyError;
       }
       
-      console.log('✅ Zakázky profilu smazány');
+      console.log(`✅ Smazáno ${deletedZakazky} zakázek profilu`);
       
-      // KROK 2: Teď smaž profil
+      // KROK 2: Teď smaž profil (admin klíč)
       console.log('🗑️ Mažu profil...');
-      const { error } = await supabase
+      const { error, count: deletedProfiles } = await supabaseAdmin
         .from('profiles')
-        .delete()
+        .delete({ count: 'exact' })
         .eq('id', profileId);
       
       if (error) {
@@ -748,7 +748,7 @@ export const AuthProvider = ({ children }) => {
         throw error;
       }
       
-      console.log('✅ Profil úspěšně smazán z Supabase');
+      console.log(`✅ Profil úspěšně smazán z Supabase (smazáno ${deletedProfiles} záznamů)`);
       
       // Aktualizuj lokální state
       const updatedProfiles = profiles.filter(p => p.id !== profileId);
