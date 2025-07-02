@@ -69,7 +69,7 @@
                 log(`Supabase URL: ${supabaseUrl}`);
                 log(`Supabase Key: ${supabaseKey.substring(0, 10)}...`);
                 
-                const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+                const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
                 
                 log('Supabase client created, testing profiles table...');
                 
