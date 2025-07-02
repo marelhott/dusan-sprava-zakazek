@@ -83,7 +83,7 @@
                 log(`✅ Success! Count: ${data}`);
                 
                 // Try to get profiles
-                const { data: profiles, error: profilesError } = await supabase.from('profiles').select('*');
+                const { data: profiles, error: profilesError } = await supabaseClient.from('profiles').select('*');
                 
                 if (profilesError) {
                     log(`❌ Error getting profiles: ${profilesError.message}`);
