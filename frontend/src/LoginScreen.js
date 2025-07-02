@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from './AuthContextSimple';
 
 const LoginScreen = () => {
-  const { getProfiles, login, addProfile, editProfile } = useAuth();
+  const { getProfiles, login, addProfile, editProfile, deleteProfile } = useAuth();
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [pin, setPin] = useState('');
   const [error, setError] = useState('');
