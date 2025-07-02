@@ -166,8 +166,8 @@ const exportCompletePDF = async (activeTab, setActiveTab, userData) => {
 };
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { AuthProvider, useAuth } from './AuthContext';
-import LoginScreen from './LoginScreen';
+// import { AuthProvider, useAuth } from './AuthContext';
+// import LoginScreen from './LoginScreen';
 import { uploadFileToSupabase, downloadFile, validateFile } from './fileUploadService';
 import './storageTest.js';
 import {
