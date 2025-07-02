@@ -773,14 +773,14 @@ body::after {
 
 .stat-card .stat-value {
   font-size: 35px !important; /* 10% větší: 32px * 1.1 = 35px */
-  font-weight: 600 !important; /* Mírně menší váha pro Inter */
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important; /* Ultra moderní crypto font */
-  color: var(--text-primary) !important; /* Vráceno zpět na původní tmavou */
+  font-weight: 700 !important; /* Silnější váha pro plnější vzhled */
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif !important; /* Ultra plný moderní font */
+  color: var(--text-primary) !important; /* Původní tmavá barva */
   margin-bottom: 4px !important;
   line-height: 1.1 !important;
   margin-left: 6px !important;
-  letter-spacing: -0.02em !important; /* Tight spacing pro tech look */
-  font-feature-settings: 'tnum' 1 !important; /* Tabular numbers pro konzistentní šířku */
+  letter-spacing: -0.01em !important; /* Méně tight pro plnější font */
+  font-feature-settings: 'tnum' 1 !important; /* Tabular numbers */
 }
 
 /* Speciální styling pro třetí buňku s menším textem */
