@@ -6082,7 +6082,7 @@ body::after {
   
   .dashboard-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 16px; /* Zvětšeno z 12px pro lepší spacing */
   }
   
   .stat-card {
