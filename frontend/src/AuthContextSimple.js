@@ -268,7 +268,7 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('🔄 Mažu zakázku z Supabase:', orderId);
       
-      const { error, count } = await supabaseAdmin
+      const { error, count } = await supabase
         .from('zakazky')
         .delete({ count: 'exact' })
         .eq('id', orderId)
