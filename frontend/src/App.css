@@ -775,7 +775,7 @@ body::after {
   font-size: 35px !important; /* 10% větší: 32px * 1.1 = 35px */
   font-weight: 700 !important; /* Silnější váha pro plnější vzhled */
   font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif !important; /* Ultra plný moderní font */
-  color: var(--text-primary) !important; /* Původní tmavá barva */
+  color: #374151 !important; /* O 5% méně sytá černá */
   margin-bottom: 4px !important;
   line-height: 1.1 !important;
   margin-left: 6px !important;
