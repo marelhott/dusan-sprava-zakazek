@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from './AuthContext';
+import { useAuth } from './AuthContextDebug';
 
 const LoginScreen = () => {
   const { getProfiles, login, addProfile, editProfile } = useAuth();
