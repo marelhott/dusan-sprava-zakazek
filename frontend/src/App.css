@@ -772,9 +772,9 @@ body::after {
 .stat-icon.orange { background: rgba(245, 158, 11, 0.2); }
 
 .stat-card .stat-value {
-  font-size: 42px !important; /* Zvětšeno z 32px o 30% s !important */
+  font-size: 35px !important; /* Pouze 10% větší: 32px * 1.1 = 35.2px */
   font-weight: 700 !important;
-  color: #374151 !important; /* Tmavší šedá s !important */
+  color: #64748b !important; /* Světlejší šedá místo tmavé - o 30% světlejší */
   margin-bottom: 4px !important;
   line-height: 1.1 !important;
   margin-left: 6px !important; /* Přidáno další odsazení */
