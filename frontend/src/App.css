@@ -6224,10 +6224,10 @@ body::after {
   
   .stat-card .stat-value {
     font-size: 22px !important; /* 10% větší: 20px * 1.1 */
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-    font-weight: 600 !important;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-weight: 700 !important;
     color: var(--text-primary) !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: -0.01em !important;
     font-feature-settings: 'tnum' 1 !important;
   }
   
