@@ -6098,8 +6098,12 @@ body::after {
   }
   
   .stat-card .stat-value {
-    font-size: 26px !important; /* 10% větší: 24px * 1.1 = 26.4px */
-    color: #64748b !important; /* Světlejší barva */
+    font-size: 26px !important; /* 10% větší: 24px * 1.1 */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.02em !important;
+    font-feature-settings: 'tnum' 1 !important;
   }
   
   .stat-label {
