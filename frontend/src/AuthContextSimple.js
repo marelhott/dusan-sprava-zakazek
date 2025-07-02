@@ -178,11 +178,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const addUserOrder = async (userId, orderData) => {
+    console.log('🚨 DEBUG: addUserOrder volána s:', { userId, orderData });
     try {
       console.log('🔄 Přidávám zakázku do Supabase:', orderData);
       
       const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
       
+      console.log('🚨 DEBUG: Volám supabase.from(zakazky).insert...');
       const { data, error } = await supabase
         .from('zakazky')
         .insert([{
@@ -205,7 +207,7 @@ export const AuthProvider = ({ children }) => {
         .single();
       
       if (error) {
-        console.error('❌ Chyba při přidávání zakázky do Supabase:', error);
+        console.error('❌ SKUTEČNÁ CHYBA při přidávání zakázky:', error);
         throw error;
       }
       
@@ -213,9 +215,10 @@ export const AuthProvider = ({ children }) => {
       
       // Načti aktualizovaná data
       const updatedData = await getUserData(userId);
+      console.log('🚨 DEBUG: Návrat updatedData:', updatedData?.length);
       return updatedData;
     } catch (error) {
-      console.error('❌ Fallback na prázdné pole pro addUserOrder:', error);
+      console.error('❌ CATCH: Fallback na prázdné pole pro addUserOrder:', error);
       return [];
     }
   };
