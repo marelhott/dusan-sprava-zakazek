@@ -6000,9 +6000,9 @@ body::after {
     padding: 16px;
   }
   
-  .stat-value {
-    font-size: 36px; /* Zvětšeno z 28px o 30% (28 * 1.3 = 36.4px) */
-    color: #374151; /* Stejně tmavá barva jako desktop */
+  .stat-card .stat-value {
+    font-size: 36px !important; /* Zvětšeno z 28px o 30% s !important */
+    color: #374151 !important; /* Stejně tmavá barva */
   }
   
   .chart-container {
