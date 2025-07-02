@@ -418,11 +418,43 @@ export const AuthProvider = ({ children }) => {
       const profile = profiles.find(p => p.id === profileId && p.pin === pin);
       if (!profile) return false;
 
+      console.log('🔄 Mažu profil z Supabase...');
+      
       // Smaž nejdříve všechny zakázky profilu
-      await supabase.from('zakazky').delete().eq('profile_id', profileId);
+      const { error: zakazkyError } = await supabase
+        .from('zakazky')
+        .delete()
+        .eq('profile_id', profileId);
+      
+      if (zakazkyError) {
+        console.error('❌ KRITICKÁ CHYBA - zakázky profilu se nesmazaly:', zakazkyError);
+        throw zakazkyError;
+      }
       
       // Smaž profil
-      await supabase.from('profiles').delete().eq('id', profileId);
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .delete()
+        .eq('id', profileId);
+      
+      if (profileError) {
+        console.error('❌ KRITICKÁ CHYBA - profil se nesmazal z Supabase:', profileError);
+        throw profileError;
+      }
+      
+      // 100% OVĚŘENÍ - kontrola že je skutečně smazán
+      const { data: verify, error: verifyError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', profileId)
+        .single();
+      
+      if (verify) {
+        console.error('❌ KRITICKÁ CHYBA - profil stále existuje v databázi!');
+        throw new Error('Profil se nepodařilo smazat z databáze');
+      }
+      
+      console.log('✅ 100% POTVRZENO - profil smazán z Supabase');
       
       // Aktualizuj lokální state
       const updatedProfiles = profiles.filter(p => p.id !== profileId);
@@ -435,7 +467,8 @@ export const AuthProvider = ({ children }) => {
       
       return true;
     } catch (error) {
-      console.error('❌ Chyba při mazání profilu:', error);
+      console.error('❌ Fatální chyba při mazání profilu:', error);
+      alert('CHYBA: Profil se nesmazal z databáze! ' + error.message);
       return false;
     }
   };
