@@ -1343,11 +1343,12 @@ const PaintPro = () => {
         poznamky: formData.poznamky || '' // NOVÝ
       };
       
-      // Přidat fee pouze pokud je hasFee true a částka je validní
+      // Fee se vždy přidá - buď vypočítané nebo 0
       if (formData.hasFee && formData.castka && Number(formData.castka) > 0) {
         processedData.fee = Math.round(Number(formData.castka) * 0.261); // 26.1% fee
+      } else {
+        processedData.fee = 0; // Pokud není fee, nastavit na 0
       }
-      // Pokud hasFee je false nebo částka není vyplněná, fee se nepřidá vůbec
       
       addZakazka(processedData);
     };
