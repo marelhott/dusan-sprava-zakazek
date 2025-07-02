@@ -3,6 +3,12 @@ from firebase_admin import credentials, firestore
 import json
 import os
 from typing import Dict, Any, List, Optional
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load environment variables
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / '.env')
 
 class FirebaseService:
     _instance = None
