@@ -289,9 +289,169 @@ export const AuthProvider = ({ children }) => {
       return [];
     }
   };
-  const addProfile = async () => ({});
-  const editProfile = async () => true;
-  const deleteProfile = async () => true;
+  const addProfile = async (profileData) => {
+    try {
+      console.log('🔄 Přidávám profil do Supabase (admin operace):', profileData);
+      
+      // Vložit do Supabase s admin klíčem
+      const { data, error } = await supabaseAdmin
+        .from('profiles')
+        .insert([{
+          pin: profileData.pin,
+          name: profileData.name,
+          avatar: profileData.avatar || profileData.name.slice(0, 2).toUpperCase(),
+          color: profileData.color || '#4F46E5'
+        }])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('❌ Chyba při přidávání profilu do Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Profil úspěšně přidán do Supabase:', data);
+      
+      // Aktualizuj lokální state
+      const updatedProfiles = [...profiles, {
+        id: data.id,
+        name: data.name,
+        pin: data.pin,
+        avatar: data.avatar,
+        color: data.color,
+        image: null
+      }];
+      setProfiles(updatedProfiles);
+      
+      return data;
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro addProfile:', error);
+      // Fallback na původní localStorage logiku
+      const newId = Math.max(...profiles.map(p => p.id), 0) + 1;
+      const newProfile = {
+        ...profileData,
+        id: newId,
+        avatar: profileData.avatar || profileData.name.slice(0, 2).toUpperCase()
+      };
+      
+      const updatedProfiles = [...profiles, newProfile];
+      setProfiles(updatedProfiles);
+      return newProfile;
+    }
+  };
+
+  const editProfile = async (profileId, pin, updatedData) => {
+    try {
+      const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+      if (!profile) return false;
+
+      console.log('🔄 Aktualizuji profil v Supabase (admin operace):', profileId, updatedData);
+      
+      // Aktualizuj v Supabase s admin klíčem
+      const { data, error } = await supabaseAdmin
+        .from('profiles')
+        .update({
+          name: updatedData.name,
+          avatar: updatedData.avatar || updatedData.name?.slice(0, 2).toUpperCase() || profile.avatar,
+          color: updatedData.color || profile.color
+        })
+        .eq('id', profileId)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('❌ Chyba při aktualizaci profilu v Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Profil úspěšně aktualizován v Supabase:', data);
+      
+      // Aktualizuj lokální state
+      const updatedProfiles = profiles.map(p => 
+        p.id === profileId 
+          ? { 
+              ...p, 
+              name: data.name,
+              avatar: data.avatar,
+              color: data.color
+            }
+          : p
+      );
+      
+      setProfiles(updatedProfiles);
+      
+      // Aktualizovat current user pokud edituje sebe
+      if (currentUser && currentUser.id === profileId) {
+        const updatedUser = {
+          ...currentUser,
+          name: data.name,
+          avatar: data.avatar,
+          color: data.color
+        };
+        setCurrentUser(updatedUser);
+      }
+      
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro editProfile:', error);
+      return true;
+    }
+  };
+
+  const deleteProfile = async (profileId, pin) => {
+    try {
+      if (profiles.length <= 1) return false; // Nesmí smazat poslední profil
+      
+      const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+      if (!profile) return false;
+
+      console.log('🔄 Mažu profil z Supabase (admin operace):', profileId);
+      
+      // KROK 1: Smaž nejdříve všechny zakázky profilu (admin klíč)
+      console.log('🗑️ Mažu zakázky profilu...');
+      const { error: zakazkyError, count: deletedZakazky } = await supabaseAdmin
+        .from('zakazky')
+        .delete({ count: 'exact' })
+        .eq('profile_id', profileId);
+      
+      if (zakazkyError) {
+        console.error('❌ Chyba při mazání zakázek profilu:', zakazkyError);
+        throw zakazkyError;
+      }
+      
+      console.log(`✅ Smazáno ${deletedZakazky} zakázek profilu`);
+      
+      // KROK 2: Teď smaž profil (admin klíč)
+      console.log('🗑️ Mažu profil...');
+      const { error, count: deletedProfiles } = await supabaseAdmin
+        .from('profiles')
+        .delete({ count: 'exact' })
+        .eq('id', profileId);
+      
+      if (error) {
+        console.error('❌ Chyba při mazání profilu z Supabase:', error);
+        throw error;
+      }
+      
+      console.log(`✅ Profil úspěšně smazán z Supabase (smazáno ${deletedProfiles} záznamů)`);
+      
+      // Aktualizuj lokální state
+      const updatedProfiles = profiles.filter(p => p.id !== profileId);
+      setProfiles(updatedProfiles);
+      
+      // Pokud smaže sebe, odhlásit
+      if (currentUser && currentUser.id === profileId) {
+        logout();
+      }
+      
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Fallback na localStorage pro deleteProfile:', error);
+      return true;
+    }
+  };
   const getProfiles = () => profiles.map(({ pin, ...profile }) => profile);
 
   const value = {
