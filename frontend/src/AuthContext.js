@@ -578,13 +578,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('paintpro_user');
   };
 
-  // Přidání nového profilu - OPRAVENO pro Supabase
+  // Přidání nového profilu - OPRAVENO pro Supabase + admin operace
   const addProfile = async (profileData) => {
     try {
-      console.log('🔄 Přidávám profil do Supabase:', profileData);
+      console.log('🔄 Přidávám profil do Supabase (admin operace):', profileData);
       
-      // Vložit do Supabase
-      const { data, error } = await supabase
+      // Vložit do Supabase s admin klíčem
+      const { data, error } = await supabaseAdmin
         .from('profiles')
         .insert([{
           pin: profileData.pin,
