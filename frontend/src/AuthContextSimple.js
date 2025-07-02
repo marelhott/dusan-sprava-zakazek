@@ -403,11 +403,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const deleteProfile = async (profileId, pin) => {
+    console.log('🚨 DEBUG: deleteProfile volána s:', { profileId, pin });
     try {
-      if (profiles.length <= 1) return false; // Nesmí smazat poslední profil
+      if (profiles.length <= 1) {
+        console.log('🚨 DEBUG: Nelze smazat poslední profil');
+        return false; // Nesmí smazat poslední profil
+      }
       
       const profile = profiles.find(p => p.id === profileId && p.pin === pin);
-      if (!profile) return false;
+      if (!profile) {
+        console.log('🚨 DEBUG: Profil nenalezen nebo špatný PIN');
+        return false;
+      }
 
       console.log('🔄 Mažu profil z Supabase (admin operace):', profileId);
       
@@ -419,7 +426,7 @@ export const AuthProvider = ({ children }) => {
         .eq('profile_id', profileId);
       
       if (zakazkyError) {
-        console.error('❌ Chyba při mazání zakázek profilu:', zakazkyError);
+        console.error('❌ SKUTEČNÁ CHYBA při mazání zakázek profilu:', zakazkyError);
         throw zakazkyError;
       }
       
@@ -433,7 +440,7 @@ export const AuthProvider = ({ children }) => {
         .eq('id', profileId);
       
       if (error) {
-        console.error('❌ Chyba při mazání profilu z Supabase:', error);
+        console.error('❌ SKUTEČNÁ CHYBA při mazání profilu z Supabase:', error);
         throw error;
       }
       
@@ -448,10 +455,11 @@ export const AuthProvider = ({ children }) => {
         logout();
       }
       
+      console.log('🚨 DEBUG: deleteProfile úspěšné, return true');
       return true;
       
     } catch (error) {
-      console.error('❌ Fallback na localStorage pro deleteProfile:', error);
+      console.error('❌ CATCH: Fallback na localStorage pro deleteProfile:', error);
       return true;
     }
   };
