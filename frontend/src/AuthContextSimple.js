@@ -181,6 +181,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
       
+      console.log('🔄 Přidávám zakázku do Supabase...');
       const { data, error } = await supabase
         .from('zakazky')
         .insert([{
@@ -203,17 +204,30 @@ export const AuthProvider = ({ children }) => {
         .single();
       
       if (error) {
-        console.error('❌ Chyba při přidávání zakázky do Supabase:', error);
-        throw error;
+        console.error('❌ KRITICKÁ CHYBA - zakázka se neuložila do Supabase:', error);
+        throw new Error(`Zakázka se neuložila: ${error.message}`);
       }
       
-      console.log('✅ Zakázka úspěšně přidána do Supabase');
+      // 100% OVĚŘENÍ - kontrola že je skutečně v databázi
+      const { data: verify, error: verifyError } = await supabase
+        .from('zakazky')
+        .select('id, klient')
+        .eq('id', data.id)
+        .single();
+      
+      if (verifyError || !verify) {
+        console.error('❌ KRITICKÁ CHYBA - zakázka není v databázi po přidání!');
+        throw new Error('Zakázka se nepodařilo ověřit v databázi');
+      }
+      
+      console.log('✅ 100% POTVRZENO - zakázka je v Supabase:', verify.klient);
       
       // Načti aktualizovaná data
       const updatedData = await getUserData(userId);
       return updatedData;
     } catch (error) {
-      console.error('❌ Chyba při přidávání zakázky:', error);
+      console.error('❌ Fatální chyba při přidávání zakázky:', error);
+      alert('CHYBA: Zakázka se neuložila do databáze! ' + error.message);
       return [];
     }
   };
