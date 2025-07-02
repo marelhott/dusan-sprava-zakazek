@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from './AuthContextDebug';
+import { useAuth } from './FirebaseAuthContext';
 
 const LoginScreen = () => {
   const { getProfiles, login, addProfile, editProfile } = useAuth();
