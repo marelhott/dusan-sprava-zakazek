@@ -127,11 +127,168 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('paintpro_user');
   };
 
-  // Dummy funkce pro kompatibilitu
-  const getUserData = async () => [];
-  const addUserOrder = async () => [];
-  const editUserOrder = async () => [];
-  const deleteUserOrder = async () => [];
+  // Dummy funkce pro kompatibilitu - IMPLEMENTUJEME SUPABASE CRUD
+  const getUserData = async (userId) => {
+    try {
+      console.log('📊 Načítám zakázky z Supabase pro uživatele:', userId);
+      
+      const { data: zakazky, error } = await supabase
+        .from('zakazky')
+        .select('*')
+        .eq('profile_id', userId)
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('❌ Chyba při načítání zakázek z Supabase:', error);
+        return [];
+      }
+      
+      console.log(`✅ Načteno ${zakazky.length} zakázek z Supabase`);
+      
+      // Konverze na frontend formát
+      const convertedZakazky = zakazky.map(zakazka => ({
+        id: zakazka.id,
+        datum: zakazka.datum,
+        druh: zakazka.druh,
+        klient: zakazka.klient,
+        cislo: zakazka.id_zakazky,
+        castka: Number(zakazka.castka),
+        fee: Number(zakazka.fee),
+        material: Number(zakazka.material),
+        pomocnik: Number(zakazka.pomocnik),
+        palivo: Number(zakazka.palivo),
+        zisk: Number(zakazka.zisk),
+        adresa: zakazka.adresa,
+        telefon: (() => {
+          // Extract telefon from adresa field
+          if (zakazka.adresa && zakazka.adresa.includes('Tel:')) {
+            const parts = zakazka.adresa.split(' | Tel: ');
+            return parts[1] || 'Bez telefonu';
+          }
+          return 'Bez telefonu';
+        })(),
+        soubory: zakazka.soubory || []
+      }));
+      
+      return convertedZakazky;
+    } catch (error) {
+      console.error('❌ Chyba při načítání dat uživatele:', error);
+      return [];
+    }
+  };
+
+  const addUserOrder = async (userId, orderData) => {
+    try {
+      console.log('🔄 Přidávám zakázku do Supabase:', orderData);
+      
+      const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
+      
+      const { data, error } = await supabaseAdmin
+        .from('zakazky')
+        .insert([{
+          profile_id: userId,
+          datum: orderData.datum,
+          druh: orderData.druh,
+          klient: orderData.klient,
+          id_zakazky: orderData.cislo,
+          castka: orderData.castka,
+          fee: orderData.fee,
+          fee_off: orderData.feeOff || 0,
+          palivo: orderData.palivo,
+          material: orderData.material,
+          pomocnik: orderData.pomocnik,
+          zisk: zisk,
+          adresa: orderData.adresa,
+          soubory: orderData.soubory || []
+        }])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('❌ Chyba při přidávání zakázky do Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Zakázka úspěšně přidána do Supabase:', data);
+      
+      // Načti aktualizovaná data
+      const updatedData = await getUserData(userId);
+      return updatedData;
+    } catch (error) {
+      console.error('❌ Fallback na prázdné pole pro addUserOrder:', error);
+      return [];
+    }
+  };
+
+  const editUserOrder = async (userId, orderId, orderData) => {
+    try {
+      console.log('🔄 Aktualizuji zakázku v Supabase:', orderId, orderData);
+      
+      const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
+      
+      const { data, error } = await supabaseAdmin
+        .from('zakazky')
+        .update({
+          datum: orderData.datum,
+          druh: orderData.druh,
+          klient: orderData.klient,
+          id_zakazky: orderData.cislo,
+          castka: orderData.castka,
+          fee: orderData.fee,
+          fee_off: orderData.feeOff || 0,
+          palivo: orderData.palivo,
+          material: orderData.material,
+          pomocnik: orderData.pomocnik,
+          zisk: zisk,
+          adresa: orderData.adresa,
+          soubory: orderData.soubory || []
+        })
+        .eq('id', orderId)
+        .eq('profile_id', userId)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('❌ Chyba při aktualizaci zakázky v Supabase:', error);
+        throw error;
+      }
+      
+      console.log('✅ Zakázka úspěšně aktualizována v Supabase:', data);
+      
+      // Načti aktualizovaná data
+      const updatedData = await getUserData(userId);
+      return updatedData;
+    } catch (error) {
+      console.error('❌ Fallback na prázdné pole pro editUserOrder:', error);
+      return [];
+    }
+  };
+
+  const deleteUserOrder = async (userId, orderId) => {
+    try {
+      console.log('🔄 Mažu zakázku z Supabase:', orderId);
+      
+      const { error, count } = await supabaseAdmin
+        .from('zakazky')
+        .delete({ count: 'exact' })
+        .eq('id', orderId)
+        .eq('profile_id', userId);
+      
+      if (error) {
+        console.error('❌ Chyba při mazání zakázky z Supabase:', error);
+        throw error;
+      }
+      
+      console.log(`✅ Zakázka úspěšně smazána z Supabase (smazáno ${count} záznamů)`);
+      
+      // Načti aktualizovaná data
+      const updatedData = await getUserData(userId);
+      return updatedData;
+    } catch (error) {
+      console.error('❌ Fallback na prázdné pole pro deleteUserOrder:', error);
+      return [];
+    }
+  };
   const addProfile = async () => ({});
   const editProfile = async () => true;
   const deleteProfile = async () => true;
