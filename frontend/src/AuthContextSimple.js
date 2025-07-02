@@ -403,50 +403,19 @@ export const AuthProvider = ({ children }) => {
   };
 
   const deleteProfile = async (profileId, pin) => {
-    console.log('🚨 DEBUG: deleteProfile volána s:', { profileId, pin });
-    console.log('🚨 DEBUG: Dostupné profily:', profiles.map(p => ({ id: p.id, name: p.name, pin: p.pin })));
-    
     try {
-      if (profiles.length <= 1) {
-        console.log('🚨 DEBUG: Nelze smazat poslední profil');
-        return false;
-      }
+      if (profiles.length <= 1) return false;
       
-      const profile = profiles.find(p => {
-        console.log('🚨 DEBUG: Porovnávám:', { pId: p.id, profileId, pPin: p.pin, pin, match: p.id === profileId && p.pin === pin });
-        return p.id === profileId && p.pin === pin;
-      });
-      
-      if (!profile) {
-        console.log('🚨 DEBUG: Profil nenalezen nebo špatný PIN');
-        return false;
-      }
+      const profile = profiles.find(p => p.id === profileId && p.pin === pin);
+      if (!profile) return false;
 
-      console.log('🔄 Zkouším smazat z Supabase...');
+      // Smaž nejdříve všechny zakázky profilu
+      await supabase.from('zakazky').delete().eq('profile_id', profileId);
       
-      // Zkus smazat z Supabase, ale nepočítej s tím že to bude fungovat
-      try {
-        const { error: zakazkyError } = await supabase
-          .from('zakazky')
-          .delete()
-          .eq('profile_id', profileId);
-        
-        const { error: profileError } = await supabase
-          .from('profiles')  
-          .delete()
-          .eq('id', profileId);
-          
-        if (!zakazkyError && !profileError) {
-          console.log('✅ Smazáno z Supabase úspěšně');
-        } else {
-          console.log('⚠️ Supabase DELETE selhalo (RLS/permissions), pokračuji s localStorage');
-        }
-      } catch (supabaseError) {
-        console.log('⚠️ Supabase DELETE chyba:', supabaseError.message);
-      }
+      // Smaž profil
+      await supabase.from('profiles').delete().eq('id', profileId);
       
-      // VŽDY aktualizuj lokální state (hlavní funkcionalita)
-      console.log('🔄 Aktualizuji lokální profily...');
+      // Aktualizuj lokální state
       const updatedProfiles = profiles.filter(p => p.id !== profileId);
       setProfiles(updatedProfiles);
       
@@ -455,11 +424,9 @@ export const AuthProvider = ({ children }) => {
         logout();
       }
       
-      console.log('🚨 DEBUG: Profil smazán z lokálního state - aplikace bude fungovat');
       return true;
-      
     } catch (error) {
-      console.error('❌ CATCH: Chyba v deleteProfile:', error);
+      console.error('❌ Chyba při mazání profilu:', error);
       return false;
     }
   };
