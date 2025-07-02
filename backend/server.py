@@ -8,6 +8,13 @@ from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional
 import uuid
 from datetime import datetime
+import sys
+import os
+from pathlib import Path
+
+# Add current directory to Python path
+sys.path.insert(0, str(Path(__file__).parent))
+
 from firebase_service import get_firebase_service
 
 
