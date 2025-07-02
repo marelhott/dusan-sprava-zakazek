@@ -6004,8 +6004,12 @@ body::after {
   }
   
   .stat-card .stat-value {
-    font-size: 31px !important; /* 10% větší: 28px * 1.1 = 30.8px */
-    color: #64748b !important; /* Světlejší barva */
+    font-size: 31px !important; /* 10% větší: 28px * 1.1 */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important; /* Původní barva */
+    letter-spacing: -0.02em !important;
+    font-feature-settings: 'tnum' 1 !important;
   }
   
   .chart-container {
