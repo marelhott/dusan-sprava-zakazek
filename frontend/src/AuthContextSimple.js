@@ -410,7 +410,7 @@ export const AuthProvider = ({ children }) => {
       
       // KROK 1: Smaž nejdříve všechny zakázky profilu (admin klíč)
       console.log('🗑️ Mažu zakázky profilu...');
-      const { error: zakazkyError, count: deletedZakazky } = await supabaseAdmin
+      const { error: zakazkyError, count: deletedZakazky } = await supabase
         .from('zakazky')
         .delete({ count: 'exact' })
         .eq('profile_id', profileId);
