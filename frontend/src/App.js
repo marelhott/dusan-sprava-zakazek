@@ -3067,57 +3067,66 @@ const PaintPro = () => {
           <div className="chart-container-large">
             <Bar data={{
               labels: (() => {
+                // Získáme všechny měsíce ze zakázek a seřadíme je
                 const monthlyLabels = {};
                 zakazkyData.forEach(z => {
-                  const dateParts = z.datum.split('.');
-                  const monthKey = `${dateParts[1]}/${dateParts[2]}`;
-                  monthlyLabels[monthKey] = true;
+                  // Převést datum z formátu "DD. MM. YYYY" na měsíc/rok
+                  const dateParts = z.datum.split('. ');
+                  if (dateParts.length === 3) {
+                    const monthKey = `${dateParts[1].padStart(2, '0')}/${dateParts[2]}`;
+                    monthlyLabels[monthKey] = true;
+                  }
                 });
                 return Object.keys(monthlyLabels).sort();
               })(),
               datasets: (() => {
-                // Filtrujeme kategorie, které mají nějaká data
-                const categoriesWithData = workCategories.filter(category => {
-                  return zakazkyData.some(z => z.druh === category.name && z.zisk > 0);
+                // Získej všechny unikátní druhy práce ze zakázek
+                const uniqueDruhy = [...new Set(zakazkyData.map(z => z.druh))];
+                
+                // Barvy pro různé druhy práce
+                const colors = [
+                  'rgba(239, 68, 68, 0.8)',   // červená
+                  'rgba(34, 197, 94, 0.8)',   // zelená
+                  'rgba(59, 130, 246, 0.8)',  // modrá
+                  'rgba(147, 51, 234, 0.8)',  // fialová
+                  'rgba(245, 158, 11, 0.8)',  // oranžová
+                  'rgba(236, 72, 153, 0.8)',  // růžová
+                  'rgba(14, 165, 233, 0.8)',  // světle modrá
+                  'rgba(168, 85, 247, 0.8)',  // světle fialová
+                ];
+                
+                return uniqueDruhy.map((druh, index) => {
+                  return {
+                    label: druh,
+                    data: (() => {
+                      // Spočítáme data pro každý měsíc pro tento druh práce
+                      const monthlyData = {};
+                      zakazkyData.forEach(z => {
+                        if (z.druh === druh) {
+                          const dateParts = z.datum.split('. ');
+                          if (dateParts.length === 3) {
+                            const monthKey = `${dateParts[1].padStart(2, '0')}/${dateParts[2]}`;
+                            if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
+                            monthlyData[monthKey] += z.zisk;
+                          }
+                        }
+                      });
+                      
+                      // Vrátíme pole hodnot v správném pořadí podle měsíců
+                      const allMonths = [...new Set(zakazkyData.map(z => {
+                        const dateParts = z.datum.split('. ');
+                        return dateParts.length === 3 ? `${dateParts[1].padStart(2, '0')}/${dateParts[2]}` : '';
+                      }))].filter(m => m).sort();
+                      
+                      return allMonths.map(month => monthlyData[month] || 0);
+                    })(),
+                    backgroundColor: colors[index % colors.length],
+                    borderColor: colors[index % colors.length].replace('0.8)', '1)'),
+                    borderWidth: 1,
+                  };
                 });
-                
-                return categoriesWithData.map((category, index) => {
-                // Generování gradient barev pro každou kategorii
-                const baseColor = category.color;
-                const rgbaMatch = baseColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
-                const hexMatch = baseColor.match(/#([0-9a-fA-F]{6})/);
-                
-                let r, g, b;
-                if (rgbaMatch) {
-                  [, r, g, b] = rgbaMatch.map(Number);
-                } else if (hexMatch) {
-                  const hex = hexMatch[1];
-                  r = parseInt(hex.substr(0, 2), 16);
-                  g = parseInt(hex.substr(2, 2), 16);
-                  b = parseInt(hex.substr(4, 2), 16);
-                } else {
-                  // Fallback barvy
-                  r = 107; g = 114; b = 128;
-                }
-                
-                return {
-                  label: category.name,
-                  data: (() => {
-                    const monthlyData = {};
-                    zakazkyData.forEach(z => {
-                      const dateParts = z.datum.split('.');
-                      const monthKey = `${dateParts[1]}/${dateParts[2]}`;
-                      if (!monthlyData[monthKey]) monthlyData[monthKey] = 0;
-                      if (z.druh === category.name) monthlyData[monthKey] += z.zisk;
-                    });
-                    const monthlyLabels = Object.keys(monthlyData).sort();
-                    return monthlyLabels.map(month => monthlyData[month] || 0);
-                  })(),
-                  backgroundColor: (context) => {
-                    const chart = context.chart;
-                    const {ctx, chartArea} = chart;
-                    if (!chartArea) return baseColor;
-                    const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+              })()
+            }} options={{
                     
                     // Vytvoření gradient efektu s dynamickými barvami
                     const darkerR = Math.max(0, r - 30);
