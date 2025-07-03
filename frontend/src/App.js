@@ -327,8 +327,6 @@ const PaintPro = () => {
     loadUserData();
   }, [currentUser?.id, getUserData]);
 
-
-
   // Jednoduchý stav pro kategorie - bez složitých listenerů
   const [workCategories, setWorkCategories] = useState(workCategoryManager.getAllCategories());
 
