@@ -159,6 +159,8 @@ export const AuthProvider = ({ children }) => {
         palivo: Number(zakazka.palivo),
         zisk: Number(zakazka.zisk),
         adresa: zakazka.adresa,
+        dobaRealizace: zakazka.doba_realizace || '', // Nové pole
+        poznamky: zakazka.poznamky || '', // Nové pole
         telefon: (() => {
           // Extract telefon from adresa field
           if (zakazka.adresa && zakazka.adresa.includes('Tel:')) {
