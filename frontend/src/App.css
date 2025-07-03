@@ -6712,6 +6712,23 @@ body::after {
   }
 }
 
+/* Úzké sloupce pro poznámky a soubory */
+.orders-table th:nth-child(15), /* POZNÁMKY */
+.orders-table td:nth-child(15) {
+  width: 120px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.orders-table th:nth-child(16), /* SOUBORY */
+.orders-table td:nth-child(16) {
+  width: 80px;
+  max-width: 80px;
+  text-align: center;
+}
+
 /* Typ badges pro identifikaci typu objektu */
 .typ-badge {
   display: inline-block;
@@ -6743,6 +6760,24 @@ body::after {
 }
 
 .typ-obchod {
+  background: rgba(245, 158, 11, 0.1);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.typ-provozovna {
+  background: rgba(245, 158, 11, 0.1);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.typ-dveře {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.typ-podlaha {
   background: rgba(245, 158, 11, 0.1);
   color: #b45309;
   border: 1px solid rgba(245, 158, 11, 0.3);
