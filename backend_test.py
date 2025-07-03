@@ -296,19 +296,22 @@ def run_tests():
         
         # Using the test data from the review request
         zakazka_data = {
-            "datum": "15. 7. 2025",
-            "druh": "Adam", 
-            "klient": "Test Klient",
-            "idZakazky": "TEST123",
+            "datum": "05.01.2025",
+            "druh": "Test - nová pole",
+            "klient": "Test Klient Doba+Poznámky", 
+            "idZakazky": "TEST-DOBA-001",
             "castka": 25000,
-            "fee": 6500,
+            "fee": 6525,
             "feeOff": 0,
             "palivo": 800,
-            "material": 3200,
-            "pomocnik": 1200,
-            "zisk": 13300,
-            "adresa": "Václavské náměstí 1, Praha",
-            "telefon": "123456789"
+            "material": 2000,
+            "pomocnik": 1500,
+            "zisk": 14175,
+            "adresa": "Test adresa pro nová pole",
+            "telefon": "604123456",
+            "doba_realizace": 7,
+            "poznamky": "Testovací poznámka pro ověření funkčnosti nového pole",
+            "soubory": []
         }
         
         response = requests.post(f"{api_url}/users/{user_id}/zakazky", json=zakazka_data)
