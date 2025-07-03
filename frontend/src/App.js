@@ -332,44 +332,6 @@ const PaintPro = () => {
     setCurrentPage(1);
   }, [searchClient, filterDruhPrace, filterDateFrom, filterDateTo]);
 
-  // PŘÍMÝ IMPORT - spustí se ihned při načtení
-  if (currentUser?.id && zakazkyData.length === 0) {
-    console.log('🔄 Spouštím přímý import...');
-    
-    const zakazkyData = [
-      { datum: '11. 4. 2025', druh: 'MvČ', castka: 10000, pomocnik: 2000, klient: 'Gabriela Hajduchová', adresa: 'Letohradská, Praha 7', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '14. 4. 2025', druh: 'Adam - minutost', castka: 14000, pomocnik: 2000, klient: 'Tereza Pochobradská', adresa: 'Cimburkova 9, Praha 3', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '17. 4. 2025', druh: 'MvČ', castka: 15000, pomocnik: 2000, klient: 'Katka Szcepaniková', adresa: 'Nad aleji 23, Praha 6', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '18. 4. 2025', druh: 'Adam - Albert', castka: 3000, pomocnik: 0, klient: 'Jan Novák', adresa: 'U Průhonu, Praha 7', typ: 'byt', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '21. 4. 2025', druh: 'MvČ', castka: 25000, pomocnik: 4000, klient: 'Marek Rucki', adresa: 'Národní obrany 49, Praha 6', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '26. 4. 2025', druh: 'MvČ', castka: 10000, pomocnik: 0, klient: 'Katka Szcepaniková', adresa: 'Nad aleji 23, Praha 6', typ: 'byt', dobaRealizace: 2, poznamky: 'dekor malba', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '27. 4. 2025', druh: 'poptávky', castka: 72000, pomocnik: 20000, klient: 'Augustin', adresa: 'Horní polubny, Křenov', typ: 'pension', dobaRealizace: 18, poznamky: 'doplatek', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '28. 4. 2025', druh: 'MvČ', castka: 24000, pomocnik: 4000, klient: 'Zdeněk Fiedler', adresa: 'Pod jarovem 14, Praha 3', typ: 'byt', dobaRealizace: 3, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '2. 5. 2025', druh: 'MvČ', castka: 15000, pomocnik: 0, klient: 'Vojtěch Král', adresa: 'Kabešova 943/2, Praha 9', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '5. 5. 2025', druh: 'MvČ', castka: 30000, pomocnik: 6000, klient: 'Petr Dvořák', adresa: 'Za Mlýnem 1746, Hostivice', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '7. 5. 2025', druh: 'Adam - Albert', castka: 4500, pomocnik: 0, klient: 'Nezadáno', adresa: 'Beroun', typ: 'dům', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '11. 5. 2025', druh: 'Adam - Lenka', castka: 17800, pomocnik: 4000, klient: 'Andrej Vacík', adresa: 'Na Pomezí 133/38, Praha 5', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '13. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: 'Nezadáno', adresa: 'Nezadáno', typ: 'byt', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '14. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: 'Nezadáno', adresa: 'Beroun', typ: 'byt', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '15. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: 'Nezadáno', adresa: 'Říčany', typ: 'dům', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '16. 5. 2025', druh: 'MvČ', castka: 9000, pomocnik: 1000, klient: 'Tomáš Patha', adresa: 'V Dolině 1515/1c, Praha Michle', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '17. 5. 2025', druh: 'Adam - Martin', castka: 11300, pomocnik: 4000, klient: 'Nezadáno', adresa: 'Tuchoměřice', typ: 'byt', dobaRealizace: 2, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '20. 5. 2025', druh: 'Adam - Albert', castka: 2800, pomocnik: 0, klient: 'Nezadáno', adresa: 'Praha Kamýk', typ: 'dveře', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '20. 5. 2025', druh: 'dohož', castka: 4000, pomocnik: 0, klient: 'Josef Švejda', adresa: 'Ortenovo náměstí, Praha 7', typ: 'podlaha', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '22. 5. 2025', druh: 'Adam - Albert', castka: 3500, pomocnik: 0, klient: 'Nezadáno', adresa: 'Vršovice', typ: 'byt', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '23. 5. 2025', druh: 'Adam - Vincent', castka: 8000, pomocnik: 2000, klient: 'Nezadáno', adresa: 'Říčany', typ: 'dům', dobaRealizace: 3, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '26. 5. 2025', druh: 'Adam - Vincent', castka: 4000, pomocnik: 0, klient: 'Nezadáno', adresa: 'Zbraslav', typ: 'dům', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '27. 5. 2025', druh: 'MvČ', castka: 8000, pomocnik: 0, klient: 'Hanzlík', adresa: 'Praha Řepy', typ: 'byt', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 },
-      { datum: '28. 5. 2025', druh: 'MvČ', castka: 6000, pomocnik: 0, klient: 'Kolínský - Mc Donalds', adresa: 'Benátky na Jizerou', typ: 'provozovna', dobaRealizace: 1, poznamky: '', cislo: '', fee: 0, material: 800, palivo: 250 }
-    ];
-
-    zakazkyData.forEach(async (zakazka) => {
-      await handleAddZakazka(zakazka);
-    });
-    
-    console.log('✅ Import 24 zakázek spuštěn!');
-  }
-
   // Jednoduchý stav pro kategorie - bez složitých listenerů
   const [workCategories, setWorkCategories] = useState(workCategoryManager.getAllCategories());
 
