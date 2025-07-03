@@ -257,8 +257,8 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
-          doba_realizace: orderData.dobaRealizace || '', // Nové pole
-          poznamky: orderData.poznamky || '', // Nové pole
+          // doba_realizace: orderData.dobaRealizace || '', // Zatím vypnuto - sloupec neexistuje
+          // poznamky: orderData.poznamky || '', // Zatím vypnuto - sloupec neexistuje
           soubory: orderData.soubory || []
         })
         .eq('id', orderId)
