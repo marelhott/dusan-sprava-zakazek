@@ -414,12 +414,16 @@ const CalendarComponent = ({
           cislo: `CAL-${Date.now()}`,
           druh: orderData.druh || 'Ostatní', // Přidáme druh práce
           klient: orderData.klient || orderData.jmeno || 'Nezadáno', // OPRAVA: Povinné pole klient
+          castka: orderData.castka || orderData.cena || 1000, // OPRAVA: Mapování cena -> castka + výchozí hodnota
           fee: 0, // Výchozí hodnoty
           material: 800,
           palivo: 250,
+          pomocnik: 0, // Výchozí pomocník
+          zisk: (orderData.castka || orderData.cena || 1000) - 800 - 250, // Zisk = částka - materiál - palivo
           dobaRealizace: orderData.dobaRealizace || 1,
           poznamky: orderData.poznamky || '',
-          typ: orderData.typ || 'byt'
+          typ: orderData.typ || 'byt',
+          adresa: orderData.adresa || 'Nezadáno' // Přidat adresu
         };
         
         await onAddOrder(calendarOrderData);
