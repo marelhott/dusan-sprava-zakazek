@@ -353,7 +353,10 @@ const PaintPro = () => {
     }
   }, []);
 
-
+  // Reset stránky při změně filtrů
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchClient, filterDruhPrace, filterDateFrom, filterDateTo]);
 
   // Funkce pro přidání zakázky - OPRAVENO pro async
   const handleAddZakazka = async (zakazkaData) => {
