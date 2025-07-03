@@ -360,10 +360,21 @@ def run_tests():
             # Check if we have the new zakazka in the list
             zakazka_found = False
             for zakazka in zakazky:
-                if zakazka.get("klient") == "Test Klient" and zakazka.get("idZakazky") == "TEST123":
+                if zakazka.get("klient") == "Test Klient Doba+Poznámky" and zakazka.get("idZakazky") == "TEST-DOBA-001":
                     zakazka_found = True
                     zakazka_id = zakazka.get("id", zakazka_id)  # Update zakazka_id if available
-                    print(f"✅ Found created zakazka with ID: {zakazka_id}")
+                    
+                    # Verify the new fields are present
+                    doba_realizace_ok = zakazka.get("doba_realizace") == 7
+                    poznamky_ok = zakazka.get("poznamky") == "Testovací poznámka pro ověření funkčnosti nového pole"
+                    
+                    if doba_realizace_ok and poznamky_ok:
+                        print(f"✅ Found created zakazka with ID: {zakazka_id} and verified new fields 'doba_realizace' and 'poznamky'")
+                    else:
+                        print(f"⚠️ Found created zakazka but new fields verification failed:")
+                        print(f"   - doba_realizace: {'OK' if doba_realizace_ok else 'MISSING/WRONG'} (expected: 7, got: {zakazka.get('doba_realizace')})")
+                        print(f"   - poznamky: {'OK' if poznamky_ok else 'MISSING/WRONG'} (expected: 'Testovací poznámka...', got: {zakazka.get('poznamky')})")
+                    
                     break
             
             if zakazka_found:
