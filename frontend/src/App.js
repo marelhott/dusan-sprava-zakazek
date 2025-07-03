@@ -1943,7 +1943,76 @@ const PaintPro = () => {
         </div>
         
         <div className="table-footer">
-          <div className="table-info">Zobrazeno 1 - {zakazkyData.length} z {zakazkyData.length} zakázek</div>
+          {(() => {
+            // Znovu spočítáme filtrované zakázky pro footer informace
+            const filteredZakazky = zakazkyData
+              .filter(zakazka => {
+                const clientMatch = searchClient === '' || 
+                  zakazka.klient.toLowerCase().includes(searchClient.toLowerCase());
+                const druhMatch = filterDruhPrace === '' || zakazka.druh === filterDruhPrace;
+                let dateMatch = true;
+                if (filterDateFrom || filterDateTo) {
+                  const zakazkaDate = new Date(zakazka.datum.split('. ').reverse().join('-'));
+                  if (filterDateFrom) {
+                    const fromDate = new Date(filterDateFrom);
+                    dateMatch = dateMatch && zakazkaDate >= fromDate;
+                  }
+                  if (filterDateTo) {
+                    const toDate = new Date(filterDateTo);
+                    dateMatch = dateMatch && zakazkaDate <= toDate;
+                  }
+                }
+                return clientMatch && druhMatch && dateMatch;
+              });
+
+            const totalItems = filteredZakazky.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+            return (
+              <>
+                <div className="table-info">
+                  Zobrazeno {startIndex + 1} - {endIndex} z {totalItems} zakázek
+                </div>
+                {totalPages > 1 && (
+                  <div className="pagination">
+                    <button 
+                      onClick={() => setCurrentPage(1)}
+                      disabled={currentPage === 1}
+                      className="btn btn-secondary btn-small"
+                    >
+                      První
+                    </button>
+                    <button 
+                      onClick={() => setCurrentPage(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="btn btn-secondary btn-small"
+                    >
+                      Předchozí
+                    </button>
+                    <span className="page-info">
+                      Stránka {currentPage} z {totalPages}
+                    </span>
+                    <button 
+                      onClick={() => setCurrentPage(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className="btn btn-secondary btn-small"
+                    >
+                      Další
+                    </button>
+                    <button 
+                      onClick={() => setCurrentPage(totalPages)}
+                      disabled={currentPage === totalPages}
+                      className="btn btn-secondary btn-small"
+                    >
+                      Poslední
+                    </button>
+                  </div>
+                )}
+              </>
+            );
+          })()}
         </div>
       </div>
     </div>
