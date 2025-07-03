@@ -352,7 +352,6 @@ const PaintPro = () => {
       setWorkCategories(workCategoryManager.getAllCategories());
     }
   }, []);
-
   // Reset stránky při změně filtrů
   useEffect(() => {
     setCurrentPage(1);
