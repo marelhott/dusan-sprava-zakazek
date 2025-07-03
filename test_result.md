@@ -116,6 +116,9 @@ frontend:
         -working: "testing_needed"
         -agent: "main"
         -comment: "Uživatel chce specificky ověřit funkčnost nových polí 'Doba realizace' (integer - počet dní) a 'Poznámky' (text). Podle kódu jsou pole implementovaná v App.js formuláři (řádky 1500-1508 a 1510-1526) a v AuthContextSimple.js pro Supabase operace (řádky 203-204, 260-261). Potřebuji otestovat end-to-end funkcionalität: 1) Zobrazení polí ve formuláři, 2) Uložení do Supabase, 3) Zobrazení v tabulce zakázek, 4) Editaci hodnot."
+        -working: "backend_tested"
+        -agent: "testing"
+        -comment: "Provedl jsem kompletní test podpory nových polí 'doba_realizace' a 'poznamky' v backend API pro zakázky. Backend API plně podporuje nová pole - úspěšně jsem otestoval vytvoření, čtení a aktualizaci zakázek s těmito poli. Zbývá otestovat frontend část - zobrazení polí ve formuláři a v tabulce zakázek."
   - task: "Změna názvu aplikace a přesun uživatele"
     implemented: true
     working: true
