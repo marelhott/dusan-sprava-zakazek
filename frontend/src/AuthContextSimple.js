@@ -200,6 +200,8 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
+          doba_realizace: orderData.dobaRealizace || '', // Nové pole
+          poznamky: orderData.poznamky || '', // Nové pole
           soubory: orderData.soubory || []
         }])
         .select()
