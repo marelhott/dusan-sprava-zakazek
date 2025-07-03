@@ -1893,7 +1893,7 @@ const PaintPro = () => {
                 return currentZakazky.map((zakazka, index) => (
                 <tr key={zakazka.id} className="table-row">
                   <td className="order-number">
-                    {index + 1}
+                    {startIndex + index + 1}
                   </td>
                   <td>{zakazka.datum}</td>
                   <td>{zakazka.druh}</td>
