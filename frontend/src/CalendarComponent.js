@@ -340,12 +340,8 @@ const CalendarComponent = ({
         telefon = parts[1] || 'Bez telefonu';
       }
 
-      // Kontroluj, zda je to kalendářová zakázka
-      const isCalendarEvent = (
-        (zakazka.cislo && zakazka.cislo.toString().startsWith('CAL-')) ||
-        (zakazka.id_zakazky && zakazka.id_zakazky.toString().startsWith('CAL-')) ||
-        zakazka.calendar_origin === true
-      );
+      // Všechny zakázky předané kalendáři jsou už kalendářové, takže nastavíme isCalendarEvent na true
+      const isCalendarEvent = true;
 
       return {
         id: zakazka.id,
@@ -361,7 +357,7 @@ const CalendarComponent = ({
           color: zakazka.color || generateEventColor(index),
           status: zakazka.status || 'incoming',
           originalData: zakazka,
-          isCalendarEvent: isCalendarEvent // Označení kalendářové události
+          isCalendarEvent: isCalendarEvent
         }
       };
     });
