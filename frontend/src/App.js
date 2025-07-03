@@ -3127,31 +3127,6 @@ const PaintPro = () => {
                 });
               })()
             }} options={{
-                    
-                    // Vytvoření gradient efektu s dynamickými barvami
-                    const darkerR = Math.max(0, r - 30);
-                    const darkerG = Math.max(0, g - 30);
-                    const darkerB = Math.max(0, b - 30);
-                    const lighterR = Math.min(255, r + 30);
-                    const lighterG = Math.min(255, g + 30);
-                    const lighterB = Math.min(255, b + 30);
-                    
-                    gradient.addColorStop(0, `rgb(${darkerR}, ${darkerG}, ${darkerB})`);
-                    gradient.addColorStop(0.3, baseColor);
-                    gradient.addColorStop(0.7, `rgb(${lighterR}, ${lighterG}, ${lighterB})`);
-                    gradient.addColorStop(1, `rgb(${Math.min(255, lighterR + 20)}, ${Math.min(255, lighterG + 20)}, ${Math.min(255, lighterB + 20)})`);
-                    return gradient;
-                  },
-                  borderRadius: {
-                    topLeft: 8,
-                    topRight: 8,
-                  },
-                  borderSkipped: false,
-                  barThickness: 32,
-                };
-              })
-            })()
-            }} options={{
               responsive: true,
               maintainAspectRatio: false,
               scales: {
