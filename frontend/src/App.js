@@ -1812,6 +1812,7 @@ const PaintPro = () => {
                   setFilterDruhPrace('');
                   setFilterDateFrom('');
                   setFilterDateTo('');
+                  setCurrentPage(1); // Reset na první stránku
                 }}
               >
                 Vymazat filtry
