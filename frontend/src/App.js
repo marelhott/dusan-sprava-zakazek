@@ -1341,7 +1341,8 @@ const PaintPro = () => {
         pomocnik: formData.pomocnik ? Number(formData.pomocnik) : 0,
         palivo: formData.palivo ? Number(formData.palivo) : 0,
         delkaRealizace: formData.delkaRealizace || '', // NOVÝ
-        poznamky: formData.poznamky || '' // NOVÝ
+        poznamky: formData.poznamky || '', // NOVÝ
+        typ: formData.typ || '' // NOVÝ - typ objektu
       };
       
       // Fee se vždy přidá - buď vypočítané nebo 0
