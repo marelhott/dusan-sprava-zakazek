@@ -272,7 +272,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Testování polí 'Doba realizace' a 'Poznámky' v zakázkách"
     - "CRUD operace zakázek"
     - "Firebase Admin SDK integrace"
     - "Firebase frontend integrace"
