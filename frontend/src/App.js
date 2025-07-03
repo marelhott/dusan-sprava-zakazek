@@ -2956,12 +2956,12 @@ const PaintPro = () => {
                     max: Math.max(
                       Math.max(...zakazkyData.map(z => z.pomocnik || 0)),
                       1000
-                    ) + 500,
+                    ) + 200,
                     ticks: {
                       ...lineChartOptions.scales.y.ticks,
-                      stepSize: 200, // Krok 200 pro stovky
+                      stepSize: 100, // Velmi jemný krok 100
                       callback: function(value) {
-                        // Škála ve stovkách: 0, 200, 400, 600, 800, 1000...
+                        // Detailní škála: 0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000...
                         return value.toLocaleString();
                       }
                     }
