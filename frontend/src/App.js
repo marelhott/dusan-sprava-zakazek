@@ -405,13 +405,6 @@ const PaintPro = () => {
 
   // Import zakázek ze screenshotu - POUZE JEDNOU
   const importZakazkyFromScreenshot = async () => {
-    // Zkontroluj, jestli už neběžel import
-    const importFlag = localStorage.getItem('zakazky_imported');
-    if (importFlag === 'true') {
-      console.log('Import už byl proveden, přeskakuji...');
-      return;
-    }
-
     const zakazkyToImport = [
       { datum: '11. 4. 2025', druh: 'MvČ', castka: 10000, pomocnik: 2000, klient: 'Gabriela Hajduchová', adresa: 'Letohradská, Praha 7', typ: 'byt', dobaRealizace: 2, poznamky: '' },
       { datum: '14. 4. 2025', druh: 'Adam - minutost', castka: 14000, pomocnik: 2000, klient: 'Tereza Pochobradská', adresa: 'Cimburkova 9, Praha 3', typ: 'byt', dobaRealizace: 2, poznamky: '' },
@@ -465,9 +458,6 @@ const PaintPro = () => {
       // Krátká pauza mezi přidáváním
       await new Promise(resolve => setTimeout(resolve, 100));
     }
-    
-    // Označ, že import byl proveden
-    localStorage.setItem('zakazky_imported', 'true');
     
     console.log('✅ Import dokončen! Importováno 24 zakázek.');
   };
