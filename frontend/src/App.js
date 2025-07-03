@@ -1861,7 +1861,7 @@ const PaintPro = () => {
                   <td className="address-cell">{zakazka.adresa || '-'}</td>
                   <td>
                     {/* DOBA REALIZACE */}
-                    {zakazka.dobaRealizace || '-'}
+                    {zakazka.dobaRealizace ? `${zakazka.dobaRealizace} ${zakazka.dobaRealizace === 1 ? 'den' : zakazka.dobaRealizace <= 4 ? 'dny' : 'dní'}` : '1 den'}
                   </td>
                   <td>
                     {/* POZNÁMKY */}
