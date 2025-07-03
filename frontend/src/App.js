@@ -379,8 +379,15 @@ const PaintPro = () => {
     }
   };
 
-  // Import zakázek ze screenshotu
+  // Import zakázek ze screenshotu - POUZE JEDNOU
   const importZakazkyFromScreenshot = async () => {
+    // Zkontroluj, jestli už neběžel import
+    const importFlag = localStorage.getItem('zakazky_imported');
+    if (importFlag === 'true') {
+      console.log('Import už byl proveden, přeskakuji...');
+      return;
+    }
+
     const zakazkyToImport = [
       { datum: '11. 4. 2025', druh: 'MvČ', castka: 10000, pomocnik: 2000, klient: 'Gabriela Hajduchová', adresa: 'Letohradská, Praha 7', typ: 'byt', dobaRealizace: 2, poznamky: '' },
       { datum: '14. 4. 2025', druh: 'Adam - minutost', castka: 14000, pomocnik: 2000, klient: 'Tereza Pochobradská', adresa: 'Cimburkova 9, Praha 3', typ: 'byt', dobaRealizace: 2, poznamky: '' },
@@ -392,18 +399,18 @@ const PaintPro = () => {
       { datum: '28. 4. 2025', druh: 'MvČ', castka: 24000, pomocnik: 4000, klient: 'Zdeněk Fiedler', adresa: 'Pod jarovem 14, Praha 3', typ: 'byt', dobaRealizace: 3, poznamky: '' },
       { datum: '2. 5. 2025', druh: 'MvČ', castka: 15000, pomocnik: 0, klient: 'Vojtěch Král', adresa: 'Kabešova 943/2, Praha 9', typ: 'byt', dobaRealizace: 2, poznamky: '' },
       { datum: '5. 5. 2025', druh: 'MvČ', castka: 30000, pomocnik: 6000, klient: 'Petr Dvořák', adresa: 'Za Mlýnem 1746, Hostivice', typ: 'byt', dobaRealizace: 2, poznamky: '' },
-      { datum: '7. 5. 2025', druh: 'Adam - Albert', castka: 4500, pomocnik: 0, klient: '', adresa: 'Beroun', typ: 'dům', dobaRealizace: 1, poznamky: '' },
+      { datum: '7. 5. 2025', druh: 'Adam - Albert', castka: 4500, pomocnik: 0, klient: 'Nezadáno', adresa: 'Beroun', typ: 'dům', dobaRealizace: 1, poznamky: '' },
       { datum: '11. 5. 2025', druh: 'Adam - Lenka', castka: 17800, pomocnik: 4000, klient: 'Andrej Vacík', adresa: 'Na Pomezí 133/38, Praha 5', typ: 'byt', dobaRealizace: 2, poznamky: '' },
-      { datum: '13. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: '', adresa: '', typ: 'byt', dobaRealizace: 1, poznamky: '' },
-      { datum: '14. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: '', adresa: 'Beroun', typ: 'byt', dobaRealizace: 1, poznamky: '' },
-      { datum: '15. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: '', adresa: 'Říčany', typ: 'dům', dobaRealizace: 1, poznamky: '' },
+      { datum: '13. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: 'Nezadáno', adresa: 'Nezadáno', typ: 'byt', dobaRealizace: 1, poznamky: '' },
+      { datum: '14. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: 'Nezadáno', adresa: 'Beroun', typ: 'byt', dobaRealizace: 1, poznamky: '' },
+      { datum: '15. 5. 2025', druh: 'Adam - Lenka', castka: 2000, pomocnik: 0, klient: 'Nezadáno', adresa: 'Říčany', typ: 'dům', dobaRealizace: 1, poznamky: '' },
       { datum: '16. 5. 2025', druh: 'MvČ', castka: 9000, pomocnik: 1000, klient: 'Tomáš Patha', adresa: 'V Dolině 1515/1c, Praha Michle', typ: 'byt', dobaRealizace: 2, poznamky: '' },
-      { datum: '17. 5. 2025', druh: 'Adam - Martin', castka: 11300, pomocnik: 4000, klient: '', adresa: 'Tuchoměřice', typ: 'byt', dobaRealizace: 2, poznamky: '' },
-      { datum: '20. 5. 2025', druh: 'Adam - Albert', castka: 2800, pomocnik: 0, klient: '', adresa: 'Praha Kamýk', typ: 'dveře', dobaRealizace: 1, poznamky: '' },
+      { datum: '17. 5. 2025', druh: 'Adam - Martin', castka: 11300, pomocnik: 4000, klient: 'Nezadáno', adresa: 'Tuchoměřice', typ: 'byt', dobaRealizace: 2, poznamky: '' },
+      { datum: '20. 5. 2025', druh: 'Adam - Albert', castka: 2800, pomocnik: 0, klient: 'Nezadáno', adresa: 'Praha Kamýk', typ: 'dveře', dobaRealizace: 1, poznamky: '' },
       { datum: '20. 5. 2025', druh: 'dohož', castka: 4000, pomocnik: 0, klient: 'Josef Švejda', adresa: 'Ortenovo náměstí, Praha 7', typ: 'podlaha', dobaRealizace: 1, poznamky: '' },
-      { datum: '22. 5. 2025', druh: 'Adam - Albert', castka: 3500, pomocnik: 0, klient: '', adresa: 'Vršovice', typ: 'byt', dobaRealizace: 1, poznamky: '' },
-      { datum: '23. 5. 2025', druh: 'Adam - Vincent', castka: 8000, pomocnik: 2000, klient: '', adresa: 'Říčany', typ: 'dům', dobaRealizace: 3, poznamky: '' },
-      { datum: '26. 5. 2025', druh: 'Adam - Vincent', castka: 4000, pomocnik: 0, klient: '', adresa: 'Zbraslav', typ: 'dům', dobaRealizace: 1, poznamky: '' },
+      { datum: '22. 5. 2025', druh: 'Adam - Albert', castka: 3500, pomocnik: 0, klient: 'Nezadáno', adresa: 'Vršovice', typ: 'byt', dobaRealizace: 1, poznamky: '' },
+      { datum: '23. 5. 2025', druh: 'Adam - Vincent', castka: 8000, pomocnik: 2000, klient: 'Nezadáno', adresa: 'Říčany', typ: 'dům', dobaRealizace: 3, poznamky: '' },
+      { datum: '26. 5. 2025', druh: 'Adam - Vincent', castka: 4000, pomocnik: 0, klient: 'Nezadáno', adresa: 'Zbraslav', typ: 'dům', dobaRealizace: 1, poznamky: '' },
       { datum: '27. 5. 2025', druh: 'MvČ', castka: 8000, pomocnik: 0, klient: 'Hanzlík', adresa: 'Praha Řepy', typ: 'byt', dobaRealizace: 1, poznamky: '' },
       { datum: '28. 5. 2025', druh: 'MvČ', castka: 6000, pomocnik: 0, klient: 'Kolínský - Mc Donalds', adresa: 'Benátky na Jizerou', typ: 'provozovna', dobaRealizace: 1, poznamky: '' }
     ];
@@ -415,8 +422,8 @@ const PaintPro = () => {
       const processedData = {
         datum: zakazka.datum,
         druh: zakazka.druh,
-        klient: zakazka.klient || 'Nezadáno',
-        cislo: `IMP-${Date.now()}-${i + 1}`,
+        klient: zakazka.klient,
+        cislo: `${zakazka.datum.replace(/\. /g, '')}-${i + 1}`, // Bez IMP prefix
         adresa: zakazka.adresa,
         castka: zakazka.castka,
         fee: 0, // Fee není vůbec
@@ -428,15 +435,45 @@ const PaintPro = () => {
         typ: zakazka.typ
       };
       
-      console.log(`📦 Importuji zakázku ${i + 1}/24: ${zakazka.klient || 'Nezadáno'} - ${zakazka.castka} Kč`);
+      console.log(`📦 Importuji zakázku ${i + 1}/24: ${zakazka.klient} - ${zakazka.castka} Kč`);
       await handleAddZakazka(processedData);
       
       // Krátká pauza mezi přidáváním
       await new Promise(resolve => setTimeout(resolve, 100));
     }
     
+    // Označ, že import byl proveden
+    localStorage.setItem('zakazky_imported', 'true');
+    
     console.log('✅ Import dokončen! Importováno 24 zakázek.');
-    alert('✅ Import dokončen! Importováno 24 zakázek ze screenshotu.');
+  };
+
+  // Funkce pro smazání všech zakázek
+  const deleteAllZakazky = async () => {
+    try {
+      console.log('🗑️ Mažu všechny zakázky...');
+      
+      const currentData = await getUserData(currentUser.id);
+      const safeData = Array.isArray(currentData) ? currentData : [];
+      
+      for (const zakazka of safeData) {
+        await deleteUserOrder(currentUser.id, zakazka.id);
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      
+      // Reset import flag
+      localStorage.removeItem('zakazky_imported');
+      
+      console.log('✅ Všechny zakázky smazány!');
+      
+      // Reload data
+      const refreshedData = await getUserData(currentUser.id);
+      const safeRefreshedData = Array.isArray(refreshedData) ? refreshedData : [];
+      setZakazkyData(safeRefreshedData);
+      
+    } catch (error) {
+      console.error('❌ Chyba při mazání zakázek:', error);
+    }
   };
 
   // Funkce pro editaci zakázky - OPRAVENO pro async
