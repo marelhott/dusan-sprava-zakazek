@@ -1888,6 +1888,12 @@ const PaintPro = () => {
                   <td className="profit-bold-green">{zakazka.zisk.toLocaleString()} Kč</td>
                   <td className="address-cell">{zakazka.adresa || '-'}</td>
                   <td>
+                    {/* TYP */}
+                    <span className={`typ-badge typ-${zakazka.typ || 'nezadano'}`}>
+                      {zakazka.typ || '-'}
+                    </span>
+                  </td>
+                  <td>
                     {/* DOBA REALIZACE */}
                     {zakazka.dobaRealizace ? `${zakazka.dobaRealizace} ${zakazka.dobaRealizace === 1 ? 'den' : zakazka.dobaRealizace <= 4 ? 'dny' : 'dní'}` : '1 den'}
                   </td>
