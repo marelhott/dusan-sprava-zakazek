@@ -3224,6 +3224,12 @@ const PaintPro = () => {
                     }
                   }
                 }
+              },
+              elements: {
+                bar: {
+                  borderRadius: 8, // Zakulacené rohy pro všechny sloupce
+                  borderSkipped: false, // Aplikovat na všechny rohy
+                }
               }
             }} />
           </div>
