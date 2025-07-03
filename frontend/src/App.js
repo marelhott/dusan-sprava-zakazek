@@ -1497,12 +1497,13 @@ const PaintPro = () => {
                 />
               </div>
               <div className="form-group">
-                <label>Délka realizace</label>
+                <label>Doba realizace (dny)</label>
                 <input
-                  type="text"
+                  type="number"
+                  min="1"
                   value={formData.delkaRealizace}
                   onChange={e => setFormData({...formData, delkaRealizace: e.target.value})}
-                  placeholder="např. 3 dny, 1 týden"
+                  placeholder="1"
                 />
               </div>
             </div>
