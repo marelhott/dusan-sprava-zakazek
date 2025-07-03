@@ -320,9 +320,13 @@ const CalendarComponent = ({
       const year = parseInt(dateParts[2]);
       const startDate = new Date(year, month, day);
       
-      // Pokud má zakázka endDate, použij ho, jinak je to jednodenní
-      let endDate = startDate;
-      if (zakazka.endDate) {
+      // Výpočet endDate podle doby realizace
+      let endDate = new Date(startDate);
+      if (zakazka.dobaRealizace && zakazka.dobaRealizace > 1) {
+        // Přidá (dobaRealizace - 1) dní k startDate
+        endDate.setDate(startDate.getDate() + zakazka.dobaRealizace - 1);
+      } else if (zakazka.endDate) {
+        // Fallback na explicitní endDate pokud existuje
         const endParts = zakazka.endDate.split('. ');
         const endDay = parseInt(endParts[0]);
         const endMonth = parseInt(endParts[1]) - 1;
