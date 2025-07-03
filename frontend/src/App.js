@@ -2951,12 +2951,26 @@ const PaintPro = () => {
                   ...lineChartOptions.scales,
                   y: {
                     ...lineChartOptions.scales.y,
-                    beginAtZero: true,
+                    beginAtZero: false,
+                    min: 0,
                     max: Math.max(
                       Math.max(...zakazkyData.map(z => z.pomocnik || 0)),
                       800,
                       250
-                    ) + 1000, // Přidáme trochu prostoru nahoře
+                    ) + 1000,
+                    ticks: {
+                      ...lineChartOptions.scales.y.ticks,
+                      stepSize: 2000, // Krok 2000: 0, 2000, 4000, 6000...
+                      callback: function(value) {
+                        // Vlastní hodnoty: 1000, 3000, 5000, 7000...
+                        if (value === 0) return '0';
+                        if (value % 2000 === 0) {
+                          const customValue = value + 1000; // Posun o 1000
+                          return customValue.toLocaleString();
+                        }
+                        return '';
+                      }
+                    }
                   }
                 }
               }} />
