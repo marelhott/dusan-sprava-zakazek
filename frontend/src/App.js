@@ -1807,6 +1807,8 @@ const PaintPro = () => {
                 <th>POMOCNÍK</th>
                 <th>ČISTÝ ZISK</th>
                 <th>ADRESA</th>
+                <th>DOBA REALIZACE</th>
+                <th>POZNÁMKY</th>
                 <th>SOUBORY</th>
                 <th>AKCE</th>
               </tr>
