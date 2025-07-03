@@ -327,6 +327,11 @@ const PaintPro = () => {
     loadUserData();
   }, [currentUser?.id, getUserData]);
 
+  // Reset stránky při změně filtrů
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchClient, filterDruhPrace, filterDateFrom, filterDateTo]);
+
   // Jednoduchý stav pro kategorie - bez složitých listenerů
   const [workCategories, setWorkCategories] = useState(workCategoryManager.getAllCategories());
 
