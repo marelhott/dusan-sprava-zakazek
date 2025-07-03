@@ -2003,13 +2003,13 @@ const PaintPro = () => {
                   <td>{zakazka.druh}</td>
                   <td>{zakazka.klient}</td>
                   <td>{zakazka.cislo}</td>
-                  <td className="amount-bold-black">{zakazka.castka.toLocaleString()} Kč</td>
-                  <td>{zakazka.fee.toLocaleString()} Kč</td>
-                  <td>{(zakazka.castka - zakazka.fee).toLocaleString()} Kč</td>
-                  <td>{zakazka.palivo.toLocaleString()} Kč</td>
-                  <td>{zakazka.material.toLocaleString()} Kč</td>
-                  <td>{zakazka.pomocnik.toLocaleString()} Kč</td>
-                  <td className="profit-bold-green">{zakazka.zisk.toLocaleString()} Kč</td>
+                  <td className="amount-bold-black">{zakazka.castka.toLocaleString()}</td>
+                  <td>{zakazka.fee.toLocaleString()}</td>
+                  <td>{(zakazka.castka - zakazka.fee).toLocaleString()}</td>
+                  <td>{zakazka.palivo.toLocaleString()}</td>
+                  <td>{zakazka.material.toLocaleString()}</td>
+                  <td>{zakazka.pomocnik.toLocaleString()}</td>
+                  <td className="profit-bold-green">{zakazka.zisk.toLocaleString()}</td>
                   <td className="address-cell">{zakazka.adresa || '-'}</td>
                   <td>
                     {/* TYP */}
