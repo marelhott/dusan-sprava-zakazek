@@ -1509,6 +1509,31 @@ const PaintPro = () => {
                 />
               </div>
             </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label>Typ objektu</label>
+                <select
+                  value={formData.typ}
+                  onChange={e => setFormData({...formData, typ: e.target.value})}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                    fontSize: '14px'
+                  }}
+                >
+                  <option value="">Vyberte typ objektu</option>
+                  <option value="byt">Byt</option>
+                  <option value="dům">Dům</option>
+                  <option value="pension">Pension</option>
+                  <option value="obchod">Obchod</option>
+                </select>
+              </div>
+              <div className="form-group">
+                {/* Prázdné pole pro zachování layoutu */}
+              </div>
+            </div>
             <div className="form-group">
               <label>Poznámky</label>
               <textarea
