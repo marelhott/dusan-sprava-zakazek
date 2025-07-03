@@ -315,10 +315,6 @@ const PaintPro = () => {
           const safeData = Array.isArray(data) ? data : [];
           setZakazkyData(safeData);
           console.log('✅ Data načtena pro uživatele:', currentUser.id, 'počet zakázek:', safeData.length);
-          
-          // Smazat všechny zakázky a potom importovat nové
-          await deleteAllZakazky();
-          await importZakazkyFromScreenshot();
         } catch (error) {
           console.error('❌ Chyba při načítání dat:', error);
           setZakazkyData([]); // Fallback na prázdné pole
