@@ -3088,7 +3088,7 @@ const PaintPro = () => {
           <div className="chart-header">
             <div>
               <h3>PŘEHLED ZAKÁZEK PODLE MĚSÍCŮ</h3>
-              <div className="chart-subtitle">Stohovaný zisk podle druhů práce a měsíců</div>
+              <div className="chart-subtitle">Porovnání zisků podle druhů práce a měsíců</div>
             </div>
           </div>
           <div className="chart-container-large">
