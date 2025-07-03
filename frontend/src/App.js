@@ -3152,8 +3152,8 @@ const PaintPro = () => {
                     borderWidth: 1,
                     borderRadius: 8, // Zakulacené rohy
                     borderSkipped: false, // Zakulacené všechny rohy
-                    barPercentage: 0.7, // Mezery mezi skupinami
-                    categoryPercentage: 0.8, // Šířka sloupců
+                    barPercentage: 0.8, // Šířka skupiny sloupců
+                    categoryPercentage: 0.9, // Mezery mezi jednotlivými sloupci ve skupině
                   };
                 });
               })()
