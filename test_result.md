@@ -265,7 +265,7 @@ test_plan:
 
 agent_communication:
     -agent: "main"
-    -message: "Dokončil jsem kompletní Firebase integraci: 1) Backend - vytvořil FirebaseService s CRUD operacemi, přepsal server.py na Firebase API, 2) Frontend - implementoval Firebase config, nový FirebaseAuthContext s real-time sync, zachoval PIN systém, 3) Provedl předchozí úpravy (název aplikace na 'Dušan/Správa zakázek', vycentrování dashboard čísel, vylepšený PDF export). Firebase backend je spuštěn a připraven k testování."
+    -message: "Uživatel chce specificky ověřit funkčnost nových polí 'Doba realizace' a 'Poznámky' v zakázkách. Potřebuji otestovat: 1) Zda se tato pole správně zobrazují ve formuláři pro přidání zakázky, 2) Zda se data uloží do Supabase včetně těchto polí, 3) Zda se pole zobrazují v seznamu zakázek, 4) Zda lze editovat tyto hodnoty, 5) Kompletní end-to-end test těchto specifických polí."
     -agent: "testing"
     -message: "Provedl jsem kompletní test backend API. Všechny testy prošly úspěšně. Backend server běží správně, API endpointy fungují a MongoDB připojení je funkční. Vytvořil jsem backend_test.py skript, který testuje všechny dostupné API endpointy (/api/, /api/status POST, /api/status GET)."
     -agent: "testing"
