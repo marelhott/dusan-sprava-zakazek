@@ -252,6 +252,18 @@ backend:
         -agent: "testing"
         -comment: "Provedl jsem kompletní test API endpointů pro kalendářovou funkcionalitu. Zjistil jsem, že API endpointy pro správu zakázek fungují správně z hlediska API rozhraní - server přijímá požadavky a vrací správné odpovědi. Problém je v tom, že data nejsou skutečně ukládána kvůli chybějící Firebase integraci. Při vytvoření nové zakázky s kalendářovými daty server vrací 'zakazka_id': 'supabase_fallback', ale při následném dotazu na seznam zakázek je seznam prázdný. Testy pro ověření vytvoření, aktualizace a smazání zakázky selhávají, protože data nejsou perzistentní. API správně zpracovává chybná data a vrací 422 status kód. Pro plnou funkčnost kalendářové funkcionality by bylo potřeba opravit Firebase integraci."
 
+  - task: "Podpora polí 'doba_realizace' a 'poznámky' v API"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: true
+        -agent: "testing"
+        -comment: "Provedl jsem kompletní test podpory nových polí 'doba_realizace' a 'poznamky' v backend API pro zakázky. Nejprve jsem aktualizoval modely ZakazkaCreate a ZakazkaUpdate v server.py, aby obsahovaly nová pole. Poté jsem otestoval POST /api/users/{user_id}/zakazky endpoint s testovacími daty obsahujícími hodnoty pro nová pole (doba_realizace: 7, poznamky: 'Testovací poznámka...'). API úspěšně přijalo a uložilo data včetně nových polí. Při GET požadavku na /api/users/{user_id}/zakazky byla nová pole správně vrácena s očekávanými hodnotami. Následně jsem otestoval PUT endpoint pro aktualizaci těchto polí (doba_realizace: 10, poznamky: 'Aktualizovaná poznámka...') a ověřil, že změny byly úspěšně uloženy. Všechny testy prošly úspěšně, což potvrzuje, že backend API plně podporuje nová pole 'doba_realizace' a 'poznamky' pro zakázky."
+
 metadata:
   created_by: "main_agent"
   version: "1.2"
