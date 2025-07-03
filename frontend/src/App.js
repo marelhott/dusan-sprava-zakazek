@@ -1847,34 +1847,50 @@ const PaintPro = () => {
               </tr>
             </thead>
             <tbody>
-              {zakazkyData
-                .filter(zakazka => {
-                  // Filtr podle klienta
-                  const clientMatch = searchClient === '' || 
-                    zakazka.klient.toLowerCase().includes(searchClient.toLowerCase());
-                  
-                  // Filtr podle druhu práce  
-                  const druhMatch = filterDruhPrace === '' || zakazka.druh === filterDruhPrace;
-                  
-                  // Filtr podle datumu
-                  let dateMatch = true;
-                  if (filterDateFrom || filterDateTo) {
-                    const zakazkaDate = new Date(zakazka.datum.split('. ').reverse().join('-'));
+              {(() => {
+                // Filtrování zakázek
+                const filteredZakazky = zakazkyData
+                  .filter(zakazka => {
+                    // Filtr podle klienta
+                    const clientMatch = searchClient === '' || 
+                      zakazka.klient.toLowerCase().includes(searchClient.toLowerCase());
                     
-                    if (filterDateFrom) {
-                      const fromDate = new Date(filterDateFrom);
-                      dateMatch = dateMatch && zakazkaDate >= fromDate;
+                    // Filtr podle druhu práce  
+                    const druhMatch = filterDruhPrace === '' || zakazka.druh === filterDruhPrace;
+                    
+                    // Filtr podle datumu
+                    let dateMatch = true;
+                    if (filterDateFrom || filterDateTo) {
+                      const zakazkaDate = new Date(zakazka.datum.split('. ').reverse().join('-'));
+                      
+                      if (filterDateFrom) {
+                        const fromDate = new Date(filterDateFrom);
+                        dateMatch = dateMatch && zakazkaDate >= fromDate;
+                      }
+                      
+                      if (filterDateTo) {
+                        const toDate = new Date(filterDateTo);
+                        dateMatch = dateMatch && zakazkaDate <= toDate;
+                      }
                     }
                     
-                    if (filterDateTo) {
-                      const toDate = new Date(filterDateTo);
-                      dateMatch = dateMatch && zakazkaDate <= toDate;
-                    }
-                  }
-                  
-                  return clientMatch && druhMatch && dateMatch;
-                })
-                .map((zakazka, index) => (
+                    return clientMatch && druhMatch && dateMatch;
+                  })
+                  // Řazení podle datumu od nejnovější po nejstarší
+                  .sort((a, b) => {
+                    const dateA = new Date(a.datum.split('. ').reverse().join('-'));
+                    const dateB = new Date(b.datum.split('. ').reverse().join('-'));
+                    return dateB - dateA; // Sestupně (nejnovější první)
+                  });
+
+                // Paginace
+                const totalItems = filteredZakazky.length;
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                const currentZakazky = filteredZakazky.slice(startIndex, endIndex);
+
+                return currentZakazky.map((zakazka, index) => (
                 <tr key={zakazka.id} className="table-row">
                   <td className="order-number">
                     {index + 1}
