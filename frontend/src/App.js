@@ -2951,19 +2951,18 @@ const PaintPro = () => {
                   ...lineChartOptions.scales,
                   y: {
                     ...lineChartOptions.scales.y,
-                    beginAtZero: false,
+                    beginAtZero: true,
                     min: 0,
                     max: Math.max(
                       Math.max(...zakazkyData.map(z => z.pomocnik || 0)),
                       1000
-                    ) + 2000,
+                    ) + 500,
                     ticks: {
                       ...lineChartOptions.scales.y.ticks,
-                      stepSize: 2000, // Krok 2000
+                      stepSize: 200, // Krok 200 pro stovky
                       callback: function(value) {
-                        // Přímá škála: 1000, 3000, 5000, 7000...
-                        if (value === 0) return '0';
-                        return (value + 1000).toLocaleString();
+                        // Škála ve stovkách: 0, 200, 400, 600, 800, 1000...
+                        return value.toLocaleString();
                       }
                     }
                   }
