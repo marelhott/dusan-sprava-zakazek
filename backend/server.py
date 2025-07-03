@@ -54,6 +54,8 @@ class ZakazkaCreate(BaseModel):
     zisk: float
     adresa: str
     telefon: Optional[str] = ""  # NEW - telefon field
+    doba_realizace: Optional[int] = None  # NEW - doba realizace field (počet dní)
+    poznamky: Optional[str] = None  # NEW - poznámky field
     soubory: List[str] = []
 
 class ZakazkaUpdate(BaseModel):
