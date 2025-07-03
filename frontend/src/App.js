@@ -2954,24 +2954,34 @@ const PaintPro = () => {
               <Line data={{
                 labels: zakazkyData.map((z, index) => `Zakázka ${index + 1}`),
                 datasets: (() => {
-                // Filtrujeme kategorie, které mají nějaká data
-                const categoriesWithData = workCategories.filter(category => {
-                  return zakazkyData.some(z => z.druh === category.name && z.zisk > 0);
-                });
-                
-                return categoriesWithData.map((category, index) => ({
-                  label: category.name,
-                  data: zakazkyData.map(z => z.druh === category.name ? z.zisk : 0),
-                  borderColor: category.color,
-                  backgroundColor: category.color.replace('1)', '0.1)').replace('rgb', 'rgba'),
-                  borderWidth: 3,
-                  fill: false,
-                  tension: 0.4,
-                  pointRadius: 0,
-                  pointHoverRadius: 0,
-                }))
-              })()
-            }} options={{
+                  // Získej všechny unikátní druhy práce ze zakázek
+                  const uniqueDruhy = [...new Set(zakazkyData.map(z => z.druh))];
+                  
+                  // Barvy pro různé druhy práce
+                  const colors = [
+                    'rgba(239, 68, 68, 1)',   // červená
+                    'rgba(34, 197, 94, 1)',   // zelená
+                    'rgba(59, 130, 246, 1)',  // modrá
+                    'rgba(147, 51, 234, 1)',  // fialová
+                    'rgba(245, 158, 11, 1)',  // oranžová
+                    'rgba(236, 72, 153, 1)',  // růžová
+                    'rgba(14, 165, 233, 1)',  // světle modrá
+                    'rgba(168, 85, 247, 1)',  // světle fialová
+                  ];
+                  
+                  return uniqueDruhy.map((druh, index) => ({
+                    label: druh,
+                    data: zakazkyData.map(z => z.druh === druh ? z.castka : 0),
+                    borderColor: colors[index % colors.length],
+                    backgroundColor: colors[index % colors.length].replace('1)', '0.1)').replace('rgb', 'rgba'),
+                    borderWidth: 3,
+                    fill: false,
+                    tension: 0.4,
+                    pointRadius: 3,
+                    pointHoverRadius: 6,
+                  }));
+                })()
+              }} options={{
                 ...lineChartOptions,
                 scales: {
                   x: {
