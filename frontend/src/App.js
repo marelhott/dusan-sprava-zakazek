@@ -3618,17 +3618,30 @@ const PaintPro = () => {
 
   // Kalendář komponenta - samostatná sekce
   const Kalendar = () => {
+    // Filtrovat pouze kalendářové zakázky - nezahrnovat zakázky ze sekce "Zakázky"
+    const kalendaroviZakazky = zakazkyData.filter(zakazka => {
+      // Kalendářové zakázky jsou identifikovány pomocí:
+      // 1. Prefix "CAL-" v čísle zakázky
+      // 2. Příznak calendar_origin
+      const isCalendarEvent = (
+        (zakazka.cislo && zakazka.cislo.toString().startsWith('CAL-')) ||
+        (zakazka.id_zakazky && zakazka.id_zakazky.toString().startsWith('CAL-')) ||
+        zakazka.calendar_origin === true
+      );
+      return isCalendarEvent;
+    });
+
     return (
       <div className="kalendar">
         <div className="page-header">
           <div>
             <h1>Kalendář</h1>
-            <p>Plánování a přehled zakázek v kalendářním zobrazení</p>
+            <p>Plánování a přehled budoucích zakázek v kalendářním zobrazení</p>
           </div>
         </div>
         
         <CalendarComponent 
-          zakazkyData={zakazkyData}
+          zakazkyData={kalendaroviZakazky}
           onAddOrder={handleAddZakazka}
           onEditOrder={handleEditZakazka}
           onDeleteOrder={handleDeleteZakazka}
