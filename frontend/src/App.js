@@ -2923,6 +2923,22 @@ const PaintPro = () => {
                     backgroundColor: 'rgba(34, 197, 94, 0.1)',
                     fill: true,
                     tension: 0.4,
+                  },
+                  {
+                    label: 'Doprava',
+                    data: zakazkyData.map(z => z.palivo),
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                  },
+                  {
+                    label: 'Pomocník',
+                    data: zakazkyData.map(z => z.pomocnik),
+                    borderColor: 'rgba(147, 51, 234, 1)',
+                    backgroundColor: 'rgba(147, 51, 234, 0.1)',
+                    fill: true,
+                    tension: 0.4,
                   }
                 ]
               }} options={lineChartOptions} />
