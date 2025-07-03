@@ -17,7 +17,7 @@ def add_24_orders():
     print("=" * 50)
     
     # Use the specific user ID from the review request
-    user_id = "999888"
+    user_id = "999888"  # PIN for testing as specified in the request
     print(f"Using user ID: {user_id}")
     
     # Define the 24 orders to add
