@@ -315,6 +315,9 @@ const PaintPro = () => {
           const safeData = Array.isArray(data) ? data : [];
           setZakazkyData(safeData);
           console.log('✅ Data načtena pro uživatele:', currentUser.id, 'počet zakázek:', safeData.length);
+          
+          // Automatický import zakázek ze screenshotu
+          await importZakazkyFromScreenshot();
         } catch (error) {
           console.error('❌ Chyba při načítání dat:', error);
           setZakazkyData([]); // Fallback na prázdné pole
