@@ -297,6 +297,10 @@ const PaintPro = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingZakazka, setEditingZakazka] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
+  
+  // Stav pro paginaci zakázek
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   // OPRAVA: Inicializace zakazkyData jako prázdné pole
   const [zakazkyData, setZakazkyData] = useState([]);
