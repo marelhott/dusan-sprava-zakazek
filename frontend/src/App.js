@@ -2910,38 +2910,56 @@ const PaintPro = () => {
                 datasets: [
                   {
                     label: 'Fee',
-                    data: zakazkyData.map(z => z.fee),
+                    data: zakazkyData.map(z => z.fee || 0), // Fee je 0, ale pro vizualizaci zachováme
                     borderColor: 'rgba(239, 68, 68, 1)',
                     backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                    fill: true,
+                    fill: false,
                     tension: 0.4,
+                    borderWidth: 2,
                   },
                   {
                     label: 'Materiál',
-                    data: zakazkyData.map(z => z.material),
+                    data: zakazkyData.map(z => z.material || 800),
                     borderColor: 'rgba(34, 197, 94, 1)',
                     backgroundColor: 'rgba(34, 197, 94, 0.1)',
-                    fill: true,
+                    fill: false,
                     tension: 0.4,
+                    borderWidth: 2,
                   },
                   {
                     label: 'Doprava',
-                    data: zakazkyData.map(z => z.palivo),
+                    data: zakazkyData.map(z => z.palivo || 250),
                     borderColor: 'rgba(59, 130, 246, 1)',
                     backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    fill: true,
+                    fill: false,
                     tension: 0.4,
+                    borderWidth: 2,
                   },
                   {
                     label: 'Pomocník',
-                    data: zakazkyData.map(z => z.pomocnik),
+                    data: zakazkyData.map(z => z.pomocnik || 0),
                     borderColor: 'rgba(147, 51, 234, 1)',
                     backgroundColor: 'rgba(147, 51, 234, 0.1)',
-                    fill: true,
+                    fill: false,
                     tension: 0.4,
+                    borderWidth: 2,
                   }
                 ]
-              }} options={lineChartOptions} />
+              }} options={{
+                ...lineChartOptions,
+                scales: {
+                  ...lineChartOptions.scales,
+                  y: {
+                    ...lineChartOptions.scales.y,
+                    beginAtZero: true,
+                    max: Math.max(
+                      Math.max(...zakazkyData.map(z => z.pomocnik || 0)),
+                      800,
+                      250
+                    ) + 1000, // Přidáme trochu prostoru nahoře
+                  }
+                }
+              }} />
             </div>
           </div>
 
