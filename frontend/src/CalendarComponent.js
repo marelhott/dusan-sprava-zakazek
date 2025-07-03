@@ -412,7 +412,14 @@ const CalendarComponent = ({
           ...orderData,
           calendar_origin: true,
           cislo: `CAL-${Date.now()}`,
-          druh: orderData.druh || 'Ostatní' // Přidáme druh práce
+          druh: orderData.druh || 'Ostatní', // Přidáme druh práce
+          klient: orderData.klient || orderData.jmeno || 'Nezadáno', // OPRAVA: Povinné pole klient
+          fee: 0, // Výchozí hodnoty
+          material: 800,
+          palivo: 250,
+          dobaRealizace: orderData.dobaRealizace || 1,
+          poznamky: orderData.poznamky || '',
+          typ: orderData.typ || 'byt'
         };
         
         await onAddOrder(calendarOrderData);
