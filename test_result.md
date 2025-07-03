@@ -249,6 +249,8 @@ metadata:
 
 test_plan:
   current_focus:
+    - "Testování polí 'Doba realizace' a 'Poznámky' v zakázkách"
+    - "CRUD operace zakázek"
     - "Firebase Admin SDK integrace"
     - "Firebase frontend integrace"
     - "Změna názvu aplikace a přesun uživatele"
@@ -256,7 +258,6 @@ test_plan:
     - "Kalendářová funkcionalita API"
     - "Kalendářová komponenta v sekci Mapa zakázek"
     - "Přesun kalendáře do samostatné sekce"
-    - "CRUD operace zakázek"
   stuck_tasks: 
     - "Kalendářová funkcionalita API"
   test_all: false
