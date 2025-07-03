@@ -3162,7 +3162,7 @@ const PaintPro = () => {
               maintainAspectRatio: false,
               scales: {
                 x: {
-                  stacked: true,
+                  stacked: false, // Changed from true to false for grouped bars
                   grid: {
                     display: false,
                   },
@@ -3175,7 +3175,7 @@ const PaintPro = () => {
                   }
                 },
                 y: {
-                  stacked: true,
+                  stacked: false, // Changed from true to false for grouped bars
                   grid: {
                     color: 'rgba(107, 114, 128, 0.08)',
                     lineWidth: 1,
