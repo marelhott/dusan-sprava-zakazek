@@ -1314,7 +1314,8 @@ const PaintPro = () => {
       pomocnik: '',
       palivo: '',
       delkaRealizace: '', // NOVÝ - délka realizace
-      poznamky: '' // NOVÝ - poznámky
+      poznamky: '', // NOVÝ - poznámky
+      typ: '' // NOVÝ - typ objektu (byt, dům, pension, obchod)
     });
 
     const handleSubmit = (e) => {
