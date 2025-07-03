@@ -3141,6 +3141,10 @@ const PaintPro = () => {
                     backgroundColor: colors[index % colors.length],
                     borderColor: colors[index % colors.length].replace('0.8)', '1)'),
                     borderWidth: 1,
+                    borderRadius: 8, // Zakulacené rohy
+                    borderSkipped: false, // Zakulacené všechny rohy
+                    barPercentage: 0.7, // Mezery mezi skupinami
+                    categoryPercentage: 0.8, // Šířka sloupců
                   };
                 });
               })()
