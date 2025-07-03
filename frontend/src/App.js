@@ -475,9 +475,6 @@ const PaintPro = () => {
         await new Promise(resolve => setTimeout(resolve, 50));
       }
       
-      // Reset import flag
-      localStorage.removeItem('zakazky_imported');
-      
       console.log('✅ Všechny zakázky smazány!');
       
       // Reload data
