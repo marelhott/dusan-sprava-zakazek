@@ -327,6 +327,33 @@ const PaintPro = () => {
     loadUserData();
   }, [currentUser?.id, getUserData]);
 
+  // Jednorázový import při prvním načtení aplikace
+  useEffect(() => {
+    const runOneTimeImport = async () => {
+      // Zkontroluj, jestli už byl import proveden
+      const importCompleted = localStorage.getItem('zakazky_imported_once');
+      
+      if (!importCompleted && currentUser?.id) {
+        console.log('🔄 Spouštím jednorázový import a smazání...');
+        
+        // Smazat všechny stávající zakázky
+        await deleteAllZakazky();
+        
+        // Importovat nové zakázky
+        await importZakazkyFromScreenshot();
+        
+        // Označit jako dokončeno
+        localStorage.setItem('zakazky_imported_once', 'true');
+        
+        console.log('✅ Jednorázový import dokončen!');
+      }
+    };
+    
+    if (currentUser?.id) {
+      runOneTimeImport();
+    }
+  }, [currentUser?.id]); // Spustí se pouze při změně currentUser.id
+
   // Jednoduchý stav pro kategorie - bez složitých listenerů
   const [workCategories, setWorkCategories] = useState(workCategoryManager.getAllCategories());
 
