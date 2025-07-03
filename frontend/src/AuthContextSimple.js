@@ -161,6 +161,7 @@ export const AuthProvider = ({ children }) => {
         adresa: zakazka.adresa,
         dobaRealizace: zakazka.doba_realizace || 1, // Číslo dní
         poznamky: zakazka.poznamky || '', // Text poznámky
+        typ: zakazka.typ || '', // Typ objektu (byt, dům, pension, obchod)
         telefon: (() => {
           // Extract telefon from adresa field
           if (zakazka.adresa && zakazka.adresa.includes('Tel:')) {
