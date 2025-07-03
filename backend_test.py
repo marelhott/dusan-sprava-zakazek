@@ -420,7 +420,9 @@ def run_tests():
         update_data = {
             "klient": "Updated Test Klient",
             "castka": 30000,
-            "zisk": 15000
+            "zisk": 15000,
+            "doba_realizace": 10,  # Update doba_realizace from 7 to 10 days
+            "poznamky": "Aktualizovaná poznámka pro test PUT endpointu"  # Update poznamky
         }
         
         response = requests.put(f"{api_url}/users/{user_id}/zakazky/{zakazka_id}", json=update_data)
