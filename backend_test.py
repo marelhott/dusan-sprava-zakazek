@@ -565,7 +565,7 @@ def run_tests():
             # Check if the zakazka was deleted
             zakazka_deleted = True
             for zakazka in zakazky:
-                if zakazka.get("id") == zakazka_id or zakazka.get("idZakazky") == "TEST123":
+                if zakazka.get("id") == zakazka_id or zakazka.get("idZakazky") == "TEST-DOBA-001":
                     zakazka_deleted = False
                     print(f"❌ Zakazka was not deleted: {zakazka}")
                     break
