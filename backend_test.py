@@ -467,11 +467,23 @@ def run_tests():
             # Check if the zakazka was updated
             zakazka_updated = False
             for zakazka in zakazky:
-                if zakazka.get("id") == zakazka_id or zakazka.get("idZakazky") == "TEST123":
-                    if zakazka.get("klient") == "Updated Test Klient" and zakazka.get("castka") == 30000:
+                if zakazka.get("id") == zakazka_id or zakazka.get("idZakazky") == "TEST-DOBA-001":
+                    # Check if all fields were updated correctly
+                    klient_updated = zakazka.get("klient") == "Updated Test Klient"
+                    castka_updated = zakazka.get("castka") == 30000
+                    doba_realizace_updated = zakazka.get("doba_realizace") == 10
+                    poznamky_updated = zakazka.get("poznamky") == "Aktualizovaná poznámka pro test PUT endpointu"
+                    
+                    if klient_updated and castka_updated and doba_realizace_updated and poznamky_updated:
                         zakazka_updated = True
-                        print(f"✅ Zakazka was successfully updated: {zakazka}")
-                        break
+                        print(f"✅ Zakazka was successfully updated with all fields including 'doba_realizace' and 'poznamky': {zakazka}")
+                    else:
+                        print(f"⚠️ Zakazka update verification partially failed:")
+                        print(f"   - klient: {'OK' if klient_updated else 'FAILED'} (expected: 'Updated Test Klient', got: {zakazka.get('klient')})")
+                        print(f"   - castka: {'OK' if castka_updated else 'FAILED'} (expected: 30000, got: {zakazka.get('castka')})")
+                        print(f"   - doba_realizace: {'OK' if doba_realizace_updated else 'FAILED'} (expected: 10, got: {zakazka.get('doba_realizace')})")
+                        print(f"   - poznamky: {'OK' if poznamky_updated else 'FAILED'} (expected: 'Aktualizovaná poznámka...', got: {zakazka.get('poznamky')})")
+                    break
             
             if zakazka_updated:
                 print(f"✅ Zakazka update verification test passed!")
