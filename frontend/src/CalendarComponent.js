@@ -432,8 +432,8 @@ const CalendarComponent = ({
 
   // Výpočet finančních sumarizací - pouze pro kalendářové zakázky
   const financialSummary = React.useMemo(() => {
-    // Filtruj pouze kalendářové zakázky
-    const calendarEvents = events.filter(event => event.resource.isCalendarEvent);
+    // Všechny události předané kalendáři jsou už kalendářové zakázky
+    const calendarEvents = events;
     
     const incomingOrders = calendarEvents.filter(event => event.resource.status === 'incoming');
     const completedOrders = calendarEvents.filter(event => event.resource.status === 'realizovana');
