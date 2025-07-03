@@ -2961,12 +2961,9 @@ const PaintPro = () => {
                       ...lineChartOptions.scales.y.ticks,
                       stepSize: 2000, // Krok 2000
                       callback: function(value) {
-                        // Škála: 1000, 3000, 5000, 7000...
+                        // Přímá škála: 1000, 3000, 5000, 7000...
                         if (value === 0) return '0';
-                        if (value % 2000 === 0) {
-                          return (value + 1000).toLocaleString();
-                        }
-                        return '';
+                        return (value + 1000).toLocaleString();
                       }
                     }
                   }
