@@ -200,8 +200,8 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
-          // doba_realizace: orderData.dobaRealizace || '', // Zatím vypnuto - sloupec neexistuje
-          // poznamky: orderData.poznamky || '', // Zatím vypnuto - sloupec neexistuje
+          doba_realizace: parseInt(orderData.dobaRealizace) || 1, // Číslo - počet dní
+          poznamky: orderData.poznamky || '', // Text poznámky
           soubory: orderData.soubory || []
         }])
         .select()
