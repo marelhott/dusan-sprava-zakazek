@@ -313,7 +313,17 @@ const CalendarComponent = ({
 
   // Převod zakázek na události pro kalendář
   useEffect(() => {
+    console.log('=== KALENDÁŘ DEBUG ===');
+    console.log('Celkem zakázek pro kalendář:', zakazkyData.length);
+    
     const calendarEvents = zakazkyData.map((zakazka, index) => {
+      console.log(`Zakázka ${index + 1}:`, {
+        klient: zakazka.klient,
+        datum: zakazka.datum,
+        dobaRealizace: zakazka.dobaRealizace,
+        endDate: zakazka.endDate
+      });
+      
       // Parse českého formátu datumu DD. MM. YYYY
       const dateParts = zakazka.datum.split('. ');
       const day = parseInt(dateParts[0]);
@@ -327,6 +337,10 @@ const CalendarComponent = ({
         // Pro allDay události v React Big Calendar musí být endDate o 1 den později
         // Pokud zakázka trvá 3 dny, endDate = startDate + 3 dny (ne -1)
         endDate.setDate(startDate.getDate() + zakazka.dobaRealizace);
+        console.log(`✅ Multi-day event: ${zakazka.dobaRealizace} dní`, {
+          startDate: startDate.toDateString(),
+          endDate: endDate.toDateString()
+        });
       } else if (zakazka.endDate) {
         // Fallback na explicitní endDate pokud existuje
         const endParts = zakazka.endDate.split('. ');
