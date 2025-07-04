@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Get the backend URL from the frontend .env file
 def get_backend_url():
-    return "https://364ec5aa-24d2-46fa-a093-bef30ed1bc90.preview.emergentagent.com"
+    return "https://fe7b677f-9b06-4e7e-9b49-e59343a6061b.preview.emergentagent.com"
 
 def add_24_orders():
     backend_url = get_backend_url()

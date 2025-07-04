@@ -9,7 +9,7 @@ import uuid
 # Get the backend URL from the frontend .env file or use the provided URL
 def get_backend_url():
     # Use the provided URL from the review request
-    return "https://364ec5aa-24d2-46fa-a093-bef30ed1bc90.preview.emergentagent.com"
+    return "https://fe7b677f-9b06-4e7e-9b49-e59343a6061b.preview.emergentagent.com"
 
 # Parse Czech date format to standard format
 def parse_czech_date(czech_date):
