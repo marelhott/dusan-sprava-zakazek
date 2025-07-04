@@ -553,10 +553,10 @@ const PaintPro = () => {
       });
     }
 
-    // Reálné měsíční data pouze z zakázek uživatele
+    // Reálné měsíční data pouze z zakázek uživatele (bez kalendářových)
     const monthlyDataMap = {};
     
-    zakazkyData.forEach(zakazka => {
+    filterMainOrdersOnly(zakazkyData).forEach(zakazka => {
       // Parse český formát datumu DD. MM. YYYY
       const dateParts = zakazka.datum.split('. ');
       const day = parseInt(dateParts[0]);
