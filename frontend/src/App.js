@@ -528,7 +528,7 @@ const PaintPro = () => {
     });
     
     // Agregace dat ze zakázek podle kategorie - OPRAVENO pro bezpečnost
-    const safeZakazkyDataForCategories = Array.isArray(zakazkyData) ? zakazkyData : [];
+    const safeZakazkyDataForCategories = filterMainOrdersOnly(zakazkyData);
     safeZakazkyDataForCategories.forEach(zakazka => {
       if (categoryStats.hasOwnProperty(zakazka.druh)) {
         categoryStats[zakazka.druh] += zakazka.zisk;
