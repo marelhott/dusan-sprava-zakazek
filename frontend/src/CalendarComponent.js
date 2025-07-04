@@ -323,8 +323,9 @@ const CalendarComponent = ({
       // Výpočet endDate podle doby realizace
       let endDate = new Date(startDate);
       if (zakazka.dobaRealizace && zakazka.dobaRealizace > 1) {
-        // Přidá (dobaRealizace - 1) dní k startDate
-        endDate.setDate(startDate.getDate() + zakazka.dobaRealizace - 1);
+        // Pro allDay události v React Big Calendar musí být endDate o 1 den později
+        // Pokud zakázka trvá 3 dny, endDate = startDate + 3 dny (ne -1)
+        endDate.setDate(startDate.getDate() + zakazka.dobaRealizace);
       } else if (zakazka.endDate) {
         // Fallback na explicitní endDate pokud existuje
         const endParts = zakazka.endDate.split('. ');
@@ -332,6 +333,12 @@ const CalendarComponent = ({
         const endMonth = parseInt(endParts[1]) - 1;
         const endYear = parseInt(endParts[2]);
         endDate = new Date(endYear, endMonth, endDay);
+        // Pro allDay události přidat +1 den
+        endDate.setDate(endDate.getDate() + 1);
+      } else {
+        // Pokud není specifikována doba realizace, událost trvá 1 den
+        // Pro allDay události přidat +1 den 
+        endDate.setDate(startDate.getDate() + 1);
       }
 
       // Extract telefon from adresa if it's there
