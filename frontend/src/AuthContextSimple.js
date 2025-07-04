@@ -201,7 +201,7 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
-          doba_realizace: parseInt(orderData.dobaRealizace) || 1, // Číslo - počet dní
+          doba_realizace: orderData.dobaRealizace ? parseInt(orderData.dobaRealizace) : 1, // Číslo - počet dní
           poznamky: orderData.poznamky || '', // Text poznámky
           typ: orderData.typ || '', // Typ objektu (byt, dům, pension, obchod)
           soubory: orderData.soubory || []
@@ -259,7 +259,7 @@ export const AuthProvider = ({ children }) => {
           pomocnik: orderData.pomocnik,
           zisk: zisk,
           adresa: orderData.adresa,
-          doba_realizace: parseInt(orderData.dobaRealizace) || 1, // Číslo - počet dní
+          doba_realizace: orderData.dobaRealizace ? parseInt(orderData.dobaRealizace) : 1, // Číslo - počet dní
           poznamky: orderData.poznamky || '', // Text poznámky
           typ: orderData.typ || '', // Typ objektu (byt, dům, pension, obchod)
           soubory: orderData.soubory || []
