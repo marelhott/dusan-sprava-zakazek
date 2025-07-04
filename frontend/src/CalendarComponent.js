@@ -328,10 +328,6 @@ const CalendarComponent = ({
         // Pro allDay události v React Big Calendar musí být endDate o 1 den později
         // Pokud zakázka trvá 3 dny, endDate = startDate + 3 dny (ne -1)
         endDate.setDate(startDate.getDate() + zakazka.dobaRealizace);
-        console.log(`✅ Multi-day event: ${zakazka.dobaRealizace} dní`, {
-          startDate: startDate.toDateString(),
-          endDate: endDate.toDateString()
-        });
       } else if (zakazka.endDate) {
         // Fallback na explicitní endDate pokud existuje
         const endParts = zakazka.endDate.split('. ');
