@@ -656,10 +656,10 @@ const PaintPro = () => {
 
 
 
-  // Aktualizovaná data pro kombinovaný graf - POUZE reálná data ze zakázek
+  // Aktualizovaná data pro kombinovaný graf - POUZE reálná data ze zakázek (bez kalendářových)
   const getCombinedChartData = () => {
     // Pokud nejsou žádné zakázky, vrať prázdný graf - OPRAVENO pro bezpečnost
-    const safeZakazkyDataForChart = Array.isArray(zakazkyData) ? zakazkyData : [];
+    const safeZakazkyDataForChart = filterMainOrdersOnly(zakazkyData);
     if (safeZakazkyDataForChart.length === 0) {
       return {
         labels: [],
@@ -667,7 +667,7 @@ const PaintPro = () => {
       };
     }
 
-    // Vytvoř reálné měsíční údaje ze zakázek
+    // Vytvoř reálné měsíční údaje ze zakázek (bez kalendářových)
     const monthlyStats = {};
     
     safeZakazkyDataForChart.forEach(zakazka => {
