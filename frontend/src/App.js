@@ -1877,8 +1877,8 @@ const PaintPro = () => {
             </thead>
             <tbody>
               {(() => {
-                // Filtrování zakázek
-                const filteredZakazky = zakazkyData
+                // Filtrování zakázek (pouze hlavní zakázky, bez kalendářových)
+                const filteredZakazky = filterMainOrdersOnly(zakazkyData)
                   .filter(zakazka => {
                     // Filtr podle klienta
                     const clientMatch = searchClient === '' || 
