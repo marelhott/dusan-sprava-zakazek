@@ -1974,8 +1974,8 @@ const PaintPro = () => {
         
         <div className="table-footer">
           {(() => {
-            // Znovu spočítáme filtrované zakázky pro footer informace
-            const filteredZakazky = zakazkyData
+            // Znovu spočítáme filtrované zakázky pro footer informace (bez kalendářových)
+            const filteredZakazky = filterMainOrdersOnly(zakazkyData)
               .filter(zakazka => {
                 const clientMatch = searchClient === '' || 
                   zakazka.klient.toLowerCase().includes(searchClient.toLowerCase());
