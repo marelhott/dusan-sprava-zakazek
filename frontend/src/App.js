@@ -505,9 +505,13 @@ const PaintPro = () => {
     // OPRAVA: Bezpečná kontrola - zajistí že zakazkyData je vždy array
     const safeZakazkyData = Array.isArray(zakazkyData) ? zakazkyData : [];
     
-    const celkoveTrzby = safeZakazkyData.reduce((sum, z) => sum + z.castka, 0);
-    const celkovyZisk = safeZakazkyData.reduce((sum, z) => sum + z.zisk, 0);
-    const pocetZakazek = safeZakazkyData.length;
+    // NOVÉ: Filtrování pouze hlavních zakázek (bez kalendářových)
+    const mainOrdersOnly = filterMainOrdersOnly(safeZakazkyData);
+    console.log('Filtrované hlavní zakázky (bez kalendářových):', mainOrdersOnly.length, 'z', safeZakazkyData.length);
+    
+    const celkoveTrzby = mainOrdersOnly.reduce((sum, z) => sum + z.castka, 0);
+    const celkovyZisk = mainOrdersOnly.reduce((sum, z) => sum + z.zisk, 0);
+    const pocetZakazek = mainOrdersOnly.length;
     const prumernyZisk = pocetZakazek > 0 ? Math.round(celkovyZisk / pocetZakazek) : 0;
 
     console.log('Celkové tržby:', celkoveTrzby);
