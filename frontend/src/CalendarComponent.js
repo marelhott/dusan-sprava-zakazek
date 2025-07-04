@@ -140,6 +140,7 @@ const InlineCellEditor = ({ date, onSave, onCancel, existingEvents }) => {
       cena: parseFloat(formData.cena) || 0,
       datum: moment(formData.startDate).format('DD. MM. YYYY'),
       endDate: moment(formData.endDate).format('DD. MM. YYYY'),
+      dobaRealizace: daysDuration, // NOVÉ: Přidání doby realizace
       color: eventColor,
       status: 'incoming', // Výchozí stav
       id: Date.now()
