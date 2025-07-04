@@ -313,18 +313,7 @@ const CalendarComponent = ({
 
   // Převod zakázek na události pro kalendář
   useEffect(() => {
-    console.log('=== KALENDÁŘ DEBUG ===');
-    console.log('Celkem zakázek pro kalendář:', zakazkyData.length);
-    
     const calendarEvents = zakazkyData.map((zakazka, index) => {
-      console.log(`=== ZAKÁZKA ${index + 1} DETAILY ===`);
-      console.log('Klient:', zakazka.klient);
-      console.log('Datum:', zakazka.datum);
-      console.log('dobaRealizace:', zakazka.dobaRealizace);
-      console.log('endDate:', zakazka.endDate);
-      console.log('cislo:', zakazka.cislo);
-      console.log('calendar_origin:', zakazka.calendar_origin);
-      console.log('=======================');
       
       // Parse českého formátu datumu DD. MM. YYYY
       const dateParts = zakazka.datum.split('. ');
