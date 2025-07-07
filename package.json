@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "scripts": {
     "install": "cd frontend && yarn install",
-    "build": "cd frontend && yarn build", 
+    "build": "cd frontend && yarn build",
     "start": "cd frontend && yarn start"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

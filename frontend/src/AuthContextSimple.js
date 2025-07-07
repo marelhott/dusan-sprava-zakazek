@@ -28,12 +28,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     console.log('🚀 AuthProvider mounted, starting initialization...');
-    
+
     const timeoutId = setTimeout(() => {
       console.log('⚠️ Loading timeout - forcing isLoading = false');
       setIsLoading(false);
     }, 5000); // 5 sekund timeout
-    
+
     initializeApp()
       .then(() => {
         clearTimeout(timeoutId);
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         console.error('❌ Initialization failed:', error);
         setIsLoading(false);
       });
-    
+
     return () => clearTimeout(timeoutId);
   }, []);
 
@@ -52,13 +52,13 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('🔄 Starting app initialization...');
       setIsLoading(true);
-      
+
       // Načtení profilů
       console.log('📋 Loading profiles...');
       const { data: supabaseProfiles, error: profilesError } = await supabase
         .from('profiles')
         .select('*');
-      
+
       if (!profilesError && supabaseProfiles && supabaseProfiles.length > 0) {
         console.log(`✅ Loaded ${supabaseProfiles.length} profiles from Supabase`);
         const convertedProfiles = supabaseProfiles.map(profile => ({
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
         console.log('⚠️ Using fallback profile');
         setProfiles([DEFAULT_PROFILE]);
       }
-      
+
       // Načtení uloženého uživatele
       console.log('👤 Checking for saved user...');
       const savedUser = localStorage.getItem('paintpro_user');
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         console.log('👤 No saved user found');
       }
-      
+
     } catch (error) {
       console.error('❌ Error in initialization:', error);
     } finally {
@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
   const login = (pin) => {
     console.log(`🔐 Login attempt with PIN: ${pin}`);
     const profile = profiles.find(p => p.pin === pin);
-    
+
     if (profile) {
       const user = {
         id: profile.id,
@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }) => {
       console.log(`✅ Login successful: ${user.name}`);
       return true;
     }
-    
+
     console.log('❌ PIN not found');
     return false;
   };
@@ -131,20 +131,20 @@ export const AuthProvider = ({ children }) => {
   const getUserData = async (userId) => {
     try {
       console.log('📊 Načítám zakázky z Supabase pro uživatele:', userId);
-      
+
       const { data: zakazky, error } = await supabase
         .from('zakazky')
         .select('*')
         .eq('profile_id', userId)
         .order('created_at', { ascending: false });
-      
+
       if (error) {
         console.error('❌ Chyba při načítání zakázek z Supabase:', error);
         return [];
       }
-      
+
       console.log(`✅ Načteno ${zakazky.length} zakázek z Supabase`);
-      
+
       // Konverze na frontend formát
       const convertedZakazky = zakazky.map(zakazka => ({
         id: zakazka.id,
@@ -172,7 +172,7 @@ export const AuthProvider = ({ children }) => {
         })(),
         soubory: zakazka.soubory || []
       }));
-      
+
       return convertedZakazky;
     } catch (error) {
       console.error('❌ Chyba při načítání dat uživatele:', error);
@@ -183,7 +183,7 @@ export const AuthProvider = ({ children }) => {
   const addUserOrder = async (userId, orderData) => {
     try {
       const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
-      
+
       console.log('🔄 Přidávám zakázku do Supabase...');
       const { data, error } = await supabase
         .from('zakazky')
@@ -208,26 +208,26 @@ export const AuthProvider = ({ children }) => {
         }])
         .select()
         .single();
-      
+
       if (error) {
         console.error('❌ KRITICKÁ CHYBA - zakázka se neuložila do Supabase:', error);
         throw new Error(`Zakázka se neuložila: ${error.message}`);
       }
-      
+
       // 100% OVĚŘENÍ - kontrola že je skutečně v databázi
       const { data: verify, error: verifyError } = await supabase
         .from('zakazky')
         .select('id, klient')
         .eq('id', data.id)
         .single();
-      
+
       if (verifyError || !verify) {
         console.error('❌ KRITICKÁ CHYBA - zakázka není v databázi po přidání!');
         throw new Error('Zakázka se nepodařilo ověřit v databázi');
       }
-      
+
       console.log('✅ 100% POTVRZENO - zakázka je v Supabase:', verify.klient);
-      
+
       // Načti aktualizovaná data
       const updatedData = await getUserData(userId);
       return updatedData;
@@ -241,9 +241,9 @@ export const AuthProvider = ({ children }) => {
   const editUserOrder = async (userId, orderId, orderData) => {
     try {
       console.log('🔄 Aktualizuji zakázku v Supabase:', orderId, orderData);
-      
+
       const zisk = orderData.castka - orderData.fee - orderData.material - orderData.pomocnik - orderData.palivo;
-      
+
       const { data, error } = await supabase
         .from('zakazky')
         .update({
@@ -268,14 +268,14 @@ export const AuthProvider = ({ children }) => {
         .eq('profile_id', userId)
         .select()
         .single();
-      
+
       if (error) {
         console.error('❌ Chyba při aktualizaci zakázky v Supabase:', error);
         throw error;
       }
-      
+
       console.log('✅ Zakázka úspěšně aktualizována v Supabase:', data);
-      
+
       // Načti aktualizovaná data
       const updatedData = await getUserData(userId);
       return updatedData;
@@ -288,20 +288,20 @@ export const AuthProvider = ({ children }) => {
   const deleteUserOrder = async (userId, orderId) => {
     try {
       console.log('🔄 Mažu zakázku z Supabase:', orderId);
-      
+
       const { error, count } = await supabase
         .from('zakazky')
         .delete({ count: 'exact' })
         .eq('id', orderId)
         .eq('profile_id', userId);
-      
+
       if (error) {
         console.error('❌ Chyba při mazání zakázky z Supabase:', error);
         throw error;
       }
-      
+
       console.log(`✅ Zakázka úspěšně smazána z Supabase (smazáno ${count} záznamů)`);
-      
+
       // Načti aktualizovaná data
       const updatedData = await getUserData(userId);
       return updatedData;
@@ -313,7 +313,7 @@ export const AuthProvider = ({ children }) => {
   const addProfile = async (profileData) => {
     try {
       console.log('🔄 Přidávám profil do Supabase (admin operace):', profileData);
-      
+
       // Vložit do Supabase s admin klíčem
       const { data, error } = await supabase
         .from('profiles')
@@ -325,14 +325,14 @@ export const AuthProvider = ({ children }) => {
         }])
         .select()
         .single();
-      
+
       if (error) {
         console.error('❌ Chyba při přidávání profilu do Supabase:', error);
         throw error;
       }
-      
+
       console.log('✅ Profil úspěšně přidán do Supabase:', data);
-      
+
       // Aktualizuj lokální state
       const updatedProfiles = [...profiles, {
         id: data.id,
@@ -343,7 +343,7 @@ export const AuthProvider = ({ children }) => {
         image: null
       }];
       setProfiles(updatedProfiles);
-      
+
       return data;
     } catch (error) {
       console.error('❌ Fallback na localStorage pro addProfile:', error);
@@ -354,7 +354,7 @@ export const AuthProvider = ({ children }) => {
         id: newId,
         avatar: profileData.avatar || profileData.name.slice(0, 2).toUpperCase()
       };
-      
+
       const updatedProfiles = [...profiles, newProfile];
       setProfiles(updatedProfiles);
       return newProfile;
@@ -367,7 +367,7 @@ export const AuthProvider = ({ children }) => {
       if (!profile) return false;
 
       console.log('🔄 Aktualizuji profil v Supabase (admin operace):', profileId, updatedData);
-      
+
       // Aktualizuj v Supabase s admin klíčem
       const { data, error } = await supabase
         .from('profiles')
@@ -379,14 +379,14 @@ export const AuthProvider = ({ children }) => {
         .eq('id', profileId)
         .select()
         .single();
-      
+
       if (error) {
         console.error('❌ Chyba při aktualizaci profilu v Supabase:', error);
         throw error;
       }
-      
+
       console.log('✅ Profil úspěšně aktualizován v Supabase:', data);
-      
+
       // Aktualizuj lokální state
       const updatedProfiles = profiles.map(p => 
         p.id === profileId 
@@ -398,9 +398,9 @@ export const AuthProvider = ({ children }) => {
             }
           : p
       );
-      
+
       setProfiles(updatedProfiles);
-      
+
       // Aktualizovat current user pokud edituje sebe
       if (currentUser && currentUser.id === profileId) {
         const updatedUser = {
@@ -411,9 +411,9 @@ export const AuthProvider = ({ children }) => {
         };
         setCurrentUser(updatedUser);
       }
-      
+
       return true;
-      
+
     } catch (error) {
       console.error('❌ Fallback na localStorage pro editProfile:', error);
       return true;
@@ -422,21 +422,21 @@ export const AuthProvider = ({ children }) => {
 
   const deleteProfile = async (profileId, pin) => {
     console.log('🚨 DEBUG deleteProfile START:', { profileId, pin, profilesCount: profiles.length });
-    
+
     try {
       if (profiles.length <= 1) {
         console.log('🚨 DEBUG: Pouze 1 profil, nelze smazat');
         return false;
       }
-      
+
       console.log('🚨 DEBUG: Hledám profil v profiles array...');
       profiles.forEach((p, index) => {
         console.log(`  ${index}: ID=${p.id}, PIN='${p.pin}', name='${p.name}'`);
         console.log(`     Match s hledaným: ID=${p.id === profileId}, PIN=${p.pin === pin}`);
       });
-      
+
       const profile = profiles.find(p => p.id === profileId && p.pin === pin);
-      
+
       if (!profile) {
         console.log('🚨 DEBUG: Profil nenalezen! profileId:', profileId, 'pin:', pin);
         return false;
@@ -444,63 +444,63 @@ export const AuthProvider = ({ children }) => {
 
       console.log('🚨 DEBUG: Profil nalezen, pokračuji s mazáním...');
       console.log('🔄 Mažu profil z Supabase...');
-      
+
       // Smaž nejdříve všechny zakázky profilu
       const { error: zakazkyError } = await supabase
         .from('zakazky')
         .delete()
         .eq('profile_id', profileId);
-      
+
       if (zakazkyError) {
         console.error('❌ KRITICKÁ CHYBA - zakázky profilu se nesmazaly:', zakazkyError);
         throw zakazkyError;
       }
-      
+
       console.log('🚨 DEBUG: Zakázky smazány, mažu profil...');
-      
+
       // Smaž profil
       const { error: profileError } = await supabase
         .from('profiles')
         .delete()
         .eq('id', profileId);
-      
+
       if (profileError) {
         console.error('❌ KRITICKÁ CHYBA - profil se nesmazal z Supabase:', profileError);
         throw profileError;
       }
-      
+
       console.log('🚨 DEBUG: Profil smazán z Supabase, ověřuji...');
-      
+
       // 100% OVĚŘENÍ - kontrola že je skutečně smazán
       const { data: verify, error: verifyError } = await supabase
         .from('profiles')
         .select('id')
         .eq('id', profileId)
         .single();
-      
+
       if (verify) {
         console.error('❌ KRITICKÁ CHYBA - profil stále existuje v databázi!');
         throw new Error('Profil se nepodařilo smazat z databáze');
       }
-      
+
       console.log('✅ 100% POTVRZENO - profil smazán z Supabase');
       console.log('🚨 DEBUG: Aktualizuji lokální state...');
-      
+
       // Aktualizuj lokální state
       const updatedProfiles = profiles.filter(p => p.id !== profileId);
       setProfiles(updatedProfiles);
-      
+
       console.log('🚨 DEBUG: Lokální state aktualizován, nový počet:', updatedProfiles.length);
-      
+
       // Pokud smaže sebe, odhlásit
       if (currentUser && currentUser.id === profileId) {
         console.log('🚨 DEBUG: Mazám sebe, odhlašuji...');
         logout();
       }
-      
+
       console.log('🚨 DEBUG: deleteProfile ÚSPĚCH, vracím true');
       return true;
-      
+
     } catch (error) {
       console.error('❌ Fatální chyba při mazání profilu:', error);
       alert('CHYBA: Profil se nesmazal z databáze! ' + error.message);
