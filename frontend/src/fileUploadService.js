@@ -24,23 +24,23 @@ const ensureBucketExists = async () => {
   try {
     // Zkontroluj existující buckets
     const { data: buckets, error: bucketsError } = await supabase.storage.listBuckets();
-    
+
     if (bucketsError) {
       console.error('❌ Chyba při načítání buckets:', bucketsError);
       // Pokusíme se pokračovat s výchozím bucket názvem
       return BUCKET_NAME;
     }
-    
+
     console.log('📁 Dostupné buckets:', buckets?.map(b => b.name) || []);
-    
+
     // Zkontroluj, zda náš bucket existuje
     const targetBucket = buckets?.find(bucket => bucket.name === BUCKET_NAME);
-    
+
     if (targetBucket) {
       console.log('✅ Používám existující bucket:', BUCKET_NAME);
       return BUCKET_NAME;
     }
-    
+
     // Zkus vytvořit nový bucket
     console.log('📁 Vytvářím bucket:', BUCKET_NAME);
     const { data: newBucket, error: createError } = await supabase.storage.createBucket(BUCKET_NAME, {
@@ -48,7 +48,7 @@ const ensureBucketExists = async () => {
       allowedMimeTypes: null, // Umožní všechny typy souborů
       fileSizeLimit: 50 * 1024 * 1024 // 50MB limit
     });
-    
+
     if (createError) {
       console.error('⚠️ Nelze vytvořit bucket:', createError);
       // Zkusíme použít jiný existující bucket
@@ -59,10 +59,10 @@ const ensureBucketExists = async () => {
       }
       return BUCKET_NAME; // Zkusíme pokračovat přesto
     }
-    
+
     console.log('✅ Bucket úspěšně vytvořen:', newBucket);
     return BUCKET_NAME;
-    
+
   } catch (error) {
     console.error('❌ Chyba při inicializaci bucket:', error);
     return BUCKET_NAME; // Fallback
@@ -83,14 +83,14 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
       type: file.type,
       zakazkaId: zakazkaId
     });
-    
+
     // Konverze souboru na base64
     const base64Data = await fileToBase64(file);
-    
+
     // Generování unikátního ID souboru
     const timestamp = Date.now();
     const fileId = `${zakazkaId}_${timestamp}`;
-    
+
     // Vytvoření file objektu s metadaty
     const fileObject = {
       id: fileId,
@@ -102,18 +102,18 @@ export const uploadFileToSupabase = async (file, zakazkaId) => {
       storagePath: fileId,
       storage: 'localStorage' // označení pro budoucí migraci
     };
-    
+
     // Uložení do localStorage
     const storageKey = `file_${fileId}`;
     localStorage.setItem(storageKey, JSON.stringify(fileObject));
-    
+
     console.log('✅ Soubor úspěšně uložen do localStorage:', fileObject.name);
-    
+
     return {
       success: true,
       fileObject
     };
-    
+
   } catch (error) {
     console.error('❌ Chyba při ukládání souboru:', error);
     return {
@@ -132,10 +132,10 @@ export const deleteFileFromSupabase = async (storagePath) => {
   try {
     const storageKey = `file_${storagePath}`;
     localStorage.removeItem(storageKey);
-    
+
     console.log('✅ Soubor úspěšně smazán z localStorage:', storagePath);
     return { success: true };
-    
+
   } catch (error) {
     console.error('❌ Chyba při mazání souboru:', error);
     return {
@@ -186,7 +186,7 @@ export const validateFile = async (file, maxSizeMB = 5) => {
       error: `Soubor je příliš velký. Maximum je ${maxSizeMB}MB.`
     };
   }
-  
+
   // Kontrola názvu souboru
   if (file.name.length > 100) {
     return {
@@ -194,6 +194,6 @@ export const validateFile = async (file, maxSizeMB = 5) => {
       error: 'Název souboru je příliš dlouhý (max 100 znaků).'
     };
   }
-  
+
   return { valid: true };
 };

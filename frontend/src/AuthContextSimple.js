@@ -93,7 +93,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('❌ Error in initialization:', error);
     } finally {
-      console.log('🔓 Setting isLoading = false');
+      console.log('🔓 Setting isLoading to false');g = false');
       setIsLoading(false);
     }
   };
