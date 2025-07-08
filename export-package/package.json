@@ -1,0 +1,30 @@
+
+{
+  "name": "dusan-sprava-zakazek",
+  "version": "2.0.0",
+  "description": "Moderní aplikace pro správu zakázek s React frontendem a FastAPI backendem",
+  "author": "Development Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "scripts": {
+    "install-all": "cd frontend && npm install && cd ../backend && pip install -r requirements.txt",
+    "start": "concurrently \"cd frontend && npm start\" \"cd backend && python server.py\"",
+    "build": "cd frontend && npm run build",
+    "frontend": "cd frontend && npm start",
+    "backend": "cd backend && python server.py"
+  },
+  "keywords": [
+    "react",
+    "fastapi",
+    "supabase",
+    "zakázky",
+    "management",
+    "dashboard"
+  ],
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
