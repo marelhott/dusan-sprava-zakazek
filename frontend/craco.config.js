@@ -1,3 +1,4 @@
+
 const webpack = require('webpack');
 
 module.exports = {
@@ -8,6 +9,23 @@ module.exports = {
         test: /\.mjs$/,
         include: /node_modules/,
         type: 'javascript/auto'
+      });
+
+      // Add specific rule for canvg to handle process imports
+      webpackConfig.module.rules.push({
+        test: /\.js$/,
+        include: /node_modules\/canvg/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: [
+              ['@babel/plugin-transform-runtime', {
+                regenerator: true
+              }]
+            ]
+          }
+        }
       });
 
       // Add polyfills for Node.js modules
@@ -21,7 +39,16 @@ module.exports = {
         "stream": require.resolve("stream-browserify"),
         "util": require.resolve("util"),
         "url": require.resolve("url"),
-        "assert": require.resolve("assert")
+        "assert": require.resolve("assert"),
+        "fs": false,
+        "net": false,
+        "tls": false
+      };
+
+      // Add alias for process/browser to resolve the import issue
+      webpackConfig.resolve.alias = {
+        ...webpackConfig.resolve.alias,
+        'process/browser': require.resolve('process/browser')
       };
 
       // Provide process and Buffer as global variables
@@ -29,6 +56,15 @@ module.exports = {
         new webpack.ProvidePlugin({
           process: 'process/browser',
           Buffer: ['buffer', 'Buffer'],
+        })
+      );
+
+      // Add DefinePlugin to define process.env for better compatibility
+      webpackConfig.plugins.push(
+        new webpack.DefinePlugin({
+          'process.env': JSON.stringify(process.env),
+          'process.browser': true,
+          'process.version': JSON.stringify(process.version)
         })
       );
 
