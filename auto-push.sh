@@ -3,6 +3,15 @@
 
 echo "🚀 Automaticky pushuju změny do PaintPro GitHub repository..."
 
+# Zkontrolujeme remote URL
+CURRENT_REMOTE=$(git remote get-url origin 2>/dev/null || echo "")
+EXPECTED_REMOTE="https://github.com/marelhott/paintpro.git"
+
+if [ "$CURRENT_REMOTE" != "$EXPECTED_REMOTE" ]; then
+    echo "🔧 Nastavuji správný remote pro paintpro..."
+    git remote set-url origin $EXPECTED_REMOTE 2>/dev/null || git remote add origin $EXPECTED_REMOTE
+fi
+
 # Zkontrolujeme jestli jsou nějaké změny
 if [ -n "$(git status --porcelain)" ]; then
     echo "✅ Nalezeny změny, commituju..."
